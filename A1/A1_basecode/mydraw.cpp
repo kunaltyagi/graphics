@@ -13,12 +13,12 @@
 
 #include "mydraw_class.hpp"
 
-//Window width
-int win_width = 512;
-//Window height
-int win_height = 512;
-
-
+// Global variables
+int win_width = 512;   ///< Window width
+int win_height = 512;  ///<Window height
+bool left_m = false;   ///< is left mouse button active
+bool right_m = false;  ///< is right mouse button active
+canvas_t canvas;
 
 //Display callback
 void display( void )
@@ -33,7 +33,14 @@ void display( void )
 //Reshape callback
 void reshape( int w, int h )
 {
-    if  ( h == 0 ) h = 1;
+    if (0 == h)
+    {
+        h = 1;
+    }
+    if (0 == w)
+    {
+        w = 1;
+    }
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
@@ -48,29 +55,104 @@ void reshape( int w, int h )
 }
 
 //Keyboard callback
-void keyboard( unsigned char key, int x, int y ) {
-    switch(key) {
-        //Exit on pressing escape
-        case 27:
-            exit(0);
-            break;
-            //Do something when 'C' is pressed
-        case 'C':
-            break;
-            //Ignore all other keypresses
-        default:
-            break;
+void keyboard( unsigned char key, int x, int y )
+{
+    switch(key)
+    {
+    case 27:   //Exit on pressing escape
+        exit(0);
+        break;
+    case 'C':
+    case 'c':  // clear canvas with current back ground color
+        // @TODO: clear the array with the required color and draw
+        // it to the screen.
+        break;
+    case 'N':
+    case 'n':  // new canvas
+        // @TODO: the background color for the canvas as input from the terminal or an initial config file
+        break;
+    case 'S':
+    case 's':  // save
+        // @TODO
+        break;
+    case 'L':
+    case 'l':  // load, input filename on the terminal
+        // @TODO
+        break;
+    case '1':  // line drawing mode
+        // @TODO: Left clicks add points, and a line is
+        // drawn between two successively clicked points, with the
+        // current pen.
+        // Right click removes the last added point, and if a line
+        // is left incomplete
+        // by removing the point, remove the line too.
+        break;
+    case '2':  // triangle drawing mode
+        // @TODO: Left clicks add vertices. Three
+        // successively clicked vertices form a triangle. A right
+        // click removes the
+        // last added point, and if a triangle is left incomplete
+        // by removing the
+        // point, the triangle is also removed.
+        break;
+    case 'F':
+    case 'f':  // Fill the current triangle with the current fill color
+        // @TODO: can require
+        // a click in the interior of the triangle to initiate a
+        // fill, depending on the fill algorithm used.
+        break;
+    case 'G':
+    case 'g':  // change current fill color, input color from terminal
+        // @TODO
+        break;
+    case 'H':
+    case 'h':  // change current pen color, input color from terminal
+        // @TODO
+        break;
+    case 'I':
+    case 'i':  // change current backgound color, input color from terminal
+        // @TODO
+        break;
+    case 'J':
+    case 'j':  // change pen width, input thickness from terminal
+        // @TODO
+        break;
+    default:   //Ignore all other keypresses
+        break;
     }
 }
 
 //Mouse callback
 void mouse(int button, int state, int x, int y)
 {
-    if (state == GLUT_DOWN)
+    if (GLUT_DOWN == state)
     {
-        if (button == GLUT_LEFT_BUTTON)
+        if (GLUT_LEFT_BUTTON == button)
         {
-            //Do something when the left mouse button is clicked
+            // left mouse button is pressed
+            left_m = true;
+            right_m = false;
+        }
+        else if (GLUT_RIGHT_BUTTON == button)
+        {
+            // right mouse button is pressed
+            right_m = true;
+            left_m = false;
+        }
+    }
+    else if (GLUT_UP == state)
+    {
+        if (GLUT_LEFT_BUTTON == button && true == left_m)
+        {
+            // left mouse button is clicked
+            canvas.left_click();
+            left_m = false;
+        }
+        else if (GLUT_RIGHT_BUTTON == button && true == right_m)
+        {
+            // right mouse button is clicked
+            canvas.right_click();
+            right_m = false;
         }
     }
     glutPostRedisplay();

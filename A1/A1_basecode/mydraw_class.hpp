@@ -87,4 +87,15 @@ class fill_t
     inline void set_color(color_t color_);
 };
 
+/**
+ * @class canvas_t
+ * @TODO
+ */
+class canvas_t
+{
+    public:
+        void left_click(void) {}
+        void right_click(void) {}
+};
+
 #endif  // _MYDRAW_CLASS_HPP_
