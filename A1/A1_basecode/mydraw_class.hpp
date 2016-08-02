@@ -83,7 +83,7 @@ class fill_t
   public:
     fill_t();
     fill_t(color_t color_);
-    void draw(color_t color_, unsigned int algorithm = 0);
+    void draw(color_t color_, point_t point_, unsigned int algorithm_ = 0);
     inline void set_color(color_t color_);
 };
 
