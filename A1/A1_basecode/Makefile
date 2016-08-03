@@ -21,6 +21,10 @@ $(info $(BIN_LIST))
 
 all: $(BIN_LIST)
 
+debug: CXXFLAGS += -DDEBUG
+debug: CXXFLAGS += -DANY_CASE
+debug: $(BIN_LIST)
+
 clean:
 	rm -f $(BIN_LIST)
 	rm -f *.o
