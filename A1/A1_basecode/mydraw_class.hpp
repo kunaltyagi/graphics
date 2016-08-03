@@ -83,7 +83,8 @@ class fill_t
   public:
     fill_t();
     fill_t(color_t color_);
-    void draw(color_t color_, point_t point_, unsigned int algorithm_ = 0);
+    void draw(color_t color_, point_t point_);
+    void draw(color_t fill_color_, color_t edge_color_);
     inline void set_color(color_t color_);
 };
 
@@ -93,9 +94,11 @@ class fill_t
  */
 class canvas_t
 {
-    public:
-        void left_click(void) {}
-        void right_click(void) {}
+  public:
+    void left_click(void) {}
+    void right_click(void) {}
+    void draw(void) {}
+    void clear(void) {}
 };
 
 #endif  // _MYDRAW_CLASS_HPP_

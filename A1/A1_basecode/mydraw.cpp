@@ -26,6 +26,11 @@ void display( void )
     //This clears the colorbuffer (current window)
     glClear(GL_COLOR_BUFFER_BIT);
 
+#ifdef DEBUG
+    std::cout << "[Event]: Drawing on canvas " << '\n';
+#endif
+    canvas.draw();
+
     //Flush the framebuffer to the screen
     glutSwapBuffers();
 }
@@ -33,6 +38,9 @@ void display( void )
 //Reshape callback
 void reshape( int w, int h )
 {
+#ifdef DEBUG
+    std::cout << "[Event]: Reshape to " << w << " X " << h << '\n';
+#endif
     if (0 == h)
     {
         h = 1;
@@ -57,26 +65,28 @@ void reshape( int w, int h )
 //Keyboard callback
 void keyboard( unsigned char key, int x, int y )
 {
+#ifdef DEBUG
+    std::cout << "[Event]: Key Press: " << key << '\n';
+#endif
+#ifndef ANY_CASE
+    key = std::toupper(key);
+#endif
     switch(key)
     {
     case 27:   //Exit on pressing escape
         exit(0);
         break;
-    case 'C':
-    case 'c':  // clear canvas with current back ground color
+    case 'C':  // clear canvas with current back ground color
         // @TODO: clear the array with the required color and draw
         // it to the screen.
         break;
-    case 'N':
-    case 'n':  // new canvas
+    case 'N':  // new canvas
         // @TODO: the background color for the canvas as input from the terminal or an initial config file
         break;
-    case 'S':
-    case 's':  // save
+    case 'S':  // save
         // @TODO
         break;
-    case 'L':
-    case 'l':  // load, input filename on the terminal
+    case 'L':  // load, input filename on the terminal
         // @TODO
         break;
     case '1':  // line drawing mode
@@ -95,26 +105,21 @@ void keyboard( unsigned char key, int x, int y )
         // by removing the
         // point, the triangle is also removed.
         break;
-    case 'F':
-    case 'f':  // Fill the current triangle with the current fill color
+    case 'F':  // Fill the current triangle with the current fill color
         // @TODO: can require
         // a click in the interior of the triangle to initiate a
         // fill, depending on the fill algorithm used.
         break;
-    case 'G':
-    case 'g':  // change current fill color, input color from terminal
+    case 'G':  // change current fill color, input color from terminal
         // @TODO
         break;
-    case 'H':
-    case 'h':  // change current pen color, input color from terminal
+    case 'H':  // change current pen color, input color from terminal
         // @TODO
         break;
-    case 'I':
-    case 'i':  // change current backgound color, input color from terminal
+    case 'I':  // change current backgound color, input color from terminal
         // @TODO
         break;
-    case 'J':
-    case 'j':  // change pen width, input thickness from terminal
+    case 'J':  // change pen width, input thickness from terminal
         // @TODO
         break;
     default:   //Ignore all other keypresses
@@ -127,14 +132,23 @@ void mouse(int button, int state, int x, int y)
 {
     if (GLUT_DOWN == state)
     {
+#ifdef DEBUG
+    std::cout << "[Event]: Mouse Press: ";
+#endif
         if (GLUT_LEFT_BUTTON == button)
         {
+#ifdef DEBUG
+            std::cout << "left" << '\n';
+#endif
             // left mouse button is pressed
             left_m = true;
             right_m = false;
         }
         else if (GLUT_RIGHT_BUTTON == button)
         {
+#ifdef DEBUG
+            std::cout << "right" << '\n';
+#endif
             // right mouse button is pressed
             right_m = true;
             left_m = false;
@@ -142,18 +156,26 @@ void mouse(int button, int state, int x, int y)
     }
     else if (GLUT_UP == state)
     {
+#ifdef DEBUG
+    std::cout << "[Event]: Mouse Click: ";
+#endif
         if (GLUT_LEFT_BUTTON == button && true == left_m)
         {
+#ifdef DEBUG
+            std::cout << "left" << '\n';
+#endif
             // left mouse button is clicked
             canvas.left_click();
-            left_m = false;
         }
         else if (GLUT_RIGHT_BUTTON == button && true == right_m)
         {
+#ifdef DEBUG
+            std::cout << "right" << '\n';
+#endif
             // right mouse button is clicked
             canvas.right_click();
-            right_m = false;
         }
+        left_m = right_m = false;
     }
     glutPostRedisplay();
 }

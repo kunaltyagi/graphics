@@ -3,7 +3,7 @@
 // dummy methods
 void _floodFill(color_t, point_t)
 {}
-void _scanFill(color_t, point_t)
+void _scanFill(color_t, color_t)
 {}
 
 // color_t methods
@@ -75,19 +75,14 @@ fill_t::fill_t(): _fill(1.0, 1.0, 1.0)
 fill_t::fill_t(color_t color_): _fill(color_)
 {}
 
-void fill_t::draw(color_t color_, point_t point_, unsigned int algorithm_)
+void fill_t::draw(color_t color_, point_t point_)
 {
-    switch(algorithm_)
-    {
-    case 0:
-        _floodFill(color_, point_);
-        break;
-    case 1:
-        _scanFill(color_, point_);
-        break;
-    default:
-        break;
-    }
+    _floodFill(color_, point_);
+}
+
+void fill_t::draw(color_t fill_color_, color_t edge_color_)
+{
+    _scanFill(fill_color_, edge_color_);
 }
 
 void fill_t::set_color(color_t color_)
