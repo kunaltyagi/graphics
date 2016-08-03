@@ -20,6 +20,7 @@ HEADERS = mydraw_class
 .SUFFIXES: .cpp .hpp
 $(info $(BIN_LIST))
 
+all: CXXFLAGS += -O2
 all: $(BIN_LIST)
 
 debug_basic: CXXFLAGS += -DDEBUG_BASIC

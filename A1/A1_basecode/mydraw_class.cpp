@@ -22,6 +22,21 @@ void color_t::set(const float r_, const float g_, const float b_)
     _b = b_;
 }
 
+float color_t::R(void)
+{
+    return _r;
+}
+
+float color_t::G(void)
+{
+    return _g;
+}
+
+float color_t::B(void)
+{
+    return _b;
+}
+
 // pen_t methods
 pen_t::pen_t(): _t(1.0), _color(1.0, 1.0, 1.0), _mode(mode::DRAW)
 {}
@@ -60,6 +75,37 @@ point_t::point_t(): _x(0), _y(0)
 point_t::point_t(int x_, int y_): _x(x_), _y(y_)
 {}
 
+int point_t::X(void)
+{
+    return _x;
+}
+
+int point_t::Y(void)
+{
+    return _y;
+}
+
+void point_t::X(int x_)
+{
+    _x = x_;
+}
+
+void point_t::Y(int y_)
+{
+    _y = y_;
+}
+
+void point_t::set(int x_, int y_)
+{
+    _x = x_;
+    _y = y_;
+}
+
+void point_t::draw(color_t color_)
+{
+    // @TODO
+}
+
 // fill_t methods
 fill_t::fill_t(): _fill(1.0, 1.0, 1.0)
 {}
@@ -81,3 +127,35 @@ void fill_t::set_color(color_t color_)
 {
     _fill = color_;
 }
+
+// canvas_t methods
+void canvas_t::left_click(int x_, int y_)
+{
+    _left_click(x_, _window.Y() - y_);
+}
+void canvas_t::right_click(int x_, int y_)
+{
+    _right_click(x_, _window.Y() - y_);
+}
+void canvas_t::_left_click(int x_, int y_)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Left Mouse @ " << x_ << '\t' << y_ << '\n';
+#endif
+    _add_point(point_t(x_, y_));
+}
+void canvas_t::_right_click(int x_, int y_)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Right Mouse @ " << x_ << '\t' << y_ << '\n';
+#endif
+    _remove_point(point_t(x_, y_));
+}
+void canvas_t::set_size(int width_, int height_)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Window size: " << width_ << " X " << height_ << '\n';
+#endif
+    _window.set(width_, height_);
+}
+
