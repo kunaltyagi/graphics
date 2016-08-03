@@ -22,21 +22,6 @@ void color_t::set(const float r_, const float g_, const float b_)
     _b = b_;
 }
 
-float color_t::R(void)
-{
-    return _r;
-}
-
-float color_t::G(void)
-{
-    return _g;
-}
-
-float color_t::B(void)
-{
-    return _b;
-}
-
 // pen_t methods
 pen_t::pen_t(): _t(1.0), _color(1.0, 1.0, 1.0), _mode(mode::DRAW)
 {}
@@ -67,6 +52,13 @@ inline void pen_t::set(int t_, color_t color_, pen_t::mode mode_)
     set_color(color_);
     set_mode(mode_);
 }
+
+// point_t methods
+point_t::point_t(): _x(0), _y(0)
+{}
+
+point_t::point_t(int x_, int y_): _x(x_), _y(y_)
+{}
 
 // fill_t methods
 fill_t::fill_t(): _fill(1.0, 1.0, 1.0)

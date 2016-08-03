@@ -1,6 +1,10 @@
 #ifndef _MYDRAW_CLASS_HPP_
 #define _MYDRAW_CLASS_HPP_
 
+#ifdef DEBUG
+#include <iostream>
+#endif
+
 /**
  * @class color_t
  * @brief Stores the Red, Green and Blue components of a color
@@ -21,6 +25,23 @@ class color_t
     inline float G(void);
     inline float B(void);
 };
+
+// color_t inline functions
+float color_t::R(void)
+{
+    return _r;
+}
+
+float color_t::G(void)
+{
+    return _g;
+}
+
+float color_t::B(void)
+{
+    return _b;
+}
+
 
 /**
  * @class pen_t
@@ -68,6 +89,34 @@ public:
     void draw(color_t color_);
 };
 
+// inline point_t methods
+int point_t::X(void)
+{
+    return _x;
+}
+
+int point_t::Y(void)
+{
+    return _y;
+}
+
+void point_t::X(int x_)
+{
+    _x = x_;
+}
+
+void point_t::Y(int y_)
+{
+    _y = y_;
+}
+
+void point_t::set(int x_, int y_)
+{
+    _x = x_;
+    _y = y_;
+}
+
+
 /**
  * @class fill_t
  * @brief contains a solid fill color
@@ -95,10 +144,54 @@ class fill_t
 class canvas_t
 {
   public:
-    void left_click(void) {}
-    void right_click(void) {}
+    inline void left_click(int x_, int y_);
+    inline void right_click(int x_, int y_);
+    inline void set_size(int width_, int height_);
+    inline void set_bg(color_t color_) {}
     void draw(void) {}
-    void clear(void) {}
+    void clear(void)
+    {
+        // @TODO: empty array
+        /* wrapper_set_bg(_bg_color); */
+    }
+  private:
+    color_t _bg_color;
+    point_t _window;
+    inline void _left_click(int x_, int y_);
+    inline void _right_click(int x_, int y_);
+    void _add_point(point_t point_) {}
+    void _remove_point(point_t point_) {}
 };
+
+// canvas_t inline functions
+void canvas_t::left_click(int x_, int y_)
+{
+    _left_click(x_, _window.Y() - y_);
+}
+void canvas_t::right_click(int x_, int y_)
+{
+    _right_click(x_, _window.Y() - y_);
+}
+void canvas_t::_left_click(int x_, int y_)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Left Mouse @ " << x_ << '\t' << y_ << '\n';
+#endif
+    _add_point(point_t(x_, y_));
+}
+void canvas_t::_right_click(int x_, int y_)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Right Mouse @ " << x_ << '\t' << y_ << '\n';
+#endif
+    _remove_point(point_t(x_, y_));
+}
+void canvas_t::set_size(int width_, int height_)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Window size: " << width_ << " X " << height_ << '\n';
+#endif
+    _window.set(width_, height_);
+}
 
 #endif  // _MYDRAW_CLASS_HPP_

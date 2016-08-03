@@ -20,13 +20,18 @@ bool left_m = false;   ///< is left mouse button active
 bool right_m = false;  ///< is right mouse button active
 canvas_t canvas;
 
+void wrapper_set_bg(color_t& bg_color_)
+{
+    glClearColor(bg_color_.R(), bg_color_.G(), bg_color_.B(), 1.0f);
+}
+
 //Display callback
 void display( void )
 {
     //This clears the colorbuffer (current window)
     glClear(GL_COLOR_BUFFER_BIT);
 
-#ifdef DEBUG
+#ifdef DEBUG_BASIC
     std::cout << "[Event]: Drawing on canvas " << '\n';
 #endif
     canvas.draw();
@@ -38,7 +43,7 @@ void display( void )
 //Reshape callback
 void reshape( int w, int h )
 {
-#ifdef DEBUG
+#ifdef DEBUG_BASIC
     std::cout << "[Event]: Reshape to " << w << " X " << h << '\n';
 #endif
     if (0 == h)
@@ -59,13 +64,16 @@ void reshape( int w, int h )
     win_width = w;
     win_height = h;
 
+    canvas.set_size(w, h);
+
     glutPostRedisplay();
 }
 
 //Keyboard callback
 void keyboard( unsigned char key, int x, int y )
 {
-#ifdef DEBUG
+    // x and y are OpenCV not OpenGL
+#ifdef DEBUG_BASIC
     std::cout << "[Event]: Key Press: " << key << '\n';
 #endif
 #ifndef ANY_CASE
@@ -77,8 +85,7 @@ void keyboard( unsigned char key, int x, int y )
         exit(0);
         break;
     case 'C':  // clear canvas with current back ground color
-        // @TODO: clear the array with the required color and draw
-        // it to the screen.
+        canvas.clear();
         break;
     case 'N':  // new canvas
         // @TODO: the background color for the canvas as input from the terminal or an initial config file
@@ -132,12 +139,12 @@ void mouse(int button, int state, int x, int y)
 {
     if (GLUT_DOWN == state)
     {
-#ifdef DEBUG
+#ifdef DEBUG_BASIC
     std::cout << "[Event]: Mouse Press: ";
 #endif
         if (GLUT_LEFT_BUTTON == button)
         {
-#ifdef DEBUG
+#ifdef DEBUG_BASIC
             std::cout << "left" << '\n';
 #endif
             // left mouse button is pressed
@@ -146,7 +153,7 @@ void mouse(int button, int state, int x, int y)
         }
         else if (GLUT_RIGHT_BUTTON == button)
         {
-#ifdef DEBUG
+#ifdef DEBUG_BASIC
             std::cout << "right" << '\n';
 #endif
             // right mouse button is pressed
@@ -156,24 +163,24 @@ void mouse(int button, int state, int x, int y)
     }
     else if (GLUT_UP == state)
     {
-#ifdef DEBUG
+#ifdef DEBUG_BASIC
     std::cout << "[Event]: Mouse Click: ";
 #endif
         if (GLUT_LEFT_BUTTON == button && true == left_m)
         {
-#ifdef DEBUG
-            std::cout << "left" << '\n';
+#ifdef DEBUG_BASIC
+            std::cout << "left\t" << x << '\t' << y << '\n';
 #endif
             // left mouse button is clicked
-            canvas.left_click();
+            canvas.left_click(x, y);
         }
         else if (GLUT_RIGHT_BUTTON == button && true == right_m)
         {
-#ifdef DEBUG
-            std::cout << "right" << '\n';
+#ifdef DEBUG_BASIC
+            std::cout << "right\t" << x << '\t' << y << '\n';
 #endif
             // right mouse button is clicked
-            canvas.right_click();
+            canvas.right_click(x, y);
         }
         left_m = right_m = false;
     }

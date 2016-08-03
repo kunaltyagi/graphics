@@ -1,7 +1,8 @@
 BIN = mydraw
 
 GLLIBS = -lGL -lGLU -lglut
-LIBS = $(GLLIBS)
+XLIBS = -lX11 -lpthread -lXrandr -lXi
+LIBS = $(GLLIBS) #$(XLIBS)
 
 CPP = g++
 # @TODO restructure the src and headers
@@ -21,8 +22,11 @@ $(info $(BIN_LIST))
 
 all: $(BIN_LIST)
 
+debug_basic: CXXFLAGS += -DDEBUG_BASIC
+debug_basic: CXXFLAGS += -DANY_CASE
+debug_basic: debug
+
 debug: CXXFLAGS += -DDEBUG
-debug: CXXFLAGS += -DANY_CASE
 debug: $(BIN_LIST)
 
 clean:
@@ -30,8 +34,8 @@ clean:
 	rm -f *.o
 	rm -f *~
 
-$(BUILD_DIR)/%:  %.cpp #$(SOURCE_DIR)/%.cpp
-	$(CPP) $(INC) $(COMMON_SRCS) $< $(CXXFLAGS) -o $@ $(LIBS)
+$(BUILD_DIR)/%:  %.cpp $(COMMON_SRCS) #$(SOURCE_DIR)/%.cpp
+	$(CPP) $(CXXFLAGS) $(INC) $(COMMON_SRCS) $< -o $@ $(LIBS)
 
 #mydraw: mydraw.cpp
 #	g++ mydraw_class.cpp mydraw.cpp -o $@ $(GLLIBS)
