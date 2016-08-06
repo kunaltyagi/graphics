@@ -5,6 +5,11 @@
 #include <iostream>
 #endif
 
+#include <vector>
+#include <iterator>
+
+#include <GL/glut.h>
+
 /**
  * @class color_t
  * @brief Stores the Red, Green and Blue components of a color
@@ -51,6 +56,7 @@ class pen_t
     // bg color??
 };
 
+class canvas_t;
 /**
  * @class point_t
  * @brief contains the X and Y coordinates of a point
@@ -69,7 +75,7 @@ public:
     void X(int x_);
     void Y(int y_);
     void set(int x_, int y_);
-    void draw(color_t color_);
+    void draw(color_t* color_, canvas_t* canvas_);
 };
 
 /**
@@ -87,8 +93,8 @@ class fill_t
   public:
     fill_t();
     fill_t(color_t color_);
-    void draw(color_t color_, point_t point_);
-    void draw(color_t fill_color_, color_t edge_color_);
+    void draw(color_t* color_, point_t* point_);
+    void draw(color_t* fill_color_, color_t* edge_color_);
     void set_color(color_t color_);
 };
 
@@ -103,7 +109,8 @@ class canvas_t
     void right_click(int x_, int y_);
     void set_size(int width_, int height_);
     void set_bg(color_t color_) {}
-    void draw(void) {}
+    void edit_pixel(point_t* point_, color_t* color_);
+    void draw(void);
     void clear(void)
     {
         // @TODO: empty array
@@ -112,9 +119,13 @@ class canvas_t
   private:
     color_t _bg_color;
     point_t _window;
+    std::vector<std::vector<float*>> _view_port;  // @TODO: change to float array
     void _left_click(int x_, int y_);
     void _right_click(int x_, int y_);
-    void _add_point(point_t point_) {}
+    void _add_point(point_t point_)
+    {
+        this->edit_pixel(&point_, new color_t(1.0, 1.0, 1.0));
+    }
     void _remove_point(point_t point_) {}
 };
 

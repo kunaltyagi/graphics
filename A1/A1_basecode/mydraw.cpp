@@ -14,8 +14,8 @@
 #include "mydraw_class.hpp"
 
 // Global variables
-int win_width = 512;   ///< Window width
-int win_height = 512;  ///<Window height
+int win_width = 64;   ///< Window width
+int win_height = 64;  ///<Window height
 bool left_m = false;   ///< is left mouse button active
 bool right_m = false;  ///< is right mouse button active
 canvas_t canvas;
