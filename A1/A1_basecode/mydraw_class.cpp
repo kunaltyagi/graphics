@@ -202,13 +202,13 @@ triangle_t::triangle_t(point_t* vertice_, color_t border_):
 
 void triangle_t::set_vertices(point_t one_, point_t two_, point_t three_)
 {
-    _vertice[0] = one_;
-    _vertice[0] = two_;
-    _vertice[0] = three_;
+    point_t pt[3] = { one_, two_, three_};
+    set(pt);
 }
-void triangle_t::set_vertices(point_t* vertice_)
+
+void triangle_t::set(point_t* vertice_)
 {
-    set_vertices(vertice_[0], vertice_[1], vertice_[2]);
+    object_t::set(vertice_, 3);
 }
 
 void triangle_t::set_border(color_t border_)
