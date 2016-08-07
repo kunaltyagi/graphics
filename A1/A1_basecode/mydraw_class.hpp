@@ -6,6 +6,8 @@
 #endif
 
 #include <vector>
+#include <tuple>
+#include <memory>
 #include <iterator>
 
 #include <GL/glut.h>
@@ -99,17 +101,35 @@ class fill_t
 };
 
 /**
+ * @class object_t
+ * @brief base class for all objects like line/triangle
+ */
+class object_t
+{
+  public:
+    object_t();
+    object_t(point_t* point_, int n);
+    void set(point_t* point_, int n_);
+    virtual void draw(color_t* color_, canvas_t* canvas_) = 0;
+  protected:
+    point_t* _vertice;
+    int _len;
+};
+
+/**
  * @class line_t
  * @brief contains the end points of a line
  * @detail draws line using integer Bresenham in all octants with
  *         the current color using the draw method of point_t
  */
-class line_t
+class line_t: public object_t
 {
   public:
     line_t();
+    line_t(point_t* point_);
     line_t(point_t start_, point_t end_);
-    void set(point_t start_, point_t end_);
+    void set(point_t start_, point_t end);
+    void set(point_t* point_);
     void draw(color_t* color_, canvas_t* canvas_);
   private:
     point_t _start, _end;
@@ -121,18 +141,36 @@ class line_t
  * @detail draws triangle using draw method of line_t and fill
  *         function on fill_t
  */
-class triangle_t
+class triangle_t: public object_t
 {
   public:
     triangle_t();
-    triangle_t(point_t one_, point_t two, point_t three, color_t border_);
-    void set_vertices(point_t one_, point_t two, point_t three);
+    triangle_t(point_t* vertice_, color_t border_);
+    void set_vertices(point_t one_, point_t two_, point_t three_);
     void set_vertices(point_t* vertice_);
     void set_border(color_t border_);
     void draw(color_t* fill_color_, canvas_t* canvas_);
   private:
     point_t _vertice[3];
     color_t _border;
+};
+
+/**
+ * @class drawing_t
+ * @brief contains a list of all lines/triangles in a drawing
+ */
+class drawing_t
+{
+  public:
+    drawing_t();
+    void add(std::shared_ptr<object_t> object_, std::shared_ptr<color_t> color_);
+    void draw(canvas_t* canvas_);
+    /* void add(line_t* object_, color_t* fill_color_); */
+    /* void add(triangle_t* object_, color_t* fill_color_); */
+  private:
+    using data = std::tuple<std::shared_ptr<object_t>, std::shared_ptr<color_t>>;
+    std::vector<data> _element;
+
 };
 
 /**

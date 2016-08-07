@@ -133,26 +133,62 @@ void fill_t::set_color(color_t color_)
     _fill = color_;
 }
 
-// line_t methods
-line_t::line_t()
+// object_t methods
+object_t::object_t(): _vertice(nullptr), _len(0)
 {}
 
-line_t::line_t(point_t start_, point_t end_): _start(start_), _end(end_)
+object_t::object_t(point_t* point_, int n_): _len(n_)
+{
+    set(point_, n_);
+
+}
+
+void object_t::set(point_t* point_, int n_)
+{
+    _len = n_;
+    if (_vertice != nullptr)
+    {
+        delete[] _vertice;
+    }
+    _vertice = new point_t[_len];
+    for (int i = 0; i < _len; ++i)
+    {
+        _vertice[i] = point_[i];
+    }
+}
+
+// line_t methods
+line_t::line_t(): object_t()
 {}
+
+line_t::line_t(point_t* vertice_): object_t(vertice_, 2)
+{}
+
+line_t::line_t(point_t start_, point_t end_)
+{
+    set(start_, end_);
+}
 
 void line_t::set(point_t start_, point_t end_)
 {
-    _start = start_;
-    _end = end_;
+    _len = 2;
+    point_t pt[2] = { start_, end_};
+    set(pt);
+}
+
+void line_t::set(point_t* vertice_)
+{
+    object_t::set(vertice_, 2);
 }
 
 void line_t::draw(color_t* color_, canvas_t* canvas_)
 {
-    point_t* current = &_start;
-    while(current->X() != _end.X() && current->Y() != _end.Y())
+    point_t* current = _vertice;
+    point_t* last = _vertice + _len;
+    while(current->X() != last->X() && current->Y() != last->Y())
     {
         current->draw(color_, canvas_);
-        current = int_bresenham(current, &_end);
+        current = int_bresenham(current, last);
     }
 }
 
@@ -160,8 +196,8 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
 triangle_t::triangle_t()
 {}
 
-triangle_t::triangle_t(point_t one_, point_t two_, point_t three_,
-                       color_t border_): _vertice{ one_, two_, three_}
+triangle_t::triangle_t(point_t* vertice_, color_t border_):
+        object_t(vertice_, 3), _border(border_)
 {}
 
 void triangle_t::set_vertices(point_t one_, point_t two_, point_t three_)
@@ -201,6 +237,24 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
         // fill the triangle
         filler.draw(fill_color_, &_border, canvas_);
         filler.draw(fill_color_, &mean, canvas_);
+    }
+}
+
+// drawing_t methods
+drawing_t::drawing_t()
+{}
+
+void drawing_t::add(std::shared_ptr<object_t> object_,
+                    std::shared_ptr<color_t> color_)
+{
+    _element.emplace_back(std::make_tuple(object_, color_));
+}
+
+void drawing_t::draw(canvas_t* canvas_)
+{
+    for (auto& element: _element)
+    {
+        std::get<0>(element)->draw(std::get<1>(element).get(), canvas_);
     }
 }
 
