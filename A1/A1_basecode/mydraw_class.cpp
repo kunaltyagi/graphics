@@ -156,6 +156,54 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
     }
 }
 
+// triangle_t methods
+triangle_t::triangle_t()
+{}
+
+triangle_t::triangle_t(point_t one_, point_t two_, point_t three_,
+                       color_t border_): _vertice{ one_, two_, three_}
+{}
+
+void triangle_t::set_vertices(point_t one_, point_t two_, point_t three_)
+{
+    _vertice[0] = one_;
+    _vertice[0] = two_;
+    _vertice[0] = three_;
+}
+void triangle_t::set_vertices(point_t* vertice_)
+{
+    set_vertices(vertice_[0], vertice_[1], vertice_[2]);
+}
+
+void triangle_t::set_border(color_t border_)
+{
+    _border = border_;
+}
+
+void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
+{
+    line_t edge[3];
+    point_t mean;
+    fill_t filler(*fill_color_);
+    for (int i = 0; i < 3; ++i)
+    {
+        edge[i].set(_vertice[i], _vertice[(i + 1) % 3]);
+        mean.X(mean.X() + _vertice[i].X());
+        mean.Y(mean.Y() + _vertice[i].Y());
+        edge[i].draw(&_border, canvas_);
+    }
+    mean.X(mean.X()/3);
+    mean.Y(mean.Y()/3);
+    for (int i = 0; i < 3; ++i)
+    {
+        // check global fill style
+        // @TODO
+        // fill the triangle
+        filler.draw(fill_color_, &_border, canvas_);
+        filler.draw(fill_color_, &mean, canvas_);
+    }
+}
+
 // canvas_t methods
 void canvas_t::left_click(int x_, int y_)
 {

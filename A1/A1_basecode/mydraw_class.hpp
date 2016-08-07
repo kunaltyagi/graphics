@@ -116,6 +116,26 @@ class line_t
 };
 
 /**
+ * @class triangle_t
+ * @brief contains the vertices and border color of a triangle
+ * @detail draws triangle using draw method of line_t and fill
+ *         function on fill_t
+ */
+class triangle_t
+{
+  public:
+    triangle_t();
+    triangle_t(point_t one_, point_t two, point_t three, color_t border_);
+    void set_vertices(point_t one_, point_t two, point_t three);
+    void set_vertices(point_t* vertice_);
+    void set_border(color_t border_);
+    void draw(color_t* fill_color_, canvas_t* canvas_);
+  private:
+    point_t _vertice[3];
+    color_t _border;
+};
+
+/**
  * @class canvas_t
  * @TODO
  */
