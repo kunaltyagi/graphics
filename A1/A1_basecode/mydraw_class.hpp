@@ -131,8 +131,6 @@ class line_t: public object_t
     void set(point_t start_, point_t end);
     void set(point_t* point_);
     void draw(color_t* color_, canvas_t* canvas_);
-  private:
-    point_t _start, _end;
 };
 
 /**
@@ -143,6 +141,7 @@ class line_t: public object_t
  */
 class triangle_t: public object_t
 {
+    //@TODO: use object_t properly in set functions
   public:
     triangle_t();
     triangle_t(point_t* vertice_, color_t border_);
@@ -151,7 +150,6 @@ class triangle_t: public object_t
     void set_border(color_t border_);
     void draw(color_t* fill_color_, canvas_t* canvas_);
   private:
-    point_t _vertice[3];
     color_t _border;
 };
 
