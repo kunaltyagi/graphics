@@ -93,9 +93,26 @@ class fill_t
   public:
     fill_t();
     fill_t(color_t color_);
-    void draw(color_t* color_, point_t* point_);
-    void draw(color_t* fill_color_, color_t* edge_color_);
+    void draw(color_t* color_, point_t* point_, canvas_t* canvas_);
+    void draw(color_t* fill_color_, color_t* edge_color_, canvas_t* canvas_);
     void set_color(color_t color_);
+};
+
+/**
+ * @class line_t
+ * @brief contains the end points of a line
+ * @detail draws line using integer Bresenham in all octants with
+ *         the current color using the draw method of point_t
+ */
+class line_t
+{
+  public:
+    line_t();
+    line_t(point_t start_, point_t end_);
+    void set(point_t start_, point_t end_);
+    void draw(color_t* color_, canvas_t* canvas_);
+  private:
+    point_t _start, _end;
 };
 
 /**

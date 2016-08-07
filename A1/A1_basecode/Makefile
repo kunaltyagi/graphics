@@ -18,7 +18,7 @@ BIN_LIST = $(addprefix $(BUILD_DIR)/, $(BIN))
 HEADERS = mydraw_class
 
 .SUFFIXES: .cpp .hpp
-$(info $(BIN_LIST))
+# $(info $(BIN_LIST))
 
 all: CXXFLAGS += -O2
 all: $(BIN_LIST)

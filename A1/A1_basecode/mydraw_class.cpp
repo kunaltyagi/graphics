@@ -1,10 +1,15 @@
 #include "mydraw_class.hpp"
 
+// @TODO
 // dummy methods
-void _floodFill(color_t*, point_t*)
+void _floodFill(color_t*, point_t*, canvas_t*)
 {}
-void _scanFill(color_t*, color_t*)
+void _scanFill(color_t*, color_t*, canvas_t*)
 {}
+point_t* int_bresenham(point_t* current_, point_t* end_)
+{
+    return current_;
+}
 
 // color_t methods
 color_t::color_t(): _r(0.0), _g(0.0), _b(0.0)
@@ -113,19 +118,42 @@ fill_t::fill_t(): _fill(1.0, 1.0, 1.0)
 fill_t::fill_t(color_t color_): _fill(color_)
 {}
 
-void fill_t::draw(color_t* color_, point_t* point_)
+void fill_t::draw(color_t* color_, point_t* point_, canvas_t* canvas_)
 {
-    _floodFill(color_, point_);
+    _floodFill(color_, point_, canvas_);
 }
 
-void fill_t::draw(color_t* fill_color_, color_t* edge_color_)
+void fill_t::draw(color_t* fill_color_, color_t* edge_color_, canvas_t* canvas_)
 {
-    _scanFill(fill_color_, edge_color_);
+    _scanFill(fill_color_, edge_color_, canvas_);
 }
 
 void fill_t::set_color(color_t color_)
 {
     _fill = color_;
+}
+
+// line_t methods
+line_t::line_t()
+{}
+
+line_t::line_t(point_t start_, point_t end_): _start(start_), _end(end_)
+{}
+
+void line_t::set(point_t start_, point_t end_)
+{
+    _start = start_;
+    _end = end_;
+}
+
+void line_t::draw(color_t* color_, canvas_t* canvas_)
+{
+    point_t* current = &_start;
+    while(current->X() != _end.X() && current->Y() != _end.Y())
+    {
+        current->draw(color_, canvas_);
+        current = int_bresenham(current, &_end);
+    }
 }
 
 // canvas_t methods
@@ -166,11 +194,15 @@ void canvas_t::set_size(int width_, int height_)
     std::cout << "[Canvas] Window size: " << width_ << " X " << height_ << '\n';
 #endif
     _view_port.resize(height_);
+#ifdef DEBUG
     std::cout << _view_port.size() << '\n';
+#endif
     for (auto it = _view_port.begin(); it != _view_port.end(); ++it)
     {
         it->resize(width_);
+#ifdef DEBUG
         std::cout << it->size() << '\t';
+#endif
         for (auto jt = it->begin() + _window.X(); jt != it->end(); ++jt)
         {
             if (std::distance(_view_port.begin(), it) >= _window.Y() ||
