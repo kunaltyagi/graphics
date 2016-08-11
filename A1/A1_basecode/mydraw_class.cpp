@@ -133,6 +133,7 @@ void fill_t::set_color(color_t color_)
     _fill = color_;
 }
 
+/*
 // object_t methods
 object_t::object_t(): _vertice(nullptr), _len(0)
 {}
@@ -257,6 +258,7 @@ void drawing_t::draw(canvas_t* canvas_)
         std::get<0>(element)->draw(std::get<1>(element).get(), canvas_);
     }
 }
+*/
 
 // canvas_t methods
 void canvas_t::left_click(int x_, int y_)
@@ -274,7 +276,7 @@ void canvas_t::_left_click(int x_, int y_)
 #ifdef DEBUG
     std::cout << "[Canvas] Left Mouse @ " << x_ << '\t' << y_ << '\n';
 #endif
-    _add_point(point_t(x_, y_));
+    _add_point(point_t(y_, x_));
 #ifdef DEBUG
     std::cout << "Color: " << _view_port[y_][x_][0] << '\t'
                            << _view_port[y_][x_][1] << '\t'
@@ -299,27 +301,19 @@ void canvas_t::set_size(int width_, int height_)
 #ifdef DEBUG
     std::cout << _view_port.size() << '\n';
 #endif
-    for (auto it = _view_port.begin(); it != _view_port.end(); ++it)
+    for (int row = 0; row < height_; ++row)
     {
-        it->resize(width_);
+        _view_port[row].resize(width_);
 #ifdef DEBUG
-        std::cout << it->size() << '\t';
+        std::cout << _view_port[row].size() << ' ';
 #endif
-        for (auto jt = it->begin() + _window.X(); jt != it->end(); ++jt)
-        {
-            if (std::distance(_view_port.begin(), it) >= _window.Y() ||
-                std::distance(it->begin(), jt) >= _window.X())
-            {
-                (*jt) = new float[3]{0, 0, 0};
-            }
-        }
     }
     _window.set(width_, height_);
 }
 
 void canvas_t::edit_pixel(point_t* point_, color_t* color_)
 {
-    float* color = _view_port[point_->Y()][point_->X()];
+    float* color = &_view_port[point_->Y()][point_->X()][0];
     color[0] = color_->R();
     color[1] = color_->G();
     color[2] = color_->B();
@@ -343,6 +337,6 @@ void canvas_t::draw(void)
                               << _view_port[row][i][2] << '\n';
         }
 #endif
-        glDrawPixels(_window.X(), 1, GL_RGB, GL_FLOAT, &(_view_port[row][0][0]));
+        glDrawPixels(1, _window.X(),/* 1,*/ GL_RGB, GL_FLOAT, &(_view_port[row][0][0]));
     }
 }

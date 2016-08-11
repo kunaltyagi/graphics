@@ -104,6 +104,7 @@ class fill_t
  * @class object_t
  * @brief base class for all objects like line/triangle
  */
+/*
 class object_t
 {
   public:
@@ -115,6 +116,7 @@ class object_t
     point_t* _vertice;
     int _len;
 };
+*/
 
 /**
  * @class line_t
@@ -122,6 +124,7 @@ class object_t
  * @detail draws line using integer Bresenham in all octants with
  *         the current color using the draw method of point_t
  */
+/*
 class line_t: public object_t
 {
   public:
@@ -132,6 +135,7 @@ class line_t: public object_t
     void set(point_t* point_);
     void draw(color_t* color_, canvas_t* canvas_);
 };
+*/
 
 /**
  * @class triangle_t
@@ -139,6 +143,7 @@ class line_t: public object_t
  * @detail draws triangle using draw method of line_t and fill
  *         function on fill_t
  */
+/*
 class triangle_t: public object_t
 {
   public:
@@ -151,24 +156,25 @@ class triangle_t: public object_t
   private:
     color_t _border;
 };
+*/
 
 /**
  * @class drawing_t
  * @brief contains a list of all lines/triangles in a drawing
  */
+/*
 class drawing_t
 {
   public:
     drawing_t();
     void add(std::shared_ptr<object_t> object_, std::shared_ptr<color_t> color_);
     void draw(canvas_t* canvas_);
-    /* void add(line_t* object_, color_t* fill_color_); */
-    /* void add(triangle_t* object_, color_t* fill_color_); */
   private:
     using data = std::tuple<std::shared_ptr<object_t>, std::shared_ptr<color_t>>;
     std::vector<data> _element;
 
 };
+*/
 
 /**
  * @class canvas_t
@@ -191,7 +197,11 @@ class canvas_t
   private:
     color_t _bg_color;
     point_t _window;
-    std::vector<std::vector<float*>> _view_port;  // @TODO: change to float array
+    /* struct _data */
+    /* { */
+    /*     float a, b, c; */
+    /* } */
+    std::vector<std::vector<std::array<float,3>>> _view_port;  // @TODO: change to float array
     void _left_click(int x_, int y_);
     void _right_click(int x_, int y_);
     void _add_point(point_t point_)
