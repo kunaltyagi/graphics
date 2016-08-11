@@ -240,7 +240,6 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
     }
 }
 
-/*
 // drawing_t methods
 drawing_t::drawing_t()
 {}
@@ -248,7 +247,8 @@ drawing_t::drawing_t()
 void drawing_t::add(std::shared_ptr<object_t> object_,
                     std::shared_ptr<color_t> color_)
 {
-    _element.emplace_back(std::make_tuple(object_, color_));
+    data new_obj = std::make_tuple(object_, color_);
+    /* _element.push_back(std::make_tuple(object_, color_)); */
 }
 
 void drawing_t::draw(canvas_t* canvas_)
@@ -258,7 +258,6 @@ void drawing_t::draw(canvas_t* canvas_)
         std::get<0>(element)->draw(std::get<1>(element).get(), canvas_);
     }
 }
-*/
 
 // canvas_t methods
 void canvas_t::left_click(int x_, int y_)
@@ -319,7 +318,7 @@ void canvas_t::draw(void)
     for (int row = 0; row < _window.Y(); ++row)
     {
         glRasterPos2i(row, 0);
-#ifdef DEBUG
+#ifdef DEBUG_BASIC
         for (int i = 0; i < _window.X(); ++i)
         {
             if (_view_port[row][i][0] != 0 ||
@@ -331,6 +330,15 @@ void canvas_t::draw(void)
                               << _view_port[row][i][2] << '\n';
         }
 #endif
-        glDrawPixels(1, _window.X(),/* 1,*/ GL_RGB, GL_FLOAT, &(_view_port[row][0][0]));
+        glDrawPixels(1, _window.X(), GL_RGB, GL_FLOAT, &(_view_port[row][0][0]));
     }
+}
+
+void canvas_t::_add_point(point_t point_)
+{
+    this->edit_pixel(&point_, new color_t(1.0, 1.0, 1.0));
+}
+void canvas_t::_remove_point(point_t point_)
+{
+    return;
 }

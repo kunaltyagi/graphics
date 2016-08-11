@@ -156,7 +156,6 @@ class triangle_t: public object_t
  * @class drawing_t
  * @brief contains a list of all lines/triangles in a drawing
  */
-/*
 class drawing_t
 {
   public:
@@ -168,7 +167,6 @@ class drawing_t
     std::vector<data> _element;
 
 };
-*/
 
 /**
  * @class canvas_t
@@ -191,18 +189,11 @@ class canvas_t
   private:
     color_t _bg_color;
     point_t _window;
-    /* struct _data */
-    /* { */
-    /*     float a, b, c; */
-    /* } */
-    std::vector<std::vector<std::array<float,3>>> _view_port;  // @TODO: change to float array
+    std::vector<std::vector<std::array<float,3>>> _view_port;
     void _left_click(int x_, int y_);
     void _right_click(int x_, int y_);
-    void _add_point(point_t point_)
-    {
-        this->edit_pixel(&point_, new color_t(1.0, 1.0, 1.0));
-    }
-    void _remove_point(point_t point_) {}
+    void _add_point(point_t point_);
+    void _remove_point(point_t point_);
 };
 
 #endif  // _MYDRAW_CLASS_HPP_
