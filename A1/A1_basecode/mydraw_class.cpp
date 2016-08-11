@@ -240,7 +240,6 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
     }
 }
 
-/*
 // drawing_t methods
 drawing_t::drawing_t()
 {}
@@ -258,7 +257,6 @@ void drawing_t::draw(canvas_t* canvas_)
         std::get<0>(element)->draw(std::get<1>(element).get(), canvas_);
     }
 }
-*/
 
 // canvas_t methods
 void canvas_t::left_click(int x_, int y_)

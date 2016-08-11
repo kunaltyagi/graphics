@@ -156,7 +156,6 @@ class triangle_t: public object_t
  * @class drawing_t
  * @brief contains a list of all lines/triangles in a drawing
  */
-/*
 class drawing_t
 {
   public:
@@ -168,7 +167,6 @@ class drawing_t
     std::vector<data> _element;
 
 };
-*/
 
 /**
  * @class canvas_t
