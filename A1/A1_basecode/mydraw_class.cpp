@@ -240,6 +240,7 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
     }
 }
 
+/*
 // drawing_t methods
 drawing_t::drawing_t()
 {}
@@ -257,6 +258,7 @@ void drawing_t::draw(canvas_t* canvas_)
         std::get<0>(element)->draw(std::get<1>(element).get(), canvas_);
     }
 }
+*/
 
 // canvas_t methods
 void canvas_t::left_click(int x_, int y_)
@@ -272,7 +274,7 @@ void canvas_t::right_click(int x_, int y_)
 void canvas_t::_left_click(int x_, int y_)
 {
 #ifdef DEBUG
-    std::cout << "[Canvas] Left Mouse @ " << x_ << '\t' << y_ << '\n';
+    std::cout << "[Canvas] Left Mouse @ " << x_ << '\t' << y_ << ' ';
 #endif
     _add_point(point_t(y_, x_));
 #ifdef DEBUG
@@ -296,15 +298,9 @@ void canvas_t::set_size(int width_, int height_)
     std::cout << "[Canvas] Window size: " << width_ << " X " << height_ << '\n';
 #endif
     _view_port.resize(height_);
-#ifdef DEBUG
-    std::cout << _view_port.size() << '\n';
-#endif
     for (int row = 0; row < height_; ++row)
     {
         _view_port[row].resize(width_);
-#ifdef DEBUG
-        std::cout << _view_port[row].size() << ' ';
-#endif
     }
     _window.set(width_, height_);
 }
