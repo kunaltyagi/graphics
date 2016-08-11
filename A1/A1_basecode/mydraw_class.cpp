@@ -133,7 +133,6 @@ void fill_t::set_color(color_t color_)
     _fill = color_;
 }
 
-/*
 // object_t methods
 object_t::object_t(): _vertice(nullptr), _len(0)
 {}
@@ -241,6 +240,7 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
     }
 }
 
+/*
 // drawing_t methods
 drawing_t::drawing_t()
 {}

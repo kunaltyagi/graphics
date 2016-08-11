@@ -104,7 +104,6 @@ class fill_t
  * @class object_t
  * @brief base class for all objects like line/triangle
  */
-/*
 class object_t
 {
   public:
@@ -116,7 +115,6 @@ class object_t
     point_t* _vertice;
     int _len;
 };
-*/
 
 /**
  * @class line_t
@@ -124,7 +122,6 @@ class object_t
  * @detail draws line using integer Bresenham in all octants with
  *         the current color using the draw method of point_t
  */
-/*
 class line_t: public object_t
 {
   public:
@@ -135,7 +132,6 @@ class line_t: public object_t
     void set(point_t* point_);
     void draw(color_t* color_, canvas_t* canvas_);
 };
-*/
 
 /**
  * @class triangle_t
@@ -143,7 +139,6 @@ class line_t: public object_t
  * @detail draws triangle using draw method of line_t and fill
  *         function on fill_t
  */
-/*
 class triangle_t: public object_t
 {
   public:
@@ -156,7 +151,6 @@ class triangle_t: public object_t
   private:
     color_t _border;
 };
-*/
 
 /**
  * @class drawing_t
