@@ -289,7 +289,7 @@ void canvas_t::_left_click(int x_, int y_)
 #ifdef DEBUG
     std::cout << "[Canvas] Left Mouse @ " << x_ << " X " << y_;
 #endif
-    _add_point(point_t(y_, x_));
+    _add_point(point_t(x_, y_));
 #ifdef DEBUG
     std::cout << "Color: " << _view_port[y_][x_][0] << '\t'
                            << _view_port[y_][x_][1] << '\t'
