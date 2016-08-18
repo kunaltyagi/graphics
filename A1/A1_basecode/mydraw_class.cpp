@@ -244,14 +244,10 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
 drawing_t::drawing_t()
 {}
 
-/* void drawing_t::add(std::shared_ptr<object_t> object_, */
-                    /* std::shared_ptr<color_t> color_) */
 void drawing_t::add(object_t* object_,
                     color_t* color_)
 {
     _element.emplace_back(object_, color_);
-    /* data new_obj = std::make_tuple(object_, color_); */
-    /* _element.push_back(std::make_tuple(object_, color_)); */
 }
 
 void drawing_t::draw(canvas_t* canvas_)
@@ -259,7 +255,6 @@ void drawing_t::draw(canvas_t* canvas_)
     for (auto& element: _element)
     {
         std::get<0>(element)->draw(std::get<1>(element), canvas_);
-        /* std::get<0>(element)->draw(std::get<1>(element).get(), canvas_); */
     }
 }
 
