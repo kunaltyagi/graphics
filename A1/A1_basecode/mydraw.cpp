@@ -18,7 +18,7 @@ int win_width = 256;   ///< Window width
 int win_height = 256;  ///<Window height
 bool left_m = false;   ///< is left mouse button active
 bool right_m = false;  ///< is right mouse button active
-canvas_t canvas;
+canvas_t canvas(color_t(0,0,0), point_t(win_width, win_height));
 
 void wrapper_set_bg(color_t& bg_color_)
 {
@@ -124,6 +124,10 @@ void keyboard( unsigned char key, int x, int y )
         // @TODO
         break;
     case 'I':  // change current backgound color, input color from terminal
+        std::cout << "Enter normalized R G B color\n";
+        float r, g, b;
+        std::cin >> r >> g >> b;
+        canvas.set_bg(color_t(r, g, b));
         // @TODO
         break;
     case 'J':  // change pen width, input thickness from terminal

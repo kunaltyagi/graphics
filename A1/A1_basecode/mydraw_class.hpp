@@ -160,10 +160,12 @@ class drawing_t
 {
   public:
     drawing_t();
-    void add(std::shared_ptr<object_t> object_, std::shared_ptr<color_t> color_);
+    void add(object_t* object_, color_t* color_);
+    /* void add(std::shared_ptr<object_t> object_, std::shared_ptr<color_t> color_); */
     void draw(canvas_t* canvas_);
   private:
-    using data = std::tuple<std::shared_ptr<object_t>, std::shared_ptr<color_t>>;
+    using data = std::tuple<object_t*, color_t*>;
+    /* using data = std::tuple<std::shared_ptr<object_t>, std::shared_ptr<color_t>>; */
     std::vector<data> _element;
 
 };
@@ -175,17 +177,15 @@ class drawing_t
 class canvas_t
 {
   public:
+    canvas_t();
+    canvas_t(color_t bg_color_, point_t window_);
     void left_click(int x_, int y_);
     void right_click(int x_, int y_);
     void set_size(int width_, int height_);
-    void set_bg(color_t color_) {}
+    void set_bg(color_t color_);
     void edit_pixel(point_t* point_, color_t* color_);
     void draw(void);
-    void clear(void)
-    {
-        // @TODO: empty array
-        /* wrapper_set_bg(_bg_color); */
-    }
+    void clear(void);
   private:
     color_t _bg_color;
     point_t _window;

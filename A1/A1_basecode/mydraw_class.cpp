@@ -244,10 +244,13 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
 drawing_t::drawing_t()
 {}
 
-void drawing_t::add(std::shared_ptr<object_t> object_,
-                    std::shared_ptr<color_t> color_)
+/* void drawing_t::add(std::shared_ptr<object_t> object_, */
+                    /* std::shared_ptr<color_t> color_) */
+void drawing_t::add(object_t* object_,
+                    color_t* color_)
 {
-    data new_obj = std::make_tuple(object_, color_);
+    _element.emplace_back(object_, color_);
+    /* data new_obj = std::make_tuple(object_, color_); */
     /* _element.push_back(std::make_tuple(object_, color_)); */
 }
 
@@ -255,11 +258,22 @@ void drawing_t::draw(canvas_t* canvas_)
 {
     for (auto& element: _element)
     {
-        std::get<0>(element)->draw(std::get<1>(element).get(), canvas_);
+        std::get<0>(element)->draw(std::get<1>(element), canvas_);
+        /* std::get<0>(element)->draw(std::get<1>(element).get(), canvas_); */
     }
 }
 
 // canvas_t methods
+canvas_t::canvas_t(): _bg_color(0, 0, 0), _window(64, 64)
+{}
+
+canvas_t::canvas_t(color_t bg_color_, point_t window_)
+{
+    set_bg(bg_color_);
+    set_size(window_.X(), window_.Y());
+    clear();
+}
+
 void canvas_t::left_click(int x_, int y_)
 {
     _left_click(x_, _window.Y() - y_);
@@ -273,7 +287,7 @@ void canvas_t::right_click(int x_, int y_)
 void canvas_t::_left_click(int x_, int y_)
 {
 #ifdef DEBUG
-    std::cout << "[Canvas] Left Mouse @ " << x_ << '\t' << y_ << ' ';
+    std::cout << "[Canvas] Left Mouse @ " << x_ << " X " << y_;
 #endif
     _add_point(point_t(y_, x_));
 #ifdef DEBUG
@@ -286,7 +300,7 @@ void canvas_t::_left_click(int x_, int y_)
 void canvas_t::_right_click(int x_, int y_)
 {
 #ifdef DEBUG
-    std::cout << "[Canvas] Right Mouse @ " << x_ << '\t' << y_ << '\n';
+    std::cout << "[Canvas] Right Mouse @ " << x_ << " X " << y_ << '\n';
 #endif
     _remove_point(point_t(x_, y_));
 }
@@ -297,16 +311,25 @@ void canvas_t::set_size(int width_, int height_)
     std::cout << "[Canvas] Window size: " << width_ << " X " << height_ << '\n';
 #endif
     _view_port.resize(height_);
+    std::array<float, 3> color;
+    color[0] = _bg_color.R();
+    color[1] = _bg_color.G();
+    color[2] = _bg_color.B();
     for (int row = 0; row < height_; ++row)
     {
-        _view_port[row].resize(width_);
+        _view_port[row].resize(width_, color);
     }
     _window.set(width_, height_);
 }
 
+void canvas_t::set_bg(color_t color_)
+{
+    _bg_color = color_;
+}
+
 void canvas_t::edit_pixel(point_t* point_, color_t* color_)
 {
-    float* color = &_view_port[point_->Y()][point_->X()][0];
+    auto& color = _view_port[point_->Y()][point_->X()];
     color[0] = color_->R();
     color[1] = color_->G();
     color[2] = color_->B();
@@ -317,7 +340,7 @@ void canvas_t::draw(void)
     // @TODO
     for (int row = 0; row < _window.Y(); ++row)
     {
-        glRasterPos2i(row, 0);
+        glRasterPos2i(0, row);
 #ifdef DEBUG_BASIC
         for (int i = 0; i < _window.X(); ++i)
         {
@@ -330,7 +353,7 @@ void canvas_t::draw(void)
                               << _view_port[row][i][2] << '\n';
         }
 #endif
-        glDrawPixels(1, _window.X(), GL_RGB, GL_FLOAT, &(_view_port[row][0][0]));
+        glDrawPixels(_window.X(), 1, GL_RGB, GL_FLOAT, &(_view_port[row][0][0]));
     }
 }
 
@@ -340,5 +363,22 @@ void canvas_t::_add_point(point_t point_)
 }
 void canvas_t::_remove_point(point_t point_)
 {
+    // @TODO
     return;
+}
+void canvas_t::clear(void)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Cleared";
+#endif
+    point_t temp(0, 0);
+    for (int i = 0; i < _window.Y(); ++i)
+    {
+        for (int j = 0; j < _window.X(); ++j)
+        {
+            temp.set(j, i);
+            edit_pixel(&temp, &_bg_color);
+        }
+    }
+    draw();
 }
