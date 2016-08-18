@@ -290,11 +290,6 @@ void canvas_t::_left_click(int x_, int y_)
     std::cout << "[Canvas] Left Mouse @ " << x_ << " X " << y_;
 #endif
     _add_point(point_t(x_, y_));
-#ifdef DEBUG
-    std::cout << "Color: " << _view_port[y_][x_][0] << '\t'
-                           << _view_port[y_][x_][1] << '\t'
-                           << _view_port[y_][x_][2] << '\n';
-#endif
 }
 
 void canvas_t::_right_click(int x_, int y_)
@@ -337,7 +332,7 @@ void canvas_t::edit_pixel(point_t* point_, color_t* color_)
 
 void canvas_t::draw(void)
 {
-    // @TODO
+    _drawing.draw(this);
     for (int row = 0; row < _window.Y(); ++row)
     {
         glRasterPos2i(0, row);
@@ -359,7 +354,27 @@ void canvas_t::draw(void)
 
 void canvas_t::_add_point(point_t point_)
 {
+    if (_points.size() == _mode)
+    {
+        switch(_mode)
+        {
+        case LINE:
+            _drawing.add((object_t*)new line_t(&_points[0]),
+                         &_fg_color);
+            break;
+        case TRIANGLE:
+            _drawing.add((object_t*)new triangle_t(&_points[0], _bg_color),
+                         &_fg_color);
+        }
+        _points.clear();
+    }
+    else
+    {
+        _points.push_back(point_);
+    }
+#ifdef DEBUG_BASIC
     this->edit_pixel(&point_, new color_t(1.0, 1.0, 1.0));
+#endif
 }
 void canvas_t::_remove_point(point_t point_)
 {

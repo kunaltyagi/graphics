@@ -187,9 +187,13 @@ class canvas_t
     void draw(void);
     void clear(void);
   private:
-    color_t _bg_color;
-    point_t _window;
     std::vector<std::vector<std::array<float,3>>> _view_port;
+    std::vector<point_t> _points;
+    enum Mode { NONE, POINT, LINE, TRIANGLE } _mode;
+    color_t _bg_color, _fg_color;
+    point_t _window;
+    drawing_t _drawing;
+    pen_t _pen;
     void _left_click(int x_, int y_);
     void _right_click(int x_, int y_);
     void _add_point(point_t point_);
