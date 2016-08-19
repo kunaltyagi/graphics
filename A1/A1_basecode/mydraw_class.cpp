@@ -348,6 +348,16 @@ void drawing_t::draw(canvas_t* canvas_)
     }
 }
 
+void drawing_t::clear()
+{
+    for (auto& tuple: _element)
+    {
+        delete std::get<0>(tuple);
+        delete std::get<1>(tuple);
+    }
+    _element.clear();
+}
+
 // canvas_t methods
 canvas_t::canvas_t(): _bg_color(0, 0, 0),
     _pen(1, color_t(1, 1, 1), pen_t::mode::DRAW), _window(64, 64), _mode(POINT)
@@ -480,12 +490,12 @@ void canvas_t::_add_point(point_t point_)
             break;
         case LINE:
             _drawing.add((object_t*)new line_t(_points.data()),
-                         &_pen.get_color());
+                         new color_t(_pen.get_color()));
             break;
         case TRIANGLE:
             _drawing.add((object_t*)new triangle_t(_points.data(),
                          _pen.get_color()),
-                         &_bg_color);
+                         new color_t(_bg_color));
             break;
         default:
             break;
@@ -508,6 +518,7 @@ void canvas_t::clear(void)
 #ifdef DEBUG
     std::cout << "[Canvas] Cleared\n";
 #endif
+    _drawing.clear();
     point_t temp(0, 0);
     for (int i = 0; i < _window.Y(); ++i)
     {

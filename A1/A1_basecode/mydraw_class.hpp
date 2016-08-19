@@ -171,6 +171,7 @@ class drawing_t
     drawing_t();
     void add(object_t* object_, color_t* color_);
     void draw(canvas_t* canvas_);
+    void clear();
   private:
     using data = std::tuple<object_t*, color_t*>;
     std::vector<data> _element;
