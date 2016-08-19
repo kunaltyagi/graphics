@@ -48,11 +48,12 @@ class pen_t
     pen_t();
     pen_t(int t_, color_t color_, mode mode_);
     void set_color(color_t color_);
-    void set_thickness(int t_);
+    color_t& get_color(void);
+    void set_width(float t_);
     void set_mode(mode mode_);
     void set(int t_, color_t color_, mode mode_);
   private:
-    int _t;          ///< thickness
+    float _t;          ///< thickness
     color_t _color;  ///< color of the pen
     mode _mode;      ///< mode of drawing
     // bg color??
@@ -161,11 +162,9 @@ class drawing_t
   public:
     drawing_t();
     void add(object_t* object_, color_t* color_);
-    /* void add(std::shared_ptr<object_t> object_, std::shared_ptr<color_t> color_); */
     void draw(canvas_t* canvas_);
   private:
     using data = std::tuple<object_t*, color_t*>;
-    /* using data = std::tuple<std::shared_ptr<object_t>, std::shared_ptr<color_t>>; */
     std::vector<data> _element;
 
 };
@@ -177,19 +176,23 @@ class drawing_t
 class canvas_t
 {
   public:
+    enum Mode { NONE, POINT, LINE, TRIANGLE };
     canvas_t();
     canvas_t(color_t bg_color_, point_t window_);
     void left_click(int x_, int y_);
     void right_click(int x_, int y_);
     void set_size(int width_, int height_);
     void set_bg(color_t color_);
+    void set_pen_color(color_t color_);
+    void set_pen_width(float t_);
     void edit_pixel(point_t* point_, color_t* color_);
     void draw(void);
     void clear(void);
+    void set_mode(Mode mode_);
   private:
     std::vector<std::vector<std::array<float,3>>> _view_port;
     std::vector<point_t> _points;
-    enum Mode { NONE, POINT, LINE, TRIANGLE } _mode;
+    Mode _mode;
     color_t _bg_color, _fg_color;
     point_t _window;
     drawing_t _drawing;

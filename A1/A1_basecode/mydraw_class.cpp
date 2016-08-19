@@ -6,8 +6,34 @@ void _floodFill(color_t*, point_t*, canvas_t*)
 {}
 void _scanFill(color_t*, color_t*, canvas_t*)
 {}
+
+/**
+ * @func int_bresenham
+ * @brief full implementation of integer version of bresenham
+ * algorithm in all 8 octants
+ */
 point_t* int_bresenham(point_t* current_, point_t* end_)
 {
+    static int error = 0;
+    int d_x, d_y;
+    if (error == 0)
+    {
+        d_x = end_->X() - current_->X();
+        d_y = end_->Y() - current_->Y();
+    }
+
+    current_->X(current_->X() + 1);
+    error += d_y;
+    if (error << 1 >= d_x)
+    {
+        error -= d_x;
+        current_->Y(current_->Y() + 1);
+    }
+
+    if (current_->X() == end_->X() && current_->Y() == end_->Y())
+    {
+        error = 0;
+    }
     return current_;
 }
 
@@ -51,24 +77,29 @@ pen_t::pen_t(int t_, color_t color_, mode mode_): _t(t_),
                                                   _mode(mode_)
 {}
 
-inline void pen_t::set_color(color_t color_)
+void pen_t::set_color(color_t color_)
 {
     _color = color_;
 }
 
-inline void pen_t::set_thickness(int t_)
+color_t& pen_t::get_color(void)
+{
+    return _color;
+}
+
+void pen_t::set_width(float t_)
 {
     _t = t_;
 }
 
-inline void pen_t::set_mode(pen_t::mode mode_)
+void pen_t::set_mode(pen_t::mode mode_)
 {
     _mode = mode_;
 }
 
-inline void pen_t::set(int t_, color_t color_, pen_t::mode mode_)
+void pen_t::set(int t_, color_t color_, pen_t::mode mode_)
 {
-    set_thickness(t_);
+    set_width(t_);
     set_color(color_);
     set_mode(mode_);
 }
@@ -252,17 +283,24 @@ void drawing_t::add(object_t* object_,
 
 void drawing_t::draw(canvas_t* canvas_)
 {
+#ifdef DEBUG
+    std::cout << "[Drawing] Painting the canvas\n";
+    int i = 0;
+#endif
     for (auto& element: _element)
     {
+        std::cout << i++ << " Element\n";
         std::get<0>(element)->draw(std::get<1>(element), canvas_);
     }
 }
 
 // canvas_t methods
-canvas_t::canvas_t(): _bg_color(0, 0, 0), _window(64, 64)
+canvas_t::canvas_t(): _bg_color(0, 0, 0),
+    _pen(1, color_t(1, 1, 1), pen_t::mode::DRAW), _window(64, 64), _mode(POINT)
 {}
 
-canvas_t::canvas_t(color_t bg_color_, point_t window_)
+canvas_t::canvas_t(color_t bg_color_, point_t window_): _mode(POINT),
+        _pen(1, color_t(1, 1, 1), pen_t::mode::DRAW)
 {
     set_bg(bg_color_);
     set_size(window_.X(), window_.Y());
@@ -282,7 +320,7 @@ void canvas_t::right_click(int x_, int y_)
 void canvas_t::_left_click(int x_, int y_)
 {
 #ifdef DEBUG
-    std::cout << "[Canvas] Left Mouse @ " << x_ << " X " << y_;
+    std::cout << "[Canvas] Left Mouse @ " << x_ << " X " << y_ << '\n';
 #endif
     _add_point(point_t(x_, y_));
 }
@@ -317,6 +355,16 @@ void canvas_t::set_bg(color_t color_)
     _bg_color = color_;
 }
 
+void canvas_t::set_pen_color(color_t color_)
+{
+    _pen.set_color(color_);
+}
+
+void canvas_t::set_pen_width(float t_)
+{
+    _pen.set_width(t_);
+}
+
 void canvas_t::edit_pixel(point_t* point_, color_t* color_)
 {
     auto& color = _view_port[point_->Y()][point_->X()];
@@ -349,37 +397,42 @@ void canvas_t::draw(void)
 
 void canvas_t::_add_point(point_t point_)
 {
+    _points.push_back(point_);
     if (_points.size() == _mode)
     {
         switch(_mode)
         {
+        case POINT:
+            this->edit_pixel(&point_, &_pen.get_color());
+            break;
         case LINE:
-            _drawing.add((object_t*)new line_t(&_points[0]),
-                         &_fg_color);
+            _drawing.add((object_t*)new line_t(_points.data()),
+                         &_pen.get_color());
             break;
         case TRIANGLE:
-            _drawing.add((object_t*)new triangle_t(&_points[0], _bg_color),
-                         &_fg_color);
+            _drawing.add((object_t*)new triangle_t(_points.data(), _bg_color),
+                         &_pen.get_color());
+            break;
+        default:
+            break;
         }
         _points.clear();
     }
-    else
-    {
-        _points.push_back(point_);
-    }
-#ifdef DEBUG_BASIC
-    this->edit_pixel(&point_, new color_t(1.0, 1.0, 1.0));
-#endif
 }
+
 void canvas_t::_remove_point(point_t point_)
 {
-    // @TODO
+    if (_points.size())
+    {
+        _points.pop_back();
+    }
     return;
 }
+
 void canvas_t::clear(void)
 {
 #ifdef DEBUG
-    std::cout << "[Canvas] Cleared";
+    std::cout << "[Canvas] Cleared\n";
 #endif
     point_t temp(0, 0);
     for (int i = 0; i < _window.Y(); ++i)
@@ -391,4 +444,22 @@ void canvas_t::clear(void)
         }
     }
     draw();
+}
+
+void canvas_t::set_mode(Mode mode_)
+{
+#ifdef DEBUG
+    std::cout << "[Canvas] Mode updated to " << mode_ << '\n';
+#endif
+    _mode = mode_;
+    while (_points.size() > mode_)
+    {
+        _points.pop_back();
+    }
+    if (_points.size() == mode_)
+    {
+        point_t back = _points.back();
+        _points.pop_back();
+        _add_point(back);
+    }
 }

@@ -69,6 +69,14 @@ void reshape( int w, int h )
     glutPostRedisplay();
 }
 
+color_t read_color()
+{
+    std::cout << "Enter normalized R G B color\n";
+    float r, g, b;
+    std::cin >> r >> g >> b;
+    return color_t(r, g, b);
+}
+
 //Keyboard callback
 void keyboard( unsigned char key, int x, int y )
 {
@@ -96,21 +104,22 @@ void keyboard( unsigned char key, int x, int y )
     case 'L':  // load, input filename on the terminal
         // @TODO
         break;
+    case '0':  // debug point mode
+        canvas.set_mode(canvas_t::POINT);
+        break;
     case '1':  // line drawing mode
-        // @TODO: Left clicks add points, and a line is
-        // drawn between two successively clicked points, with the
-        // current pen.
-        // Right click removes the last added point, and if a line
-        // is left incomplete
+        // Left clicks add points, and a line is drawn between two
+        // successively clicked points, with the current pen. Right click
+        // removes the last added point, and if a line is left incomplete
         // by removing the point, remove the line too.
+        canvas.set_mode(canvas_t::LINE);
         break;
     case '2':  // triangle drawing mode
-        // @TODO: Left clicks add vertices. Three
-        // successively clicked vertices form a triangle. A right
-        // click removes the
-        // last added point, and if a triangle is left incomplete
-        // by removing the
+        // Left clicks add vertices. Three successively clicked vertices
+        // form a triangle. A right click removes the last added point,
+        // and if a triangle is left incomplete by removing the
         // point, the triangle is also removed.
+        canvas.set_mode(canvas_t::TRIANGLE);
         break;
     case 'F':  // Fill the current triangle with the current fill color
         // @TODO: can require
@@ -121,17 +130,18 @@ void keyboard( unsigned char key, int x, int y )
         // @TODO
         break;
     case 'H':  // change current pen color, input color from terminal
-        // @TODO
+        std::cout << "[Foreground] ";
+        canvas.set_pen_color(read_color());
         break;
     case 'I':  // change current backgound color, input color from terminal
-        std::cout << "Enter normalized R G B color\n";
-        float r, g, b;
-        std::cin >> r >> g >> b;
-        canvas.set_bg(color_t(r, g, b));
-        // @TODO
+        std::cout << "[Background] ";
+        canvas.set_bg(read_color());
         break;
     case 'J':  // change pen width, input thickness from terminal
-        // @TODO
+        float t;
+        std::cout << "Please enter the thickness of the pen: ";
+        std::cin >> t;
+        canvas.set_pen_width(t);
         break;
     default:   //Ignore all other keypresses
         break;
