@@ -443,7 +443,6 @@ void canvas_t::clear(void)
             edit_pixel(&temp, &_bg_color);
         }
     }
-    draw();
 }
 
 void canvas_t::set_mode(Mode mode_)

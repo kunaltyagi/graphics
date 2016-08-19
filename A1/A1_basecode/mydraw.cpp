@@ -94,6 +94,7 @@ void keyboard( unsigned char key, int x, int y )
         break;
     case 'C':  // clear canvas with current back ground color
         canvas.clear();
+        display();
         break;
     case 'N':  // new canvas
         // @TODO: the background color for the canvas as input from the terminal or an initial config file
