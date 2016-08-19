@@ -49,18 +49,20 @@ class pen_t
   public:
     enum class mode: bool { DRAW, ERASER };
     pen_t();
-    pen_t(int t_, color_t color_, mode mode_);
-    void set_color(color_t color_);
-    color_t& get_color(void);
+    pen_t(int t_, color_t fg_color_, color_t bg_color, mode mode_);
+    void set_fg_color(color_t color_);
+    color_t get_fg_color(void);
+    void set_bg_color(color_t color_);
+    color_t get_bg_color(void);
     float get_width(void);
     mode get_mode(void);
     void set_width(float t_);
     void set_mode(mode mode_);
-    void set(int t_, color_t color_, mode mode_);
+    void set(int t_, color_t fg_color_, color_t bg_color_, mode mode_);
     friend std::ostream& operator<< (std::ostream& o_, const pen_t& pen_);
   private:
     float _t;          ///< thickness
-    color_t _color;  ///< color of the pen
+    color_t _fg_color, _bg_color;  ///< color of the pen
     mode _mode;      ///< mode of drawing
     // bg color??
 };
@@ -124,6 +126,7 @@ class object_t
   protected:
     point_t* _vertice;
     int _len;
+    pen_t _pen;
 };
 
 /**
@@ -159,7 +162,7 @@ class triangle_t: public object_t
     void set_border(color_t border_);
     void draw(color_t* fill_color_, canvas_t* canvas_);
   private:
-    color_t _border;
+    color_t _border, _fill;
 };
 
 /**
@@ -187,7 +190,7 @@ class canvas_t
   public:
     enum Mode { NONE, POINT, LINE, TRIANGLE };
     canvas_t();
-    canvas_t(color_t bg_color_, point_t window_);
+    canvas_t(color_t fg_color_, color_t bg_color_, point_t window_);
     void left_click(int x_, int y_);
     void right_click(int x_, int y_);
     void set_size(int width_, int height_);

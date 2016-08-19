@@ -18,7 +18,7 @@ int win_width = 256;   ///< Window width
 int win_height = 256;  ///<Window height
 bool left_m = false;   ///< is left mouse button active
 bool right_m = false;  ///< is right mouse button active
-canvas_t canvas(color_t(0,0,0), point_t(win_width, win_height));
+canvas_t canvas(color_t(1,1,1), color_t(0,0,0), point_t(win_width, win_height));
 
 void wrapper_set_bg(color_t& bg_color_)
 {

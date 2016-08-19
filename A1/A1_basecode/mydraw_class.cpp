@@ -75,22 +75,32 @@ float color_t::B(void)
 }
 
 // pen_t methods
-pen_t::pen_t(): _t(1.0), _color(1.0, 1.0, 1.0), _mode(mode::DRAW)
+pen_t::pen_t(): _t(1.0), _fg_color(1, 1, 1), _bg_color(0, 0, 0),
+        _mode(mode::DRAW)
 {}
 
-pen_t::pen_t(int t_, color_t color_, mode mode_): _t(t_),
-                                                  _color(color_),
-                                                  _mode(mode_)
+pen_t::pen_t(int t_, color_t fg_color_, color_t bg_color_, mode mode_):
+    _t(t_), _fg_color(fg_color_), _bg_color(bg_color_), _mode(mode_)
 {}
 
-void pen_t::set_color(color_t color_)
+void pen_t::set_fg_color(color_t color_)
 {
-    _color = color_;
+    _fg_color = color_;
 }
 
-color_t& pen_t::get_color(void)
+color_t pen_t::get_fg_color(void)
 {
-    return _color;
+    return _fg_color;
+}
+
+void pen_t::set_bg_color(color_t color_)
+{
+    _bg_color = color_;
+}
+
+color_t pen_t::get_bg_color(void)
+{
+    return _bg_color;
 }
 
 float pen_t::get_width(void)
@@ -113,10 +123,11 @@ void pen_t::set_mode(pen_t::mode mode_)
     _mode = mode_;
 }
 
-void pen_t::set(int t_, color_t color_, pen_t::mode mode_)
+void pen_t::set(int t_, color_t fg_color_, color_t bg_color_, pen_t::mode mode_)
 {
     set_width(t_);
-    set_color(color_);
+    set_fg_color(fg_color_);
+    set_bg_color(bg_color_);
     set_mode(mode_);
 }
 
@@ -366,14 +377,14 @@ void drawing_t::clear()
 }
 
 // canvas_t methods
-canvas_t::canvas_t(): _bg_color(0, 0, 0),
-    _pen(1, color_t(1, 1, 1), pen_t::mode::DRAW), _window(64, 64), _mode(POINT)
+canvas_t::canvas_t():
+    _pen(1, color_t(1, 1, 1), color_t(0, 0, 0), pen_t::mode::DRAW),
+    _window(64, 64), _mode(POINT)
 {}
 
-canvas_t::canvas_t(color_t bg_color_, point_t window_): _mode(POINT),
-        _pen(1, color_t(1, 1, 1), pen_t::mode::DRAW)
+canvas_t::canvas_t(color_t fg_color_, color_t bg_color_, point_t window_):
+    _mode(POINT), _pen(1, fg_color_, bg_color_, pen_t::mode::DRAW)
 {
-    set_bg(bg_color_);
     set_size(window_.X(), window_.Y());
     clear();
 }
@@ -411,9 +422,9 @@ void canvas_t::set_size(int width_, int height_)
 #endif
     _view_port.resize(height_);
     std::array<float, 3> color;
-    color[0] = _bg_color.R();
-    color[1] = _bg_color.G();
-    color[2] = _bg_color.B();
+    color[0] = _pen.get_bg_color().R();
+    color[1] = _pen.get_bg_color().G();
+    color[2] = _pen.get_bg_color().B();
     for (int row = 0; row < height_; ++row)
     {
         _view_port[row].resize(width_, color);
@@ -423,12 +434,12 @@ void canvas_t::set_size(int width_, int height_)
 
 void canvas_t::set_bg(color_t color_)
 {
-    _bg_color = color_;
+    _pen.set_bg_color(color_);
 }
 
 void canvas_t::set_pen_color(color_t color_)
 {
-    _pen.set_color(color_);
+    _pen.set_fg_color(color_);
 }
 
 void canvas_t::set_pen_width(float t_)
@@ -493,16 +504,16 @@ void canvas_t::_add_point(point_t point_)
         switch(_mode)
         {
         case POINT:
-            this->edit_pixel(&point_, &_pen.get_color());
+            this->edit_pixel(&point_, new color_t(_pen.get_fg_color()));
             break;
         case LINE:
             _drawing.add((object_t*)new line_t(_points.data()),
-                         new color_t(_pen.get_color()));
+                         new color_t(_pen.get_fg_color()));
             break;
         case TRIANGLE:
             _drawing.add((object_t*)new triangle_t(_points.data(),
-                         _pen.get_color()),
-                         new color_t(_bg_color));
+                         _pen.get_fg_color()),
+                         new color_t(_pen.get_bg_color()));
             break;
         default:
             break;
@@ -584,18 +595,17 @@ color_t canvas_t::get_pixel(point_t* point_)
 // stream overloads
 std::ostream& operator<< (std::ostream& o_, const color_t& color_)
 {
-    o_ << "color: " << color_._r << ',' << color_._g << ',' << color_._b
-       << '\n';
+    o_ << "color: " << color_._r << ',' << color_._g << ',' << color_._b;
 }
 
 std::ostream& operator<< (std::ostream& o_, const pen_t& pen_)
 {
-    o_ << "pen: " << (int)pen_._mode << ',' << pen_._t << ',' << pen_._color;
+    o_ << "pen: " << (int)pen_._mode << ',' << pen_._t << ',' << pen_._fg_color << ',' << pen_._bg_color;
 }
 
 std::ostream& operator<< (std::ostream& o_, const point_t& point_)
 {
-    o_ << "point: " << point_._x << ',' << point_._y << '\n';
+    o_ << "point: " << point_._x << ',' << point_._y;
 }
 
 std::ostream& operator<< (std::ostream& o_, const fill_t& fill_)
