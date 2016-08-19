@@ -233,12 +233,16 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
     }
 
     int error = 0;
-    while(current->X() != last->X() && current->Y() != last->Y())
+    while((current->X() != last->X()) || (current->Y() != last->Y()))
     {
+        std::cout << *current;
         current->draw(color_, canvas_);
         if (dx >= inc*dy)
         {
             error += inc*dy;
+            if (dy == 0)
+            {
+            }
             if ((error << 1) >= dx)
             {
                 error -= dx;
@@ -256,8 +260,8 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
             }
             current->Y(current->Y() + inc);
         }
-        std::cout << "Error: " << error << ' ' << *current << '\n';
     }
+    current->draw(color_, canvas_);
     delete current;
 }
 
