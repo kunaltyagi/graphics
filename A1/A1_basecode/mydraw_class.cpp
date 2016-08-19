@@ -88,9 +88,19 @@ color_t& pen_t::get_color(void)
     return _color;
 }
 
+float pen_t::get_width(void)
+{
+    return _t;
+}
+
 void pen_t::set_width(float t_)
 {
     _t = t_;
+}
+
+pen_t::mode pen_t::get_mode()
+{
+    return _mode;
 }
 
 void pen_t::set_mode(pen_t::mode mode_)
@@ -235,7 +245,6 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
     int error = 0;
     while((current->X() != last->X()) || (current->Y() != last->Y()))
     {
-        std::cout << *current;
         current->draw(color_, canvas_);
         if (dx >= inc*dy)
         {
@@ -411,10 +420,29 @@ void canvas_t::set_pen_width(float t_)
 
 void canvas_t::edit_pixel(point_t* point_, color_t* color_)
 {
-    auto& color = _view_port[point_->Y()][point_->X()];
-    color[0] = color_->R();
-    color[1] = color_->G();
-    color[2] = color_->B();
+    float semi_t = _pen.get_width()/2;
+    if (semi_t == 0)
+    {
+        return;
+    }
+    if (semi_t <= 0.5 && semi_t >= 0.25)
+    {
+        semi_t = 0;  // use only one pixel for 1 > width > 0.5
+    }
+    for (int i = round(std::max((float)0, point_->Y() - semi_t));
+            i <= round(std::min((float)_window.Y()-1, point_->Y() + semi_t));
+            ++i)
+    {
+        for (int j = round(std::max((float)0, point_->X() - semi_t));
+                j <= round(std::min((float)_window.X()-1, point_->X() + semi_t));
+                ++j)
+        {
+            auto& color = _view_port.at(i).at(j); //[i][j];
+            color[0] = color_->R();
+            color[1] = color_->G();
+            color[2] = color_->B();
+        }
+    }
 }
 
 void canvas_t::draw(void)

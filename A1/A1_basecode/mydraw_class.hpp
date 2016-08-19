@@ -9,6 +9,7 @@
 #include <tuple>
 #include <memory>
 #include <iterator>
+#include <math.h>
 
 #include <GL/glut.h>
 
@@ -50,6 +51,8 @@ class pen_t
     pen_t(int t_, color_t color_, mode mode_);
     void set_color(color_t color_);
     color_t& get_color(void);
+    float get_width(void);
+    mode get_mode(void);
     void set_width(float t_);
     void set_mode(mode mode_);
     void set(int t_, color_t color_, mode mode_);
