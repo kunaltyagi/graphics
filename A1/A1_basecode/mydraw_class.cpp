@@ -11,6 +11,7 @@ void _scanFill(color_t*, color_t*, canvas_t*)
  * @func int_bresenham
  * @brief full implementation of integer version of bresenham
  * algorithm in all 8 octants
+ * @TODO: move to line_t drawing function
  */
 point_t* int_bresenham(point_t* current_, point_t* end_)
 {
@@ -289,7 +290,9 @@ void drawing_t::draw(canvas_t* canvas_)
 #endif
     for (auto& element: _element)
     {
+#ifdef DEBUG
         std::cout << i++ << " Element\n";
+#endif
         std::get<0>(element)->draw(std::get<1>(element), canvas_);
     }
 }
@@ -460,5 +463,36 @@ void canvas_t::set_mode(Mode mode_)
         point_t back = _points.back();
         _points.pop_back();
         _add_point(back);
+    }
+}
+
+// stream overloads
+std::ostream& operator<< (std::ostream& o_, const color_t& color_)
+{
+    o_ << "color: " << color_._r << ',' << color_._g << ',' << color_._b
+       << '\n';
+}
+
+std::ostream& operator<< (std::ostream& o_, const pen_t& pen_)
+{
+    o_ << "pen: " << (int)pen_._mode << ',' << pen_._t << ',' << pen_._color;
+}
+
+std::ostream& operator<< (std::ostream& o_, const point_t& point_)
+{
+    o_ << "point: " << point_._x << ',' << point_._y << '\n';
+}
+
+std::ostream& operator<< (std::ostream& o_, const fill_t& fill_)
+{
+    o_ << "fill: " << fill_._fill;
+}
+
+std::ostream& operator<< (std::ostream& o_, const object_t& object_)
+{
+    o_ << "object: " << object_._len << ',';
+    for (int i = 0; i < object_._len; ++i)
+    {
+        o_ << object_._vertice[i];
     }
 }

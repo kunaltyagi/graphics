@@ -31,6 +31,7 @@ class color_t
     float R(void);
     float G(void);
     float B(void);
+    friend std::ostream& operator<< (std::ostream& o_, const color_t& color_);
 };
 
 /**
@@ -52,6 +53,7 @@ class pen_t
     void set_width(float t_);
     void set_mode(mode mode_);
     void set(int t_, color_t color_, mode mode_);
+    friend std::ostream& operator<< (std::ostream& o_, const pen_t& pen_);
   private:
     float _t;          ///< thickness
     color_t _color;  ///< color of the pen
@@ -79,6 +81,7 @@ public:
     void Y(int y_);
     void set(int x_, int y_);
     void draw(color_t* color_, canvas_t* canvas_);
+    friend std::ostream& operator<< (std::ostream& o_, const point_t& point_);
 };
 
 /**
@@ -99,6 +102,7 @@ class fill_t
     void draw(color_t* color_, point_t* point_, canvas_t* canvas_);
     void draw(color_t* fill_color_, color_t* edge_color_, canvas_t* canvas_);
     void set_color(color_t color_);
+    friend std::ostream& operator<< (std::ostream& o_, const fill_t& fill_);
 };
 
 /**
@@ -112,6 +116,7 @@ class object_t
     object_t(point_t* point_, int n);
     void set(point_t* point_, int n_);
     virtual void draw(color_t* color_, canvas_t* canvas_) = 0;
+    friend std::ostream& operator<< (std::ostream& o_, const object_t& object_);
   protected:
     point_t* _vertice;
     int _len;
@@ -166,7 +171,6 @@ class drawing_t
   private:
     using data = std::tuple<object_t*, color_t*>;
     std::vector<data> _element;
-
 };
 
 /**
