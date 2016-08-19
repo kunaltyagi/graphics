@@ -29,6 +29,7 @@ class color_t
     color_t(const float r_, const float g_, const float b_);
 
     void set(const float r_, const float g_, const float b_);
+    bool operator ==(const color_t &b) const;
     float R(void);
     float G(void);
     float B(void);
@@ -193,10 +194,14 @@ class canvas_t
     void set_bg(color_t color_);
     void set_pen_color(color_t color_);
     void set_pen_width(float t_);
+    void save_pen();
+    void restore_pen();
     void edit_pixel(point_t* point_, color_t* color_);
+    color_t get_pixel(point_t* point_);
     void draw(void);
     void clear(void);
     void set_mode(Mode mode_);
+    bool is_valid(point_t* point_);
   private:
     std::vector<std::vector<std::array<float,3>>> _view_port;
     std::vector<point_t> _points;
@@ -204,7 +209,7 @@ class canvas_t
     color_t _bg_color, _fg_color;
     point_t _window;
     drawing_t _drawing;
-    pen_t _pen;
+    pen_t _pen, _bkp_pen;
     void _left_click(int x_, int y_);
     void _right_click(int x_, int y_);
     void _add_point(point_t point_);

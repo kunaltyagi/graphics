@@ -2,41 +2,41 @@
 
 // @TODO
 // dummy methods
-void _floodFill(color_t*, point_t*, canvas_t*)
-{}
+void _floodFill(color_t*, color_t, point_t*, canvas_t*);
+void _floodFill(color_t* color_, point_t* point_, canvas_t* canvas_)
+{
+    _floodFill(color_, canvas_->get_pixel(point_), point_, canvas_);
+}
+void _floodFill(color_t* replacement_color_, color_t target_color,
+                point_t* point_, canvas_t* canvas_)
+{
+    if (*replacement_color_ == canvas_->get_pixel(point_) ||
+        !(canvas_->get_pixel(point_) == target_color))
+    {
+        return;
+    }
+    point_->draw(replacement_color_, canvas_);
+    // paint current point
+    point_t temp;
+    int x[4] = { 1, -1, 0, 0};
+    int y[4] = { 0, 0, 1, -1};
+
+    for (int i = 0; i < 4; ++i)
+    {
+        temp.X(point_->X() + x[i]);
+        temp.Y(point_->Y() + y[i]);
+        if (canvas_->is_valid(&temp))
+        {
+            if (!(*replacement_color_ == canvas_->get_pixel(&temp)))
+            {
+                _floodFill(replacement_color_, target_color, &temp, canvas_);
+            }
+        }
+    }
+    return;
+}
 void _scanFill(color_t*, color_t*, canvas_t*)
 {}
-
-/**
- * @func int_bresenham
- * @brief full implementation of integer version of bresenham
- * algorithm in all 8 octants
- * @TODO: move to line_t drawing function
- */
-point_t* int_bresenham(point_t* current_, point_t* end_)
-{
-    static int error = 0;
-    int d_x, d_y;
-    if (error == 0)
-    {
-        d_x = end_->X() - current_->X();
-        d_y = end_->Y() - current_->Y();
-    }
-
-    current_->X(current_->X() + 1);
-    error += d_y;
-    if (error << 1 >= d_x)
-    {
-        error -= d_x;
-        current_->Y(current_->Y() + 1);
-    }
-
-    if (current_->X() == end_->X() && current_->Y() == end_->Y())
-    {
-        error = 0;
-    }
-    return current_;
-}
 
 // color_t methods
 color_t::color_t(): _r(0.0), _g(0.0), _b(0.0)
@@ -52,6 +52,11 @@ void color_t::set(const float r_, const float g_, const float b_)
     _r = r_;
     _g = g_;
     _b = b_;
+}
+
+bool color_t::operator ==(const color_t &b) const
+{
+    return _r == b._r && _g == b._g && _b == b._b;
 }
 
 float color_t::R(void)
@@ -162,7 +167,10 @@ fill_t::fill_t(color_t color_): _fill(color_)
 
 void fill_t::draw(color_t* color_, point_t* point_, canvas_t* canvas_)
 {
+    canvas_->save_pen();
+    canvas_->set_pen_width(1);
     _floodFill(color_, point_, canvas_);
+    canvas_->restore_pen();
 }
 
 void fill_t::draw(color_t* fill_color_, color_t* edge_color_, canvas_t* canvas_)
@@ -310,7 +318,6 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
         mean.Y(mean.Y() + _vertice[i].Y());
         edge[i].draw(&_border, canvas_);
     }
-    return;
     mean.X(mean.X()/3);
     mean.Y(mean.Y()/3);
     for (int i = 0; i < 3; ++i)
@@ -318,7 +325,7 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
         // check global fill style
         // @TODO
         // fill the triangle
-        filler.draw(fill_color_, &_border, canvas_);
+        /* filler.draw(fill_color_, &_border, canvas_); */
         filler.draw(fill_color_, &mean, canvas_);
     }
 }
@@ -546,6 +553,32 @@ void canvas_t::set_mode(Mode mode_)
         _points.pop_back();
         _add_point(back);
     }
+}
+
+void canvas_t::save_pen()
+{
+    _bkp_pen = _pen;
+}
+
+void canvas_t::restore_pen()
+{
+    _pen = _bkp_pen;
+}
+
+bool canvas_t::is_valid(point_t* point_)
+{
+    if (point_->X() < _window.X() && point_->Y() < _window.Y() &&
+        point_->X() >= 0 && point_->Y() >= 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+color_t canvas_t::get_pixel(point_t* point_)
+{
+    auto& color = _view_port[point_->Y()][point_->X()];
+    return color_t(color[0], color[1], color[2]);
 }
 
 // stream overloads
