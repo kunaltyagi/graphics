@@ -275,7 +275,7 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
 }
 
 // triangle_t methods
-triangle_t::triangle_t()
+triangle_t::triangle_t(): _border(1, 1, 1), object_t()
 {}
 
 triangle_t::triangle_t(point_t* vertice_, color_t border_):
@@ -310,6 +310,7 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
         mean.Y(mean.Y() + _vertice[i].Y());
         edge[i].draw(&_border, canvas_);
     }
+    return;
     mean.X(mean.X()/3);
     mean.Y(mean.Y()/3);
     for (int i = 0; i < 3; ++i)
@@ -482,8 +483,9 @@ void canvas_t::_add_point(point_t point_)
                          &_pen.get_color());
             break;
         case TRIANGLE:
-            _drawing.add((object_t*)new triangle_t(_points.data(), _bg_color),
-                         &_pen.get_color());
+            _drawing.add((object_t*)new triangle_t(_points.data(),
+                         _pen.get_color()),
+                         &_bg_color);
             break;
         default:
             break;
