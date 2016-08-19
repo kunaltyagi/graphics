@@ -169,7 +169,7 @@ void fill_t::set_color(color_t color_)
 object_t::object_t(): _vertice(nullptr), _len(0)
 {}
 
-object_t::object_t(point_t* point_, int n_): _len(n_)
+object_t::object_t(point_t* point_, int n_): _vertice(nullptr), _len(n_)
 {
     set(point_, n_);
 
@@ -215,13 +215,50 @@ void line_t::set(point_t* vertice_)
 
 void line_t::draw(color_t* color_, canvas_t* canvas_)
 {
-    point_t* current = _vertice;
-    point_t* last = _vertice + _len;
+    point_t* current = new point_t(_vertice[0]);
+    point_t* last = _vertice + 1;
+
+    int dx = last->X() - current->X(), dy = last->Y() - current->Y();
+    int inc = 1;
+    if (dx < 0)
+    {
+        dx *= -1;
+        dy *= -1;
+        last = _vertice;
+        current = new point_t(_vertice[1]);
+    }
+    if (dy < 0)
+    {
+        inc = -1;
+    }
+
+    int error = 0;
     while(current->X() != last->X() && current->Y() != last->Y())
     {
         current->draw(color_, canvas_);
-        current = int_bresenham(current, last);
+        if (dx >= inc*dy)
+        {
+            error += inc*dy;
+            if ((error << 1) >= dx)
+            {
+                error -= dx;
+                current->Y(current->Y() + inc);
+            }
+            current->X(current->X() + 1);
+        }
+        else
+        {
+            error += dx;
+            if ((error << 1) >= inc*dy)
+            {
+                error -= inc*dy;
+                current->X(current->X() + 1);
+            }
+            current->Y(current->Y() + inc);
+        }
+        std::cout << "Error: " << error << ' ' << *current << '\n';
     }
+    delete current;
 }
 
 // triangle_t methods
