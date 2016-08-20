@@ -128,7 +128,8 @@ void keyboard( unsigned char key, int x, int y )
         // fill, depending on the fill algorithm used.
         break;
     case 'G':  // change current fill color, input color from terminal
-        // @TODO
+        std::cout << "[Fill] ";
+        canvas.set_fill_color(read_color());
         break;
     case 'H':  // change current pen color, input color from terminal
         std::cout << "[Foreground] ";
@@ -140,7 +141,7 @@ void keyboard( unsigned char key, int x, int y )
         break;
     case 'J':  // change pen width, input thickness from terminal
         float t;
-        std::cout << "Please enter the thickness of the pen: ";
+        std::cout << "[Pen] Enter the thickness: ";
         std::cin >> t;
         canvas.set_pen_width(t);
         break;

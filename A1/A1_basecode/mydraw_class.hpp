@@ -54,6 +54,7 @@ class pen_t
     color_t get_fg_color(void);
     void set_bg_color(color_t color_);
     color_t get_bg_color(void);
+    color_t get_color();
     float get_width(void);
     mode get_mode(void);
     void set_width(float t_);
@@ -119,9 +120,9 @@ class object_t
 {
   public:
     object_t();
-    object_t(point_t* point_, int n);
-    void set(point_t* point_, int n_);
-    virtual void draw(color_t* color_, canvas_t* canvas_) = 0;
+    object_t(point_t* point_, int n_, pen_t pen_);
+    void set(point_t* point_, int n_, pen_t pen_);
+    virtual void draw(canvas_t* canvas_) = 0;
     friend std::ostream& operator<< (std::ostream& o_, const object_t& object_);
   protected:
     point_t* _vertice;
@@ -139,11 +140,11 @@ class line_t: public object_t
 {
   public:
     line_t();
-    line_t(point_t* point_);
-    line_t(point_t start_, point_t end_);
-    void set(point_t start_, point_t end);
-    void set(point_t* point_);
-    void draw(color_t* color_, canvas_t* canvas_);
+    line_t(point_t* point_, pen_t pen_);
+    line_t(point_t start_, point_t end_, pen_t pen_);
+    void set(point_t start_, point_t end, pen_t pen_);
+    void set(point_t* point_, pen_t pen_);
+    void draw(canvas_t* canvas_);
 };
 
 /**
@@ -156,13 +157,9 @@ class triangle_t: public object_t
 {
   public:
     triangle_t();
-    triangle_t(point_t* vertice_, color_t border_);
-    void set_vertices(point_t one_, point_t two_, point_t three_);
-    void set(point_t* vertice_);
-    void set_border(color_t border_);
-    void draw(color_t* fill_color_, canvas_t* canvas_);
-  private:
-    color_t _border, _fill;
+    triangle_t(point_t* vertice_, pen_t pen_);
+    void set(point_t* vertice_, pen_t pen_);
+    void draw(canvas_t* canvas_);
 };
 
 /**
@@ -173,11 +170,11 @@ class drawing_t
 {
   public:
     drawing_t();
-    void add(object_t* object_, color_t* color_);
+    void add(object_t* object_);
     void draw(canvas_t* canvas_);
     void clear();
   private:
-    using data = std::tuple<object_t*, color_t*>;
+    using data = object_t*;
     std::vector<data> _element;
 };
 
@@ -196,7 +193,9 @@ class canvas_t
     void set_size(int width_, int height_);
     void set_bg(color_t color_);
     void set_pen_color(color_t color_);
+    void set_fill_color(color_t color_);
     void set_pen_width(float t_);
+    void set_pen(pen_t pen_);
     void save_pen();
     void restore_pen();
     void edit_pixel(point_t* point_, color_t* color_);
@@ -209,7 +208,7 @@ class canvas_t
     std::vector<std::vector<std::array<float,3>>> _view_port;
     std::vector<point_t> _points;
     Mode _mode;
-    color_t _bg_color, _fg_color;
+    color_t _fill_color;
     point_t _window;
     drawing_t _drawing;
     pen_t _pen, _bkp_pen;

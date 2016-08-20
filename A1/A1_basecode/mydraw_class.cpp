@@ -103,6 +103,15 @@ color_t pen_t::get_bg_color(void)
     return _bg_color;
 }
 
+color_t pen_t::get_color()
+{
+    if (_mode == mode::DRAW)
+    {
+        return _fg_color;
+    }
+    return _bg_color;
+}
+
 float pen_t::get_width(void)
 {
     return _t;
@@ -195,18 +204,20 @@ void fill_t::set_color(color_t color_)
 }
 
 // object_t methods
-object_t::object_t(): _vertice(nullptr), _len(0)
+object_t::object_t(): _vertice(nullptr), _len(0), _pen()
 {}
 
-object_t::object_t(point_t* point_, int n_): _vertice(nullptr), _len(n_)
+object_t::object_t(point_t* point_, int n_, pen_t pen_):
+    _vertice(nullptr), _len(n_), _pen(pen_)
 {
-    set(point_, n_);
+    set(point_, n_, pen_);
 
 }
 
-void object_t::set(point_t* point_, int n_)
+void object_t::set(point_t* point_, int n_, pen_t pen_)
 {
     _len = n_;
+    _pen = pen_;
     if (_vertice != nullptr)
     {
         delete[] _vertice;
@@ -222,27 +233,27 @@ void object_t::set(point_t* point_, int n_)
 line_t::line_t(): object_t()
 {}
 
-line_t::line_t(point_t* vertice_): object_t(vertice_, 2)
+line_t::line_t(point_t* vertice_, pen_t pen_): object_t(vertice_, 2, pen_)
 {}
 
-line_t::line_t(point_t start_, point_t end_)
+line_t::line_t(point_t start_, point_t end_, pen_t pen_)
 {
-    set(start_, end_);
+    set(start_, end_, pen_);
 }
 
-void line_t::set(point_t start_, point_t end_)
+void line_t::set(point_t start_, point_t end_, pen_t pen_)
 {
     _len = 2;
     point_t pt[2] = { start_, end_};
-    set(pt);
+    set(pt, pen_);
 }
 
-void line_t::set(point_t* vertice_)
+void line_t::set(point_t* vertice_, pen_t pen_)
 {
-    object_t::set(vertice_, 2);
+    object_t::set(vertice_, 2, pen_);
 }
 
-void line_t::draw(color_t* color_, canvas_t* canvas_)
+void line_t::draw(canvas_t* canvas_)
 {
     point_t* current = new point_t(_vertice[0]);
     point_t* last = _vertice + 1;
@@ -262,9 +273,12 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
     }
 
     int error = 0;
+    canvas_->save_pen();
+    canvas_->set_pen(_pen);
+
     while((current->X() != last->X()) || (current->Y() != last->Y()))
     {
-        current->draw(color_, canvas_);
+        current->draw(new color_t(_pen.get_color()), canvas_);
         if (dx >= inc*dy)
         {
             error += inc*dy;
@@ -289,45 +303,35 @@ void line_t::draw(color_t* color_, canvas_t* canvas_)
             current->Y(current->Y() + inc);
         }
     }
-    current->draw(color_, canvas_);
+    current->draw(new color_t(_pen.get_color()), canvas_);
+    canvas_->restore_pen();
     delete current;
 }
 
 // triangle_t methods
-triangle_t::triangle_t(): _border(1, 1, 1), object_t()
+triangle_t::triangle_t(): object_t()
 {}
 
-triangle_t::triangle_t(point_t* vertice_, color_t border_):
-        object_t(vertice_, 3), _border(border_)
+triangle_t::triangle_t(point_t* vertice_, pen_t pen_):
+        object_t(vertice_, 3, pen_)
 {}
 
-void triangle_t::set_vertices(point_t one_, point_t two_, point_t three_)
+void triangle_t::set(point_t* vertice_, pen_t pen_)
 {
-    point_t pt[3] = { one_, two_, three_};
-    set(pt);
+    object_t::set(vertice_, 3, pen_);
 }
 
-void triangle_t::set(point_t* vertice_)
-{
-    object_t::set(vertice_, 3);
-}
-
-void triangle_t::set_border(color_t border_)
-{
-    _border = border_;
-}
-
-void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
+void triangle_t::draw(canvas_t* canvas_)
 {
     line_t edge[3];
     point_t mean;
-    fill_t filler(*fill_color_);
+    fill_t filler(_pen.get_bg_color());
     for (int i = 0; i < 3; ++i)
     {
-        edge[i].set(_vertice[i], _vertice[(i + 1) % 3]);
+        edge[i].set(_vertice[i], _vertice[(i + 1) % 3], _pen);
         mean.X(mean.X() + _vertice[i].X());
         mean.Y(mean.Y() + _vertice[i].Y());
-        edge[i].draw(&_border, canvas_);
+        edge[i].draw(canvas_);
     }
     mean.X(mean.X()/3);
     mean.Y(mean.Y()/3);
@@ -337,7 +341,7 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
         // @TODO
         // fill the triangle
         /* filler.draw(fill_color_, &_border, canvas_); */
-        filler.draw(fill_color_, &mean, canvas_);
+        filler.draw(new color_t(_pen.get_bg_color()), &mean, canvas_);
     }
 }
 
@@ -345,10 +349,9 @@ void triangle_t::draw(color_t* fill_color_, canvas_t* canvas_)
 drawing_t::drawing_t()
 {}
 
-void drawing_t::add(object_t* object_,
-                    color_t* color_)
+void drawing_t::add(object_t* object_)
 {
-    _element.emplace_back(object_, color_);
+    _element.emplace_back(object_);
 }
 
 void drawing_t::draw(canvas_t* canvas_)
@@ -362,16 +365,15 @@ void drawing_t::draw(canvas_t* canvas_)
 #ifdef DEBUG
         std::cout << i++ << " Element\n";
 #endif
-        std::get<0>(element)->draw(std::get<1>(element), canvas_);
+        element->draw(canvas_);
     }
 }
 
 void drawing_t::clear()
 {
-    for (auto& tuple: _element)
+    for (auto& element: _element)
     {
-        delete std::get<0>(tuple);
-        delete std::get<1>(tuple);
+        delete element;
     }
     _element.clear();
 }
@@ -507,13 +509,12 @@ void canvas_t::_add_point(point_t point_)
             this->edit_pixel(&point_, new color_t(_pen.get_fg_color()));
             break;
         case LINE:
-            _drawing.add((object_t*)new line_t(_points.data()),
-                         new color_t(_pen.get_fg_color()));
+            _drawing.add((object_t*)new line_t(_points.data(), _pen));
             break;
         case TRIANGLE:
             _drawing.add((object_t*)new triangle_t(_points.data(),
-                         _pen.get_fg_color()),
-                         new color_t(_pen.get_bg_color()));
+                         pen_t(_pen.get_width(), _pen.get_fg_color(),
+                               _fill_color, pen_t::mode::DRAW)));
             break;
         default:
             break;
@@ -543,7 +544,7 @@ void canvas_t::clear(void)
         for (int j = 0; j < _window.X(); ++j)
         {
             temp.set(j, i);
-            edit_pixel(&temp, &_bg_color);
+            edit_pixel(&temp, new color_t(_pen.get_bg_color()));
         }
     }
 }
@@ -590,6 +591,16 @@ color_t canvas_t::get_pixel(point_t* point_)
 {
     auto& color = _view_port[point_->Y()][point_->X()];
     return color_t(color[0], color[1], color[2]);
+}
+
+void canvas_t::set_pen(pen_t pen_)
+{
+    _pen = pen_;
+}
+
+void canvas_t::set_fill_color(color_t color_)
+{
+    _fill_color = color_;
 }
 
 // stream overloads
