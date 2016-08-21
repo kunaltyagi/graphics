@@ -230,6 +230,11 @@ void object_t::set(point_t* point_, int n_, pen_t pen_)
     _fill_center.Y(-1);
 }
 
+int object_t::count_vertices()
+{
+    return _len;
+}
+
 // line_t methods
 line_t::line_t(): object_t()
 {}
@@ -394,7 +399,20 @@ void drawing_t::save(std::string file_)
 
 void drawing_t::load(std::ifstream& file_, canvas_t* canvas_)
 {
-    _element.clear();
+    line_t dummy_line;
+    while (file_.good())
+    {
+        file_ >> dummy_line;
+        if (dummy_line.count_vertices() == 2)
+        {
+            add((object_t*)new line_t(dummy_line));
+        }
+        else
+        {
+            add((object_t*)new triangle_t(*(triangle_t*)((object_t*)&dummy_line)));
+        }
+    }
+    draw(canvas_);
     // @TODO
     // use
     // canvas_->add_point(point_t);
@@ -653,7 +671,7 @@ void canvas_t::save(std::string file_)
 {
     std::ofstream file;
     file.open(file_);
-    file << _window << ',' << _fill_color << ',' << _mode << ',' << _pen <<'\n';
+    file << _window << ", " << _fill_color << ", " << _mode << ", " << _pen <<'\n';
     file.close();
     _drawing.save(file_);
 }
@@ -677,7 +695,7 @@ void canvas_t::load(std::string file_, bool read_drawing_)
 // stream overloads
 std::ostream& operator<< (std::ostream& o_, const color_t& color_)
 {
-    o_ << "color: " << color_._r << ',' << color_._g << ',' << color_._b;
+    o_ << "color: " << color_._r << ", " << color_._g << ", " << color_._b;
     return o_;
 }
 
@@ -685,7 +703,7 @@ std::istream& operator>> (std::istream& o_, color_t& color_)
 {
     std::string str;
     o_ >> str;
-    if (str != "color:")
+    if (str == "color:")
     {
         o_ >> color_._r >> str >> color_._g >> str >> color_._b;
     }
@@ -694,7 +712,7 @@ std::istream& operator>> (std::istream& o_, color_t& color_)
 
 std::ostream& operator<< (std::ostream& o_, const pen_t& pen_)
 {
-    o_ << "pen: " << (int)pen_._mode << ',' << pen_._t << ',' << pen_._fg_color << ',' << pen_._bg_color;
+    o_ << "pen: " << (int)pen_._mode << ", " << pen_._t << ", " << pen_._fg_color << ", " << pen_._bg_color;
     return o_;
 }
 
@@ -714,7 +732,7 @@ std::istream& operator>> (std::istream& o_, pen_t& pen_)
 
 std::ostream& operator<< (std::ostream& o_, const point_t& point_)
 {
-    o_ << "point: " << point_._x << ',' << point_._y;
+    o_ << "point: " << point_._x << ", " << point_._y;
     return o_;
 }
 
@@ -748,12 +766,12 @@ std::istream& operator>> (std::istream& o_, fill_t& fill_)
 
 std::ostream& operator<< (std::ostream& o_, const object_t& object_)
 {
-    o_ << "object: " << object_._len << ',';
+    o_ << "object: " << object_._len << ", ";
     for (int i = 0; i < object_._len; ++i)
     {
-        o_ << object_._vertice[i] << ',';
+        o_ << object_._vertice[i] << ", ";
     }
-    o_ << object_._pen << ',' << object_._fill_center;
+    o_ << object_._pen << ", " << object_._fill_center;
     return o_;
 }
 
@@ -764,6 +782,7 @@ std::istream& operator>> (std::istream& o_, object_t& object_)
     if (str == "object:")
     {
         o_ >> object_._len >> str;
+        object_._vertice = new point_t[object_._len];
         for (int i = 0; i < object_._len; ++i)
         {
             o_ >> object_._vertice[i] >> str;

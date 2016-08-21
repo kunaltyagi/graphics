@@ -126,6 +126,7 @@ class object_t
     object_t();
     object_t(point_t* point_, int n_, pen_t pen_);
     void set(point_t* point_, int n_, pen_t pen_);
+    int count_vertices();
     virtual void draw(canvas_t* canvas_) = 0;
     virtual void fill(point_t* point_, canvas_t* canvas_) {}
     friend std::ostream& operator<< (std::ostream& o_, const object_t& object_);

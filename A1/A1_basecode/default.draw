@@ -1,1 +1,6 @@
-point: 256,256,color: 0,0,0,1,pen: 0,1,color: 1,1,1,color: 0,0,0
+point: 256, 256, color: 0, 1, 0, 3, pen: 0, 1, color: 0, 0, 1, color: 0, 0, 1
+object: 2, point: 23, 230, point: 170, 207, pen: 0, 2, color: 1, 0, 0, color: 0, 0, 1, point: -1, -1
+object: 2, point: 95, 236, point: 45, 184, pen: 0, 2, color: 1, 0, 0, color: 0, 0, 1, point: -1, -1
+object: 3, point: 86, 177, point: 60, 135, point: 126, 156, pen: 0, 2, color: 1, 0, 0, color: 0, 1, 0, point: -1, -1
+object: 3, point: 164, 104, point: 164, 67, point: 224, 94, pen: 0, 1, color: 0, 0, 1, color: 0, 1, 0, point: -1, -1
+object: 3, point: 50, 115, point: 88, 107, point: 43, 79, pen: 0, 1, color: 0, 0, 1, color: 0, 1, 0, point: 56, 101
