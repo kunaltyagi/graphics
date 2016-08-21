@@ -113,6 +113,7 @@ class fill_t
     void draw(color_t* fill_color_, color_t* edge_color_, canvas_t* canvas_);
     void set_color(color_t color_);
     friend std::ostream& operator<< (std::ostream& o_, const fill_t& fill_);
+    friend std::istream& operator>> (std::istream& o_, fill_t& fill_);
 };
 
 /**
@@ -128,6 +129,7 @@ class object_t
     virtual void draw(canvas_t* canvas_) = 0;
     virtual void fill(point_t* point_, canvas_t* canvas_) {}
     friend std::ostream& operator<< (std::ostream& o_, const object_t& object_);
+    friend std::istream& operator>> (std::istream& o_, object_t& object_);
   protected:
     point_t* _vertice;
     int _len;

@@ -673,6 +673,7 @@ void canvas_t::load(std::string file_)
 std::ostream& operator<< (std::ostream& o_, const color_t& color_)
 {
     o_ << "color: " << color_._r << ',' << color_._g << ',' << color_._b;
+    return o_;
 }
 
 std::istream& operator>> (std::istream& o_, color_t& color_)
@@ -689,6 +690,7 @@ std::istream& operator>> (std::istream& o_, color_t& color_)
 std::ostream& operator<< (std::ostream& o_, const pen_t& pen_)
 {
     o_ << "pen: " << (int)pen_._mode << ',' << pen_._t << ',' << pen_._fg_color << ',' << pen_._bg_color;
+    return o_;
 }
 
 std::istream& operator>> (std::istream& o_, pen_t& pen_)
@@ -702,11 +704,13 @@ std::istream& operator>> (std::istream& o_, pen_t& pen_)
         pen_._mode = static_cast<pen_t::mode>(mode);
         o_ >> str >> pen_._t >> str >> pen_._fg_color >> str >> pen_._bg_color;
     }
+    return o_;
 }
 
 std::ostream& operator<< (std::ostream& o_, const point_t& point_)
 {
     o_ << "point: " << point_._x << ',' << point_._y;
+    return o_;
 }
 
 std::istream& operator>> (std::istream& o_, point_t& point_)
@@ -717,11 +721,24 @@ std::istream& operator>> (std::istream& o_, point_t& point_)
     {
         o_ >> point_._x >> str >> point_._y;
     }
+    return o_;
 }
 
 std::ostream& operator<< (std::ostream& o_, const fill_t& fill_)
 {
     o_ << "fill: " << fill_._fill;
+    return o_;
+}
+
+std::istream& operator>> (std::istream& o_, fill_t& fill_)
+{
+    std::string str;
+    o_ >> str;
+    if (str == "fill:")
+    {
+        o_ >> fill_._fill;
+    }
+    return o_;
 }
 
 std::ostream& operator<< (std::ostream& o_, const object_t& object_)
@@ -729,7 +746,24 @@ std::ostream& operator<< (std::ostream& o_, const object_t& object_)
     o_ << "object: " << object_._len << ',';
     for (int i = 0; i < object_._len; ++i)
     {
-        o_ << object_._vertice[i]<<',';
+        o_ << object_._vertice[i] << ',';
     }
     o_ << object_._pen << ',' << object_._fill_center;
+    return o_;
+}
+
+std::istream& operator>> (std::istream& o_, object_t& object_)
+{
+    std::string str;
+    o_ >> str;
+    if (str == "object:")
+    {
+        o_ >> object_._len >> str;
+        for (int i = 0; i < object_._len; ++i)
+        {
+            o_ >> object_._vertice[i] >> str;
+        }
+        o_ >> object_._pen >> str >> object_._fill_center;
+    }
+    return o_;
 }
