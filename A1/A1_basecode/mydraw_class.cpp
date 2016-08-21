@@ -264,6 +264,9 @@ void line_t::draw(canvas_t* canvas_)
     point_t* current = new point_t(_vertice[0]);
     point_t* last = _vertice + 1;
 
+    // Reference:
+    // https://www.cs.helsinki.fi/group/goa/mallinnus/lines/bresenh.html
+
     int dx = last->X() - current->X(), dy = last->Y() - current->Y();
     int inc = 1;
     if (dx < 0)
