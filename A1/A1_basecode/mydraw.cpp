@@ -119,6 +119,7 @@ void keyboard( unsigned char key, int x, int y )
     case 'L':  // load, input filename on the terminal
         std::cout << "[Load] ";
         canvas.load(read_filename());
+        display();
         break;
     case '0':  // debug point mode
         canvas.set_mode(canvas_t::POINT);

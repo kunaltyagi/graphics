@@ -403,6 +403,7 @@ void drawing_t::save(std::string file_)
 void drawing_t::load(std::ifstream& file_, canvas_t* canvas_)
 {
     line_t dummy_line;
+    clear();
     while (file_.good())
     {
         file_ >> dummy_line;
