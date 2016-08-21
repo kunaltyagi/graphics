@@ -182,7 +182,7 @@ class drawing_t
     void draw(canvas_t* canvas_);
     void clear();
     void save(std::string file_);
-    void load(std::string file_, canvas_t* canvas_);
+    void load(std::ifstream& file_, canvas_t* canvas_);
     void fill(point_t* point_, canvas_t* canvas_);
   private:
     using data = object_t*;
@@ -191,7 +191,12 @@ class drawing_t
 
 /**
  * @class canvas_t
- * @TODO
+ * @brief the canvas for the painting
+ * @detail contains the current drawing
+ *         contains the size of the canvas (width × height)
+ *         contains a background color for the canvas
+ *         contains a clear method that clears the canvas
+ *         contains a 2D array the size of the canvas
  */
 class canvas_t
 {
@@ -214,7 +219,7 @@ class canvas_t
     void draw(void);
     void clear(void);
     void save(std::string file_);
-    void load(std::string file_);
+    void load(std::string file_, bool read_drawing_ = true);
     void set_mode(Mode mode_);
     bool is_valid(point_t* point_);
     void fill(point_t* point_);

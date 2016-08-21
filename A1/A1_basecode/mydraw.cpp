@@ -109,7 +109,8 @@ void keyboard( unsigned char key, int x, int y )
         display();
         break;
     case 'N':  // new canvas
-        // @TODO: the background color for the canvas as input from the terminal or an initial config file
+        // the background color for the canvas as input from the terminal or an initial config file
+        canvas.load(read_filename(), false);
         break;
     case 'S':  // save
         std::cout << "[Save] ";
@@ -117,7 +118,6 @@ void keyboard( unsigned char key, int x, int y )
         break;
     case 'L':  // load, input filename on the terminal
         std::cout << "[Load] ";
-        // @TODO
         canvas.load(read_filename());
         break;
     case '0':  // debug point mode

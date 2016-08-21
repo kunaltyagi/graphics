@@ -1,7 +1,5 @@
 #include "mydraw_class.hpp"
 
-// @TODO
-// dummy methods
 void _floodFill(color_t*, color_t, point_t*, canvas_t*);
 void _floodFill(color_t* color_, point_t* point_, canvas_t* canvas_)
 {
@@ -35,6 +33,7 @@ void _floodFill(color_t* replacement_color_, color_t target_color,
     }
     return;
 }
+// @TODO
 void _scanFill(color_t*, color_t*, canvas_t*)
 {}
 
@@ -393,7 +392,7 @@ void drawing_t::save(std::string file_)
     file.close();
 }
 
-void drawing_t::load(std::string file_, canvas_t* canvas_)
+void drawing_t::load(std::ifstream& file_, canvas_t* canvas_)
 {
     _element.clear();
     // @TODO
@@ -659,14 +658,20 @@ void canvas_t::save(std::string file_)
     _drawing.save(file_);
 }
 
-void canvas_t::load(std::string file_)
+void canvas_t::load(std::string file_, bool read_drawing_)
 {
     std::ifstream file;
     file.open(file_);
-    /* file >> _window >> ',' >> _fill_color >> ',' >> _mode >> ',' >> _pen >>'\n'; */
+    std::string str;
+    int mode;
+    file >> _window >> str >> _fill_color >> str >> mode >> str >> _pen;
+    _mode = static_cast<Mode>(mode);
+    clear();
+    if (read_drawing_)
+    {
+        _drawing.load(file, this);
+    }
     file.close();
-    // @TODO
-    _drawing.load(file_, this);
 }
 
 // stream overloads
