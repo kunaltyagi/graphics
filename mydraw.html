@@ -41,19 +41,26 @@
         </ul>
       </div>
       <div id="content">
-        <h1>CS 475M - Assignment 1</h1>
-        <p>Hi there!!!</p>
-        <p>This page is developed as a submission for <a href="https://www.cse.iitb.ac.in/~paragc/teaching/2016/cs475m/assignment.shtml#a1">Assignment 1</a> of Computer graphics Minor (<a href="https://www.cse.iitb.ac.in/~paragc/teaching/2016/cs475m/">CS 475M </a>) course running in the Autumn semester of academic year 2016 - 17 in <a href="http://iitb.ac.in/"> IIT Bombay</a>. Course instructor: <a href="https://www.cse.iitb.ac.in/~paragc/">Parag Chaudhuri</a>. </p>
-        <p>This assigment has been the done by Kunal Tyagi (Roll no. : 120010006) and Pavan R Hebbar (Roll no. 130010046). We declare that we have followed the complete academic honesty and integrity</p>
-          <h2>Brief Overview</h2>
-        <p>The assignment submitted has the following files:</p>
-        <ul>
-          <li><h4>mydraw.cpp</h4> This file is the primary C++ file that captures the OpenGL initializations, display and interactions with mouse and keyboard</li>
-          <li><h4>mydraw_class.hpp</h4> This is a header file that defines all the classes and their corresponding funtions that are implemented in the mydraw.cpp</li> 
-          <li><h4>mydraw_class.cpp</h4> This is a C++ file that defines and implements all the classes that are required. </li>
-          
+        <h1>mydraw.cpp</h1>
+        <p>Following are the funtions included with the file: </p>
+        <ul> 
+          <li><h5>int main():</h5> This function initializes the GLUT, creates window and calls the event handling and the display functions. This can be briefly summarized as : </li>
+          <p> &emsp; &emsp; &emsp; int main(int argc, char *argv[]){ </p>
+          <p>&emsp; &emsp; &emsp; &emsp;//initializes GLUT and create window</p>
+          <p>&emsp; &emsp; &emsp; &emsp;//register display call back</p>
+          <p>&emsp; &emsp; &emsp; &emsp;//callback for interaction with keyboard</p>
+          <p>&emsp; &emsp; &emsp; &emsp;//callback for interaction with mouseclick</p>
+           <p>&emsp; &emsp; &emsp; &emsp;//enter event processing cycle </p>
+           <p>&emsp; &emsp; &emsp;} </p>
+           <li><h5>void mouse(int button, int state, int x, int y):</h5> Mouse call back function. Records the position and button when the mouse is clicked to implement the corresponding drawing functions </li> 
+           <li><h5>void keyboard( unsigned char key, int x, int y ):</h5> Key board call back function. Records the key pressed and teh position of mouse when the key is pressed. We have used "switch - case" method to do the required action when the corresponding key is pressed</li>
+           <li><h5>std::string read_filename():</h5> Used to read the filename that has to be loaded from the user input </li>
+           <li><h5>color_t read_color():</h5> Used to read the normalised set of RGB from the user input</li>
+           <li><h5>void reshape( int w, int h ):</h5>Resizes the OpenGL Window. Uses glOrtho to scale the existing matrix of pixels</li>
+           <li><h5>void display( void ):</h5> Draws the canvas onto the screen</li>
+           <li><h5>void wrapper_set_bg(color_t&amp; bg_color_):</h5> Sets the background color to black</li>
+           <li><h5>canvas_t canvas(color_t(1,1,1), color_t(0,0,0), point_t(win_width, win_height)):</h5> Initializes canvas</li>
         </ul>
-      </div>
     </div>
     <div id="footer">
       <p><a href="index.html">Home</a> | <a href="examples.html">Examples</a> | <a href="page.html">A Page</a> | <a href="another_page.html">Another Page</a> | <a href="contact.html">Contact Us</a></p>

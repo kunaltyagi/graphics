@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>CS 475M - A1</title>
+  <meta name="description" content="website description" />
+  <meta name="keywords" content="website keywords, website keywords" />
+  <meta http-equiv="content-type" content="text/html; charset=windows-1252" />
+  <link rel="stylesheet" type="text/css" href="style/style.css" />
+</head>
+
+<body>
+  <div id="main">
+    <div id="header">
+      <div id="logo">
+        <div id="logo_text">
+          <!-- class="logo_colour", allows you to change the colour of the text -->
+          <h1><a href="index.html">Computer Graphics<span class="logo_colour">(Minor)</span></a></h1>
+          <h2>Assignment 1 Report.</h2>
+        </div>
+      </div>
+      <div id="menubar">
+        <ul id="menu">
+          <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
+          <li class="selected"><a href="index.html">Home</a></li>
+          <li><a href="mydraw_class.html">mydraw_class-header</a></li>
+          <li><a href="mydraw.html">mydraw</a></li>
+          <li><a href="functioning.html">mydraw_class</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="site_content">
+      <div class="sidebar">
+        <h1>Useful Links</h1>
+        <ul>
+          <li><a href="#">link 1</a></li>
+          <li><a href="#">link 2</a></li>
+          <li><a href="#">link 3</a></li>
+          <li><a href="#">link 4</a></li>
+        </ul>
+      </div>
+      <div id="content">
+        <h1>Another Page</h1>
+        <p>Following the the classes and the functions implemented in them: </p>
+        <ol>
+          <li><h5>color_t:</h5>Private variables are red, blue and green components. Consists of the following member functions:
+          <ul>
+            <li>color_t(): initializes an element of class and sets R, G B components to zero</li>
+            <li>color_t(const float r_, const float g_, const float b_): Defines a element of type color_t and sets the private variables _r, _g, _b to their corresponding values</li>
+            <li>void set(const float r_, const float g_, const float b_): Sets the private variables _r, _g, _b  of the element to the given values</li>
+            <li>bool operator ==(const color_t &amp;b) const: Compare the color of two entities</li>
+            <li>float R(void): Returns the normalized red component</li>
+            <li>float G(void): Returns the normalized green component</li>
+            <li>float B(void): Returns the normalized blue component</li>
+          </ul>
+          </li>
+          <li><h5>pen_t:</h5> Private variables are current thinkness, current foreground and background color and current mode. Consists of following functions:
+            <ul>
+              <li>pen_t(): Initialize an element of class with thickness 1.0, color = white and with mode draw </li>
+              <li>pen_t(int t_, color_t fg_color_, color_t bg_color, mode mode_): Defines an element of class and sets the pen thickness, foreground and background color and the mode </li>
+              <li>set_fg_color(color_t color_): Sets foreground color</li>
+              <li>color_t get_fg_color(void): Returns the current Foreground color</li>
+              <li>set_bg_color(color_t color_): Sets foreground color</li>
+              <li>color_t get_bg_color(void): Returns the current Foreground color</li>
+              <li>color_t get_color(): Get current color of the pen i.e return the foreground color if mode = Draw and background color if mode = Erase</li>
+              <li>float get_width(void): Returns the width of the pen</li>
+              <li>float set_width(float t_): Sets the width of pen to the given number</li>
+              <li>void set_mode(mode mode_): Sets mode of the pen to given value</li>
+              <li>mode get_mode(void): Returns the mode value</li>
+              <li>void set(int t_, color_t fg_color_, color_t bg_color_, mode mode_): Sets the pen thickness, foreground and background color and the mode</li>
+            </ul>
+          </li>
+          <li><h5>point_t</h5> private variables are x and y coordinates. member functions are:
+            <ul>
+              <li>point_t(): Initialize the element of class at origin</li>
+              <li>point_t(int x_, int y_): Defines a element of class and sets it to the given x_ and y_ coordinates</li>
+              <li>int X(void): Returns X value</li>
+              <li>int Y(void): Returns Y value</li></ul></li></ul>
+              <li>void X(int x_): Sets X coordinate of given point to x_</li>
+              <li>void Y(int y_): Sets Y component of given system to y_</li>
+              <li>void set(int x_, int y_): Sets X and Y components tot he given coordinates</li>
+              <li>void draw(color_t* color_, canvas_t* canvas_): Calls the edit_pixel function of canvas_</li>
+            </ul>
+          </li>
+          <li><h5>fill_t:</h5> Used for handling the color to be used for filling. This color is private. Member functions are:
+            <ul>
+              <li>fill_t(): Define an element and initialize the current fill color to white </li>
+              ,<li>fill_t(color_t color_): Sets the current fill color to the given value</li>
+              <li>void draw(color_t* color_, point_t* point_, canvas_t* canvas_): Uses floodfill algorithm to color region</li>
+              <li>void draw(color_t* fill_color_, color_t* edge_color_, canvas_t* canvas_): Uses Scanfill algorithm to color region</li>
+              <li>void set_color(color_t color_): Sets the color of element to given value</li>
+            </ul>
+          </li>
+          <li><h5>object_t:</h5>Maintains the list of all lines and triangles to be drawn. Private variables are array of vertices and its length, _pen, and the point about which scanfill should start. if fill is not implmented this value is (-1,-1)
+            <ul>
+              <li>object_t(point_t* point_, int n_, pen_t pen_): Initializes an object with n vertices, whose coordinates are given by point_. Also sets the parameters to that of the pen</li>
+              <li>void set(point_t* point_, int n_, pen_t pen_): Sets an already initilized element to the given values</li>
+              <li>virtual void draw(canvas_t* canvas_) = 0:</li>
+              <li>virtual void fill(point_t* point_, canvas_t* canvas_)</li>
+            </ul>
+          </li>
+          <li><h5>line_t:</h5> Stores the paramters of the lines drawn. Member functions are:
+            <ul>
+              <li>line_t(): Initializes an object.</li>
+              <li>line_t(point_t* point_, pen_t pen_): Calls the object_t(vertice_, 2, pen_) to initialize an object of length 2 with given vertices and pen parameters</li>
+              <li>line_t(point_t start_, point_t end_, pen_t pen_):Initializes and sets the start and the endpoints of line and pen parameters</li>
+              <li>void set(point_t start_, point_t end, pen_t pen_): Sets the start and the endpoints of line and pen parameters</li>
+              <li>void set(point_t* point_, pen_t pen_): Calls object::set to set the vertices.</li>
+              ,<li>void draw(canvas_t* canvas_): Applies modified Bressenhem's algorithm(in all 4 quadrants and no float) and then calls canvas::draw on each pixel</li>
+
+            </ul>            
+          </li>
+          <li><h5>traingle_t():</h5> Stores parameters of a triangle. 
+            <ul>
+              <li> triangle_t(): Initilizes an object</li>
+              <li>triangle_t(point_t* vertice_, pen_t pen_): Calls object_t(vertice_, 3, pen_) to initilizes an object of length 3 and set its coordinates and pen parameters as required</li>
+              <li>void set(point_t* vertice_, pen_t pen_): Calls object::set to set the 3 vertices</li>
+              <li>void draw(canvas_t* canvas_): Calls line::draw on each of the three lines to draw to boundaries. If fill_center is not -1, then traingle::fill is called. </li>
+              <li>void fill(point_t* point_, canvas_t* canvas_): Implements the flood fill algorithm </li>
+            </ul>            
+          </li>
+          <li><h5>drawing_t :</h5>It stores all the lines and traingles to be drawn, their color etc which are used to color the pixels. The data of objects and their parameters are stored as private variables. The elements of objects are stored as a vector
+            <ul>
+              <li>drawing_t(): Initializes the element</li>
+              <li>void add(object_t* object_): Adds the given object to the list of objects that are already stored</li>
+              <li>void clear(): Deletes all the objects</li>
+              <li>void save(std::string file_): Saves the list of objects and their parameters into a text file using ifstream funcions</li>
+              <li>void load(std::string file_, canvas_t* canvas_) : Loads the objects and their parameters from a text file using ofstream functions</li> 
+              <li>void fill(point_t* point_, canvas_t* canvas_): Fills the objects with the specified color</li>
+            </ul>
+          </li>
+          <li><h5>canvas_t: </h5>Consits of a 2D array of pixels that will be rendered to the screen. Pritive variables include a vector to store the color information of each pixel, another vector to store points, mode, fill_color, pen parameters, drawing. Member functions are:<br> <h6>Private Functions</h6>
+          <ul>
+            <li>void _left_click(int x_, int y_): Calls function to add point (x_, y_)</li>
+            <li>void _right_click(int x_, int y_):Calls function to remove point (x_, y_)</li>
+            <li>void _remove_point(point_t point_): Pops the point out of the vector _points</li>
+
+          </ul><br>
+          <h6>Public Functions</h6>
+          <ul>
+            <li>canvas_t(): Initializes the Canvas</li>
+            <li>canvas_t(color_t fg_color_, color_t bg_color_, point_t window_): Sets the canvas parameters to the given values</li>
+            <li>void left_click(int x_, int y_): Calls _left_click(x_, _window.Y() - y_)</li>
+            <li>void right_click(int x_, int y_): Calls _left_click(x_, _window.Y() - y_)</li>
+            <li>void set_size(int width_, int height_): Sets the vector _view_port to the required size, and also sets the _window parameters</li>
+            <li>void set_bg(color_t color_): Sets background color</li>
+            <li>void set_pen_color(color_t color_): Sets pen Color</li>
+            <li>void set_fill_color(color_t color_): Sets fill color</li>
+            <li>void set_pen_width(float t_): Sets pen width</li>
+            <li>void set_pen(pen_t pen_): Sets pen parameters</li>
+            <li>void save_pen(): Saves pen parameter</li>
+            <li>void restore_pen(): Restore the saved pen parameter</li>
+            <li>void edit_pixel(point_t* point_, color_t* color_): Edits the vector _view_port at the given pixel</li>
+            <li>color_t get_pixel(point_t* point_): Returns the color of the point_ </li>
+            <li>void draw(void): Draws the objects onto the window using glDrawPixels</li>
+            <li>void clear(void): Clears the canvas and colors all pixels to the background color</li>
+            <li>void save(std::string file_): Saves the drawing into a text file. </li>
+            <li>void load(std::string file_): loads Drawing from a text file.</li>
+            <li>void set_mode(Mode mode_): Sets mode of the pen to draw a point line or a rectangle</li>
+            <li>bool is_valid(point_t* point_): Checks if the point lies within the window</li>
+            <li>void fill(point_t* point_);</li>
+            <li>void add_point(point_t point_);</li>
+          </ul>            
+          </li>
+      </div>
+    </div>
+    <div id="footer">
+      <p><a href="index.html">Home</a> | <a href="examples.html">Examples</a> | <a href="page.html">A Page</a> | <a href="another_page.html">Another Page</a> | <a href="contact.html">Contact Us</a></p>
+      <p>Copyright &copy; night_sky | <a href="http://validator.w3.org/check?uri=referer">HTML5</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a></p>
+    </div>
+  </div>
+</body>
+</html>
