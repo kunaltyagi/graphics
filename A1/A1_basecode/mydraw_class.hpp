@@ -34,6 +34,7 @@ class color_t
     float G(void);
     float B(void);
     friend std::ostream& operator<< (std::ostream& o_, const color_t& color_);
+    friend std::istream& operator>> (std::istream& o_, color_t& color_);
 };
 
 /**
@@ -61,6 +62,7 @@ class pen_t
     void set_mode(mode mode_);
     void set(int t_, color_t fg_color_, color_t bg_color_, mode mode_);
     friend std::ostream& operator<< (std::ostream& o_, const pen_t& pen_);
+    friend std::istream& operator>> (std::istream& o_, pen_t& pen_);
   private:
     float _t;          ///< thickness
     color_t _fg_color, _bg_color;  ///< color of the pen
@@ -89,6 +91,7 @@ public:
     void set(int x_, int y_);
     void draw(color_t* color_, canvas_t* canvas_);
     friend std::ostream& operator<< (std::ostream& o_, const point_t& point_);
+    friend std::istream& operator>> (std::istream& o_, point_t& point_);
 };
 
 /**

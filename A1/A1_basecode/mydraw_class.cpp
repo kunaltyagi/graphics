@@ -654,13 +654,17 @@ void canvas_t::save(std::string file_)
 {
     std::ofstream file;
     file.open(file_);
-    file << _window << ',' << _pen <<'\n';
+    file << _window << ',' << _fill_color << ',' << _mode << ',' << _pen <<'\n';
     file.close();
     _drawing.save(file_);
 }
 
 void canvas_t::load(std::string file_)
 {
+    std::ifstream file;
+    file.open(file_);
+    /* file >> _window >> ',' >> _fill_color >> ',' >> _mode >> ',' >> _pen >>'\n'; */
+    file.close();
     // @TODO
     _drawing.load(file_, this);
 }
@@ -671,14 +675,48 @@ std::ostream& operator<< (std::ostream& o_, const color_t& color_)
     o_ << "color: " << color_._r << ',' << color_._g << ',' << color_._b;
 }
 
+std::istream& operator>> (std::istream& o_, color_t& color_)
+{
+    std::string str;
+    o_ >> str;
+    if (str != "color:")
+    {
+        o_ >> color_._r >> str >> color_._g >> str >> color_._b;
+    }
+    return o_;
+}
+
 std::ostream& operator<< (std::ostream& o_, const pen_t& pen_)
 {
     o_ << "pen: " << (int)pen_._mode << ',' << pen_._t << ',' << pen_._fg_color << ',' << pen_._bg_color;
 }
 
+std::istream& operator>> (std::istream& o_, pen_t& pen_)
+{
+    std::string str;
+    o_ >> str;
+    int mode;
+    if (str == "pen:")
+    {
+        o_ >> mode;
+        pen_._mode = static_cast<pen_t::mode>(mode);
+        o_ >> str >> pen_._t >> str >> pen_._fg_color >> str >> pen_._bg_color;
+    }
+}
+
 std::ostream& operator<< (std::ostream& o_, const point_t& point_)
 {
     o_ << "point: " << point_._x << ',' << point_._y;
+}
+
+std::istream& operator>> (std::istream& o_, point_t& point_)
+{
+    std::string str;
+    o_ >> str;
+    if (str == "point:")
+    {
+        o_ >> point_._x >> str >> point_._y;
+    }
 }
 
 std::ostream& operator<< (std::ostream& o_, const fill_t& fill_)
