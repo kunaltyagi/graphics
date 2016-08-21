@@ -71,10 +71,22 @@ void reshape( int w, int h )
 
 color_t read_color()
 {
-    std::cout << "Enter normalized R G B color\n";
+    std::cout << "Enter normalized R G B color: ";
     float r, g, b;
     std::cin >> r >> g >> b;
     return color_t(r, g, b);
+}
+
+std::string read_filename()
+{
+    std::cout << "Enter filename: ";
+    std::string line;
+    std::getline(std::cin, line);
+    if (line == "")
+    {
+        line = "default.draw";
+    }
+    return line;
 }
 
 //Keyboard callback
@@ -100,10 +112,13 @@ void keyboard( unsigned char key, int x, int y )
         // @TODO: the background color for the canvas as input from the terminal or an initial config file
         break;
     case 'S':  // save
-        // @TODO
+        std::cout << "[Save] ";
+        canvas.save(read_filename());
         break;
     case 'L':  // load, input filename on the terminal
+        std::cout << "[Load] ";
         // @TODO
+        canvas.load(read_filename());
         break;
     case '0':  // debug point mode
         canvas.set_mode(canvas_t::POINT);

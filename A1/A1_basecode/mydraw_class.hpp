@@ -6,7 +6,7 @@
 #endif
 
 #include <vector>
-#include <tuple>
+#include <fstream>
 #include <memory>
 #include <iterator>
 #include <math.h>
@@ -129,6 +129,7 @@ class object_t
     point_t* _vertice;
     int _len;
     pen_t _pen;
+    point_t _fill_center;
 };
 
 /**
@@ -156,15 +157,12 @@ class line_t: public object_t
  */
 class triangle_t: public object_t
 {
- protected:
-    point_t _fill_center;
   public:
     triangle_t();
     triangle_t(point_t* vertice_, pen_t pen_);
     void set(point_t* vertice_, pen_t pen_);
     void draw(canvas_t* canvas_);
     void fill(point_t* point_, canvas_t* canvas_);
-    friend std::ostream& operator<< (std::ostream& o_, const triangle_t& object_);
 };
 
 /**
@@ -178,6 +176,8 @@ class drawing_t
     void add(object_t* object_);
     void draw(canvas_t* canvas_);
     void clear();
+    void save(std::string file_);
+    void load(std::string file_);
     void fill(point_t* point_, canvas_t* canvas_);
   private:
     using data = object_t*;
@@ -208,6 +208,8 @@ class canvas_t
     color_t get_pixel(point_t* point_);
     void draw(void);
     void clear(void);
+    void save(std::string file_);
+    void load(std::string file_);
     void set_mode(Mode mode_);
     bool is_valid(point_t* point_);
     void fill(point_t* point_);

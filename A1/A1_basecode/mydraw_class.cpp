@@ -204,11 +204,11 @@ void fill_t::set_color(color_t color_)
 }
 
 // object_t methods
-object_t::object_t(): _vertice(nullptr), _len(0), _pen()
+object_t::object_t(): _vertice(nullptr), _len(0), _pen(), _fill_center(-1,-1)
 {}
 
 object_t::object_t(point_t* point_, int n_, pen_t pen_):
-    _vertice(nullptr), _len(n_), _pen(pen_)
+    _vertice(nullptr), _len(n_), _pen(pen_), _fill_center(-1,-1)
 {
     set(point_, n_, pen_);
 
@@ -227,6 +227,8 @@ void object_t::set(point_t* point_, int n_, pen_t pen_)
     {
         _vertice[i] = point_[i];
     }
+    _fill_center.X(-1);
+    _fill_center.Y(-1);
 }
 
 // line_t methods
@@ -309,17 +311,16 @@ void line_t::draw(canvas_t* canvas_)
 }
 
 // triangle_t methods
-triangle_t::triangle_t(): object_t(), _fill_center(-1,-1)
+triangle_t::triangle_t(): object_t()
 {}
 
 triangle_t::triangle_t(point_t* vertice_, pen_t pen_):
-        object_t(vertice_, 3, pen_), _fill_center(-1,-1)
+        object_t(vertice_, 3, pen_)
 {}
 
 void triangle_t::set(point_t* vertice_, pen_t pen_)
 {
     object_t::set(vertice_, 3, pen_);
-    _fill_center.X(-1);
 }
 
 void triangle_t::draw(canvas_t* canvas_)
@@ -379,6 +380,23 @@ void drawing_t::clear()
     _element.clear();
 }
 
+void drawing_t::save(std::string file_)
+{
+    std::ofstream file;
+    file.open(file_);
+    int i = 0;
+    for (auto& element: _element)
+    {
+        /* file << "*** Element " << i++ << " ***\n"; */
+        file << *element << '\n';
+    }
+    file.close();
+}
+
+void drawing_t::load(std::string file_)
+{
+    // @TODO
+}
 void drawing_t::fill(point_t* point_, canvas_t* canvas_)
 {
     _element.back()->fill(point_, canvas_);
@@ -624,6 +642,16 @@ void canvas_t::fill(point_t* point_)
     set_mode(TRIANGLE);
 }
 
+void canvas_t::save(std::string file_)
+{
+    _drawing.save(file_);
+}
+
+void canvas_t::load(std::string file_)
+{
+    _drawing.load(file_);
+}
+
 // stream overloads
 std::ostream& operator<< (std::ostream& o_, const color_t& color_)
 {
@@ -650,16 +678,7 @@ std::ostream& operator<< (std::ostream& o_, const object_t& object_)
     o_ << "object: " << object_._len << ',';
     for (int i = 0; i < object_._len; ++i)
     {
-        o_ << object_._vertice[i];
+        o_ << object_._vertice[i]<<',';
     }
-}
-
-std::ostream& operator<< (std::ostream& o_, const triangle_t& object_)
-{
-    o_ << "object: " << object_._len << ',';
-    for (int i = 0; i < object_._len; ++i)
-    {
-        o_ << object_._vertice[i] << ',';
-    }
-    o_ << object_._fill_center;
+    o_ << object_._pen << ',' << object_._fill_center;
 }
