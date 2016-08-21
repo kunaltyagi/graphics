@@ -218,7 +218,7 @@ class canvas_t
     void edit_pixel(point_t* point_, color_t* color_);
     color_t get_pixel(point_t* point_);
     void draw(void);
-    void clear(void);
+    void clear(bool not_drawing_ = false);
     void save(std::string file_);
     void load(std::string file_, bool read_drawing_ = true);
     void set_mode(Mode mode_);

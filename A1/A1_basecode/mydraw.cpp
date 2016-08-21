@@ -154,6 +154,7 @@ void keyboard( unsigned char key, int x, int y )
     case 'I':  // change current backgound color, input color from terminal
         std::cout << "[Background] ";
         canvas.set_bg(read_color());
+        display();
         break;
     case 'J':  // change pen width, input thickness from terminal
         float t;

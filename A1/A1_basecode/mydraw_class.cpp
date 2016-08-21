@@ -486,6 +486,7 @@ void canvas_t::set_size(int width_, int height_)
 void canvas_t::set_bg(color_t color_)
 {
     _pen.set_bg_color(color_);
+    clear(true);
 }
 
 void canvas_t::set_pen_color(color_t color_)
@@ -586,12 +587,15 @@ void canvas_t::_remove_point(point_t point_)
     return;
 }
 
-void canvas_t::clear(void)
+void canvas_t::clear(bool not_drawing_)
 {
 #ifdef DEBUG
     std::cout << "[Canvas] Cleared\n";
 #endif
-    _drawing.clear();
+    if (not_drawing_ == false)
+    {
+        _drawing.clear();
+    }
     point_t temp(0, 0);
     for (int i = 0; i < _window.Y(); ++i)
     {
