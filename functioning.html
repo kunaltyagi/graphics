@@ -22,11 +22,10 @@
       <div id="menubar">
         <ul id="menu">
           <!-- put class="selected" in the li tag for the selected page - to highlight which page you're on -->
-          <li class="selected"><a href="index.html">Home</a></li>
+          <li><a href="index.html">Home</a></li>
           <li><a href="mydraw_class.html">mydraw_classes</a></li>
           <li><a href="mydraw.html">mydraw</a></li>
-          <li><a href="functioning.html">Functioning</a></li>
-          <li><a href="contact.html">Contact Us</a></li>
+          <li class="selected"><a href="functioning.html">Functioning</a></li>
         </ul>
       </div>
     </div>
@@ -34,14 +33,72 @@
       <div class="sidebar">
         <h1>Useful Links</h1>
         <ul>
-          <li><a href="#">link 1</a></li>
-          <li><a href="#">link 2</a></li>
-          <li><a href="#">link 3</a></li>
-          <li><a href="#">link 4</a></li>
+          <li><a
+                  href="https://www.cs.helsinki.fi/group/goa/mallinnus/lines/bresenh.html">Integer
+              Bresenham (all octants)</a></li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
+          <li> </li> <li> </li> <li> </li> <li> </li> <li> </li>
         </ul>
       </div>
+        <h2>Information Flow</h2>
+        All signals, mouse clicks and keypresses are passed onto
+        the <b>canvas_t</b> class, which then passes them onto
+        either the <b>drawing_t</b> class or performs the necessary
+        actions.
         <h2>Points</h2> 
-        <p> Points are added on to the screen on left click. On left click the function canvas.left_click(x, y) is called that records the pixel position 
+        <p>
+        Points are added on to the screen on left click. On
+        left click the function canvas.left_click(x, y) is called
+        that records the pixel position. It calls _left_click(x,y)
+        by converting (x,y) from screen frame to canvas frame.
+        </p>
+        Points are drawn by the canvas_t on demand by the point_t
+        class.
+
+        <h2>Mode</h2>
+        <p>
+        Changing modes only changes how drawing_t responds to the
+        points, and nothing else. o, the debug point mode, line and
+        triangle modes all behave similarly.
+        </p>
+        <h2>Objects</h2>
+        <p>
+        The drawing objects (line and triangles) are treated
+        similarly. They are stored in the order they are created
+        with data about the vertices, the line thickness used to
+        create them, the border and fill color, etc. This makes
+        redrawing an image very simple.
+        </p>
+        Lines are drawn by drawing the points computed via the line
+        drawing algorithm and Triangles are drawn using the edges.
+        <h2>Canvas</h2>
+        <p>
+        Canvas is just a 3D array of adjustable length and breadth
+        with pixel color data which enables OpenGl to draw them. It
+        contains no further data.
+        </p>
+        <h2>Saving/Loading</h2>
+        <p>
+        Stream operators are overloaded enabling easy input and
+        output of drawing and recreating the drawing very quickly
+        and exactly with no loss of information.
+        </p>
+        <h2>Algorithms</h2>
+        <p>
+        For line drawing, integer version of Bresenham algorithm is
+        used, with flood fill as the default filling algorithm. The
+        thickness of lines is implemented by updating nearby pixels
+        as well while editing a single pixel in canvas_t
+        </p>
+
     <div id="footer">
       <p><a href="index.html">Home</a> | <a href="examples.html">Examples</a> | <a href="page.html">A Page</a> | <a href="another_page.html">Another Page</a> | <a href="contact.html">Contact Us</a></p>
       <p>Copyright &copy; night_sky | <a href="http://validator.w3.org/check?uri=referer">HTML5</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://www.html5webtemplates.co.uk">design from HTML5webtemplates.co.uk</a></p>
