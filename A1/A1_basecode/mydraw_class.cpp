@@ -383,7 +383,7 @@ void drawing_t::clear()
 void drawing_t::save(std::string file_)
 {
     std::ofstream file;
-    file.open(file_);
+    file.open(file_, std::ofstream::out | std::ofstream::app);
     int i = 0;
     for (auto& element: _element)
     {
@@ -393,9 +393,17 @@ void drawing_t::save(std::string file_)
     file.close();
 }
 
-void drawing_t::load(std::string file_)
+void drawing_t::load(std::string file_, canvas_t* canvas_)
 {
+    _element.clear();
     // @TODO
+    // use
+    // canvas_->add_point(point_t);
+    // canvas_->set_mode(Mode);
+    // canvas_->set_size(int, int);
+    // canvas_->set_fill_color(color_t);
+    // canvas_->set_pen(pen_t);
+    // canvas_->fill(point_t* point_);
 }
 void drawing_t::fill(point_t* point_, canvas_t* canvas_)
 {
@@ -430,7 +438,7 @@ void canvas_t::_left_click(int x_, int y_)
 #ifdef DEBUG
     std::cout << "[Canvas] Left Mouse @ " << x_ << " X " << y_ << '\n';
 #endif
-    _add_point(point_t(x_, y_));
+    add_point(point_t(x_, y_));
 }
 
 void canvas_t::_right_click(int x_, int y_)
@@ -522,7 +530,7 @@ void canvas_t::draw(void)
     }
 }
 
-void canvas_t::_add_point(point_t point_)
+void canvas_t::add_point(point_t point_)
 {
     if (_mode == NONE)
     {
@@ -596,7 +604,7 @@ void canvas_t::set_mode(Mode mode_)
     {
         point_t back = _points.back();
         _points.pop_back();
-        _add_point(back);
+        add_point(back);
     }
 }
 
@@ -644,12 +652,17 @@ void canvas_t::fill(point_t* point_)
 
 void canvas_t::save(std::string file_)
 {
+    std::ofstream file;
+    file.open(file_);
+    file << _window << ',' << _pen <<'\n';
+    file.close();
     _drawing.save(file_);
 }
 
 void canvas_t::load(std::string file_)
 {
-    _drawing.load(file_);
+    // @TODO
+    _drawing.load(file_, this);
 }
 
 // stream overloads
