@@ -132,6 +132,14 @@ class object_t
     point_t _fill_center;
 };
 
+class pointd_t: public object_t
+{
+    public:
+        pointd_t();
+        pointd_t(point_t* point_, pen_t pen_);
+        void draw(canvas_t* canvas_);
+};
+
 /**
  * @class line_t
  * @brief contains the end points of a line
@@ -177,7 +185,7 @@ class drawing_t
     void draw(canvas_t* canvas_);
     void clear();
     void save(std::string file_);
-    void load(std::string file_);
+    void load(std::string file_, canvas_t* canvas_);
     void fill(point_t* point_, canvas_t* canvas_);
   private:
     using data = object_t*;
@@ -213,6 +221,7 @@ class canvas_t
     void set_mode(Mode mode_);
     bool is_valid(point_t* point_);
     void fill(point_t* point_);
+    void add_point(point_t point_);
   private:
     std::vector<std::vector<std::array<float,3>>> _view_port;
     std::vector<point_t> _points;
@@ -223,7 +232,6 @@ class canvas_t
     pen_t _pen, _bkp_pen;
     void _left_click(int x_, int y_);
     void _right_click(int x_, int y_);
-    void _add_point(point_t point_);
     void _remove_point(point_t point_);
 };
 

@@ -231,7 +231,25 @@ void object_t::set(point_t* point_, int n_, pen_t pen_)
     _fill_center.Y(-1);
 }
 
-// line_t methods
+//pointd_t methods
+pointd_t::pointd_t(): object_t()
+{}
+
+pointd_t::pointd_t(point_t* vertice_, pen_t pen_): object_t(vertice_, 1, pen_)
+{}
+
+
+void pointd_t::draw(canvas_t* canvas_)
+{
+    canvas_->save_pen();
+    canvas_->set_pen(_pen);
+    point_t* current = new point_t(_vertice[0]);
+    current->draw(new color_t(_pen.get_color()), canvas_); 
+    canvas_->restore_pen();
+    delete current;
+}
+
+// line_t methodsI
 line_t::line_t(): object_t()
 {}
 
@@ -383,7 +401,7 @@ void drawing_t::clear()
 void drawing_t::save(std::string file_)
 {
     std::ofstream file;
-    file.open(file_);
+    file.open(file_, std::ofstream::out | std::ofstream::app);
     int i = 0;
     for (auto& element: _element)
     {
@@ -393,9 +411,17 @@ void drawing_t::save(std::string file_)
     file.close();
 }
 
-void drawing_t::load(std::string file_)
+void drawing_t::load(std::string file_, canvas_t* canvas_)
 {
+    _element.clear();
     // @TODO
+    // use
+    // canvas_->add_point(point_t);
+    // canvas_->set_mode(Mode);
+    // canvas_->set_size(int, int);
+    // canvas_->set_fill_color(color_t);
+    // canvas_->set_pen(pen_t);
+    // canvas_->fill(point_t* point_);
 }
 void drawing_t::fill(point_t* point_, canvas_t* canvas_)
 {
@@ -430,7 +456,7 @@ void canvas_t::_left_click(int x_, int y_)
 #ifdef DEBUG
     std::cout << "[Canvas] Left Mouse @ " << x_ << " X " << y_ << '\n';
 #endif
-    _add_point(point_t(x_, y_));
+    add_point(point_t(x_, y_));
 }
 
 void canvas_t::_right_click(int x_, int y_)
@@ -502,6 +528,15 @@ void canvas_t::edit_pixel(point_t* point_, color_t* color_)
 
 void canvas_t::draw(void)
 {
+    point_t temp(0, 0);
+    for (int i = 0; i < _window.Y(); ++i)
+    {
+        for (int j = 0; j < _window.X(); ++j)
+        {
+            temp.set(j, i);
+            edit_pixel(&temp, new color_t(_pen.get_bg_color()));
+        }
+    }
     _drawing.draw(this);
     for (int row = 0; row < _window.Y(); ++row)
     {
@@ -522,7 +557,7 @@ void canvas_t::draw(void)
     }
 }
 
-void canvas_t::_add_point(point_t point_)
+void canvas_t::add_point(point_t point_)
 {
     if (_mode == NONE)
     {
@@ -535,7 +570,7 @@ void canvas_t::_add_point(point_t point_)
         switch(_mode)
         {
         case POINT:
-            this->edit_pixel(&point_, new color_t(_pen.get_fg_color()));
+            _drawing.add((object_t*)new pointd_t(_points.data(), _pen));
             break;
         case LINE:
             _drawing.add((object_t*)new line_t(_points.data(), _pen));
@@ -596,7 +631,7 @@ void canvas_t::set_mode(Mode mode_)
     {
         point_t back = _points.back();
         _points.pop_back();
-        _add_point(back);
+        add_point(back);
     }
 }
 
@@ -644,12 +679,17 @@ void canvas_t::fill(point_t* point_)
 
 void canvas_t::save(std::string file_)
 {
+    std::ofstream file;
+    file.open(file_);
+    file << _window << ',' << _pen <<'\n';
+    file.close();
     _drawing.save(file_);
 }
 
 void canvas_t::load(std::string file_)
 {
-    _drawing.load(file_);
+    // @TODO
+    _drawing.load(file_, this);
 }
 
 // stream overloads

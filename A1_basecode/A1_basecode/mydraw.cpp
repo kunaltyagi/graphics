@@ -18,9 +18,8 @@ int win_width = 256;   ///< Window width
 int win_height = 256;  ///<Window height
 bool left_m = false;   ///< is left mouse button active
 bool right_m = false;  ///< is right mouse button active
-int numline = 0;
-int numtri = 0;
-
+int numones = 0;       // Number of 1s pressed
+int numtwos = 0;       // Number of twos pressed
 canvas_t canvas(color_t(1,1,1), color_t(0,0,0), point_t(win_width, win_height));
 
 void wrapper_set_bg(color_t& bg_color_)
@@ -113,6 +112,10 @@ void keyboard( unsigned char key, int x, int y )
         break;
     case 'N':  // new canvas
         // @TODO: the background color for the canvas as input from the terminal or an initial config file
+        std::cout << "[New canvas] Background color: ";
+        canvas.set_bg(read_color());
+        canvas.clear();
+        display();
         break;
     case 'S':  // save
         std::cout << "[Save] ";
@@ -131,22 +134,22 @@ void keyboard( unsigned char key, int x, int y )
         // successively clicked points, with the current pen. Right click
         // removes the last added point, and if a line is left incomplete
         // by removing the point, remove the line too.
-        numline = numline + 1;
-        if (numline % 2 == 1){
+        numones =  numones + 1;
+        if(numones % 2 == 1){
             canvas.set_mode(canvas_t::LINE);
         }
-        else{canvas.set_mode(canvas_t::POINT);}
+        else{ canvas.set_mode(canvas_t::POINT);}
         break;
     case '2':  // triangle drawing mode
         // Left clicks add vertices. Three successively clicked vertices
         // form a triangle. A right click removes the last added point,
         // and if a triangle is left incomplete by removing the
         // point, the triangle is also removed.
-        numtri = numtri + 1;
-        if (numtri % 2 == 1){
+        numones =  numones + 1;
+        if(numones % 2 == 1){
             canvas.set_mode(canvas_t::TRIANGLE);
         }
-        else{canvas.set_mode(canvas_t::POINT);}
+        else{ canvas.set_mode(canvas_t::POINT);}
         break;
     case 'F':  // Fill the current triangle with the current fill color
         // can require a click in the interior of the triangle to initiate a
@@ -165,6 +168,7 @@ void keyboard( unsigned char key, int x, int y )
     case 'I':  // change current backgound color, input color from terminal
         std::cout << "[Background] ";
         canvas.set_bg(read_color());
+        display();
         break;
     case 'J':  // change pen width, input thickness from terminal
         float t;
