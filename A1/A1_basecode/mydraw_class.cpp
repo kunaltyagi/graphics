@@ -309,23 +309,23 @@ void line_t::draw(canvas_t* canvas_)
 }
 
 // triangle_t methods
-triangle_t::triangle_t(): object_t()
+triangle_t::triangle_t(): object_t(), _fill_center(-1,-1)
 {}
 
 triangle_t::triangle_t(point_t* vertice_, pen_t pen_):
-        object_t(vertice_, 3, pen_)
+        object_t(vertice_, 3, pen_), _fill_center(-1,-1)
 {}
 
 void triangle_t::set(point_t* vertice_, pen_t pen_)
 {
     object_t::set(vertice_, 3, pen_);
+    _fill_center.X(-1);
 }
 
 void triangle_t::draw(canvas_t* canvas_)
 {
     line_t edge[3];
     point_t mean;
-    fill_t filler(_pen.get_bg_color());
     for (int i = 0; i < 3; ++i)
     {
         edge[i].set(_vertice[i], _vertice[(i + 1) % 3], _pen);
@@ -333,16 +333,17 @@ void triangle_t::draw(canvas_t* canvas_)
         mean.Y(mean.Y() + _vertice[i].Y());
         edge[i].draw(canvas_);
     }
-    mean.X(mean.X()/3);
-    mean.Y(mean.Y()/3);
-    for (int i = 0; i < 3; ++i)
+    if (_fill_center.X() != -1)
     {
-        // check global fill style
-        // @TODO
-        // fill the triangle
-        /* filler.draw(fill_color_, &_border, canvas_); */
-        filler.draw(new color_t(_pen.get_bg_color()), &mean, canvas_);
+        fill(&_fill_center, canvas_);
     }
+}
+
+void triangle_t::fill(point_t* mean_, canvas_t* canvas_)
+{
+    _fill_center = *mean_;
+    fill_t filler(_pen.get_bg_color());
+    filler.draw(new color_t(_pen.get_bg_color()), mean_, canvas_);
 }
 
 // drawing_t methods
@@ -376,6 +377,11 @@ void drawing_t::clear()
         delete element;
     }
     _element.clear();
+}
+
+void drawing_t::fill(point_t* point_, canvas_t* canvas_)
+{
+    _element.back()->fill(point_, canvas_);
 }
 
 // canvas_t methods
@@ -500,6 +506,11 @@ void canvas_t::draw(void)
 
 void canvas_t::_add_point(point_t point_)
 {
+    if (_mode == NONE)
+    {
+        fill(&point_);
+        return;
+    }
     _points.push_back(point_);
     if (_points.size() == _mode)
     {
@@ -555,6 +566,10 @@ void canvas_t::set_mode(Mode mode_)
     std::cout << "[Canvas] Mode updated to " << mode_ << '\n';
 #endif
     _mode = mode_;
+    if (_mode == NONE)
+    {
+        mode_ = POINT;
+    }
     while (_points.size() > mode_)
     {
         _points.pop_back();
@@ -603,6 +618,12 @@ void canvas_t::set_fill_color(color_t color_)
     _fill_color = color_;
 }
 
+void canvas_t::fill(point_t* point_)
+{
+    _drawing.fill(point_, this);
+    set_mode(TRIANGLE);
+}
+
 // stream overloads
 std::ostream& operator<< (std::ostream& o_, const color_t& color_)
 {
@@ -631,4 +652,14 @@ std::ostream& operator<< (std::ostream& o_, const object_t& object_)
     {
         o_ << object_._vertice[i];
     }
+}
+
+std::ostream& operator<< (std::ostream& o_, const triangle_t& object_)
+{
+    o_ << "object: " << object_._len << ',';
+    for (int i = 0; i < object_._len; ++i)
+    {
+        o_ << object_._vertice[i] << ',';
+    }
+    o_ << object_._fill_center;
 }

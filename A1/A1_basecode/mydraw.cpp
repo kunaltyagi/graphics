@@ -123,9 +123,10 @@ void keyboard( unsigned char key, int x, int y )
         canvas.set_mode(canvas_t::TRIANGLE);
         break;
     case 'F':  // Fill the current triangle with the current fill color
-        // @TODO: can require
-        // a click in the interior of the triangle to initiate a
+        // can require a click in the interior of the triangle to initiate a
         // fill, depending on the fill algorithm used.
+        std::cout << "[Fill] Click on point to initiate filling";
+        canvas.set_mode(canvas_t::NONE);
         break;
     case 'G':  // change current fill color, input color from terminal
         std::cout << "[Fill] ";
