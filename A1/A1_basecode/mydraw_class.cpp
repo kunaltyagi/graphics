@@ -691,6 +691,7 @@ void canvas_t::load(std::string file_, bool read_drawing_)
     std::string str;
     int mode;
     file >> _window >> str >> _fill_color >> str >> mode >> str >> _pen;
+    set_size(_window.X(), _window.Y());
     _mode = static_cast<Mode>(mode);
     clear();
     if (read_drawing_)
