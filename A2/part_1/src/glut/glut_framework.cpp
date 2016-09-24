@@ -234,7 +234,8 @@ void GlutFramework::setInstance()
 
 void GlutFramework::run()
 {
-    if(frameRateTimer.isStopped()) {    // The initial frame has the timer stopped, start it once
+    if(frameRateTimer.isStopped()) // The initial frame has the timer stopped, start it once
+    {
         frameRateTimer.start();
     }
 
@@ -242,7 +243,8 @@ void GlutFramework::run()
     double milliseconds = frameRateTimer.getElapsedMilliseconds();
     frameTimeElapsed += milliseconds;
 
-    if(frameTimeElapsed >= FRAME_TIME) {  // If the time exceeds a certain "frame rate" then show the next frame
+    if(frameTimeElapsed >= FRAME_TIME) // If the time exceeds a certain "frame rate" then show the next frame
+    {
         glutPostRedisplay();
         frameTimeElapsed -= FRAME_TIME;     // remove a "frame" and start counting up again
     }
@@ -251,7 +253,8 @@ void GlutFramework::run()
 
 void GlutFramework::displayFramework()
 {
-    if(displayTimer.isStopped()) {          // Start the timer on the initial frame
+    if(displayTimer.isStopped()) // Start the timer on the initial frame
+    {
         displayTimer.start();
     }
 
