@@ -15,26 +15,10 @@ struct Viewport: public glut_framework::GlutFramework
 
     void setBaseObj(ObjectPtr obj_) { _baseObject = obj_; }
 
-    void displayFramework()
+    void display(float dTime)
     {
-        if (this->displayTimer.isStopped())
-        {
-            this->displayTimer.start();
-        }
-
-        glClearColor(_bg.x, _bg.y, _bg.z, _bg.w);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        this->displayTimer.stop();
-        this->elapsedTimeInSeconds = this->displayTimer.getElapsedSeconds();
-
-        setupLights();
-        setDisplayMatricies();
-
         _baseObject->draw();
-
-        glutSwapBuffers();
-        this->displayTimer.start();
+        std::cout << dTime << '\n';
     }
 protected:
     Point _bg;  // background color
