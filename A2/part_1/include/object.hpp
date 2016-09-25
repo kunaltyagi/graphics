@@ -6,6 +6,7 @@
 struct Object: public ObjectBase
 {
     Object():ObjectBase() { _init(); }
+    virtual ~Object() { _cleanup(); }
     virtual void draw(void) { _drawJoints(); }
     void setPose(Pose newPose_) { _objPose = newPose_; }
     Pose getPose() { return _objPose; }
@@ -21,6 +22,7 @@ protected:
         }
     }
     virtual void _init() {}
+    virtual void _cleanup() {}
 };  // class Object
 
 #endif  // _OBJECT_HPP_

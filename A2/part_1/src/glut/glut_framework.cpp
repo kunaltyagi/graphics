@@ -112,20 +112,14 @@ void GlutFramework::mouseMove(int x, int y)
 }
 
 void GlutFramework::keyboardDown(unsigned char key, int x, int y)
-
 {
     // Subclass and override this method
     printf("KeyboardDown: %c = %d\n", key, (int)key);
-    if (key==27) { //27 =- ESC key
-        exit (0);
-    }
-
     keyStates.keyDown((int)key);
     mouseMove(x, y);
 }
 
 void GlutFramework::keyboardUp(unsigned char key, int x, int y)
-
 {
     // Subclass and override this method
     printf("KeyboardUp: %c \n", key);
@@ -134,7 +128,6 @@ void GlutFramework::keyboardUp(unsigned char key, int x, int y)
 }
 
 void GlutFramework::specialKeyboardDown(int key, int x, int y)
-
 {
     // Subclass and override this method
     printf("SpecialKeyboardDown: %d\n", key);
@@ -142,7 +135,6 @@ void GlutFramework::specialKeyboardDown(int key, int x, int y)
 }
 
 void GlutFramework::specialKeyboardUp(int key, int x, int y)
-
 {
     // Subclass and override this method
     printf("SpecialKeyboardUp: %d \n", key);

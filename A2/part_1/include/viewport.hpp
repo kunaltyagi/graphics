@@ -20,6 +20,30 @@ struct Viewport: public glut_framework::GlutFramework
         _baseObject->draw();
         std::cout << dTime << '\n';
     }
+    void keyboardDown(unsigned char key, int x, int y)
+    {
+        GF::keyboardDown(key, x, y);
+        switch(key)
+        {
+        case 'X':
+            glRotatef(30.,1.0,0.0,0.0);
+            glutPostRedisplay();
+            break;
+        case 'Y':
+            glRotatef(30.,0.0,1.0,0.0);
+            glutPostRedisplay();
+            break;
+        case 'I':
+            glLoadIdentity();
+            glutPostRedisplay();
+            gluLookAt(eyeVector.x, eyeVector.y, eyeVector.z,
+                    centerVector.x, centerVector.y, centerVector.z,
+                    upVector.x, upVector.y, upVector.z);
+            break;
+        case 27:
+            exit(0);
+        }
+    }
 protected:
     Point _bg;  // background color
     ObjectPtr _baseObject;

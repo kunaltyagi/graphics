@@ -46,13 +46,6 @@ void Keyboard::keyUp(int key)
 
 bool Keyboard::isKeyDown(int key)
 {
-    if (keys[key] == DOWN)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return keys[key] == DOWN;
 }
 }  // namespace glut_framework
