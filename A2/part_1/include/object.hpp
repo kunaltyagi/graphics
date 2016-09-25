@@ -5,6 +5,7 @@
 
 struct Object: public ObjectBase
 {
+    Object():ObjectBase() { _init(); }
     virtual void draw(void) { _drawJoints(); }
     void setPose(Pose newPose_) { _objPose = newPose_; }
     Pose getPose() { return _objPose; }
@@ -19,6 +20,7 @@ protected:
             item->draw();
         }
     }
+    virtual void _init() {}
 };  // class Object
 
 #endif  // _OBJECT_HPP_

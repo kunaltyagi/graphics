@@ -101,7 +101,8 @@ void GlutFramework::reshape(int width, int height)
 
 void GlutFramework::mouseButtonPress(int button, int state, int x, int y)
 {
-    printf("MouseButtonPress: x: %d y: %d\n", x, y);
+    printf("MouseButtonPress: button: %d state: %d x: %d y: %d\n",
+            button, state, x, y);
 
 }
 
@@ -120,6 +121,7 @@ void GlutFramework::keyboardDown(unsigned char key, int x, int y)
     }
 
     keyStates.keyDown((int)key);
+    mouseMove(x, y);
 }
 
 void GlutFramework::keyboardUp(unsigned char key, int x, int y)
@@ -128,6 +130,7 @@ void GlutFramework::keyboardUp(unsigned char key, int x, int y)
     // Subclass and override this method
     printf("KeyboardUp: %c \n", key);
     keyStates.keyUp((int)key);
+    mouseMove(x, y);
 }
 
 void GlutFramework::specialKeyboardDown(int key, int x, int y)
@@ -135,6 +138,7 @@ void GlutFramework::specialKeyboardDown(int key, int x, int y)
 {
     // Subclass and override this method
     printf("SpecialKeyboardDown: %d\n", key);
+    mouseMove(x, y);
 }
 
 void GlutFramework::specialKeyboardUp(int key, int x, int y)
@@ -142,6 +146,7 @@ void GlutFramework::specialKeyboardUp(int key, int x, int y)
 {
     // Subclass and override this method
     printf("SpecialKeyboardUp: %d \n", key);
+    mouseMove(x, y);
 }
 
 // ******************************

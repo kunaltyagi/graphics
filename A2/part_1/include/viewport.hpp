@@ -4,7 +4,7 @@
 #include <glut/glut_framework.hpp>
 #include <object.hpp>
 
-struct Viewport: glut_framework::GlutFramework
+struct Viewport: public glut_framework::GlutFramework
 {
     using GF = glut_framework::GlutFramework;
 
@@ -13,27 +13,29 @@ struct Viewport: glut_framework::GlutFramework
         this->setTitle("Assignment 2 (I)");
     }
 
-    void displayFramework()
-    {
-        if (this->displayTimer.isStopped())
-        {
-            this->displayTimer.start();
-        }
+    void setBaseObj(ObjectPtr obj_) { _baseObject = obj_; }
 
-        glClearColor(_bg.x, _bg.y, _bg.z, _bg.w);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    /* void displayFramework() */
+    /* { */
+    /*     if (this->displayTimer.isStopped()) */
+    /*     { */
+    /*         this->displayTimer.start(); */
+    /*     } */
 
-        this->displayTimer.stop();
-        this->elapsedTimeInSeconds = this->displayTimer.getElapsedSeconds();
+    /*     glClearColor(_bg.x, _bg.y, _bg.z, _bg.w); */
+    /*     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); */
 
-        setupLights();
-        setDisplayMatricies();
+    /*     this->displayTimer.stop(); */
+    /*     this->elapsedTimeInSeconds = this->displayTimer.getElapsedSeconds(); */
 
-        _baseObject->draw();
+    /*     setupLights(); */
+    /*     setDisplayMatricies(); */
 
-        glutSwapBuffers();
-        this->displayTimer.start();
-    }
+    /*     _baseObject->draw(); */
+
+    /*     glutSwapBuffers(); */
+    /*     this->displayTimer.start(); */
+    /* } */
 protected:
     Point _bg;  // background color
     ObjectPtr _baseObject;

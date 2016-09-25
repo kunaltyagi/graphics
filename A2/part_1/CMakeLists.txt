@@ -1,9 +1,11 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 project(bicycle)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
+find_package(Threads REQUIRED)
 
 include_directories(
     include
@@ -13,7 +15,10 @@ include_directories(
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g")
+set(CMAKE_CXX_FLAGS
+    "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Wextra -O0 -pedantic"
+)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(GLUT_HDRS
     include/glut/point.hpp
@@ -30,17 +35,23 @@ set(GLUT_SRCS
 set(HDRS
     include/object.hpp
     include/joint.hpp
+    include/cylinder.hpp
+    include/viewport.hpp
+)
+
+set(LIBS
+    Threads::Threads
+    ${OPENGL_LIBRARIES}
+    ${GLUT_LIBRARY}
 )
 
 add_library(glut_framework ${GLUT_SRCS} ${GLUT_HDRS})
-target_link_libraries(glut_framework ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+target_link_libraries(glut_framework ${LIBS})
 
 add_executable(bicycle src/main.cpp ${HDRS})
 add_dependencies(bicycle glut_framework)
-target_link_libraries(bicycle
-    ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glut_framework)
+target_link_libraries(bicycle ${LIBS} glut_framework)
 
 add_executable(glut_test src/glut/main.cpp)
 add_dependencies(glut_test glut_framework)
-target_link_libraries(glut_test
-    ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glut_framework)
+target_link_libraries(glut_test ${LIBS} glut_framework)
