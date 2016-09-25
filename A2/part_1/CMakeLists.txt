@@ -20,15 +20,25 @@ set(GLUT_HDRS
     include/glut/vector.hpp
     include/glut/performance_timer.hpp
     include/glut/keyboard.hpp
-    include/glut/glut_framework.hpp)
+    include/glut/glut_framework.hpp
+)
 set(GLUT_SRCS
     src/glut/glut_framework.cpp
     src/glut/keyboard.cpp
     src/glut/performance_timer.cpp
 )
+set(HDRS
+    include/object.hpp
+    include/joint.hpp
+)
 
 add_library(glut_framework ${GLUT_SRCS} ${GLUT_HDRS})
 target_link_libraries(glut_framework ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+
+add_executable(bicycle src/main.cpp ${HDRS})
+add_dependencies(bicycle glut_framework)
+target_link_libraries(bicycle
+    ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} glut_framework)
 
 add_executable(glut_test src/glut/main.cpp)
 add_dependencies(glut_test glut_framework)

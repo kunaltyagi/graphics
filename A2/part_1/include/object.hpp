@@ -1,36 +1,7 @@
-#include <cmath>
-#include <iostream>
-#include <cstdlib>
-#include <GL/glut.h>
+#ifndef _OBJECT_HPP_
+#define _OBJECT_HPP_
 
-#include <memory>
-
-struct Pose
-{
-    Point transpose, rotation;  // transpose.w = 1, rotation in quaternion
-};
-
-struct ObjectBase
-{
-    virtual void draw(void) = 0;
-};
-using ObjectPtr = std::shared_ptr<ObjectBase>;
-using WeakObjPtr = std::weak_ptr<ObjectBase>;
-
-class Joint: public ObjectBase
-{
-protected:
-    ObjectPtr _child;
-    WeakObjPtr _parent;
-    Pose _jointPose;
-public:
-    void replaceChild(ObjectPtr newChild_) { _child = newChild_; }
-    void replaceParent(ObjectPtr newParent_);
-    virtual void manipulate(Pose deltaPose_) = 0;
-    Pose getPose() { return _jointPose; }
-    void draw(void) { /*transfor*/ _child->draw(); }
-};
-using JointPtr = std::shared_ptr<Joint>;
+#include <joint.hpp>
 
 struct Object: public ObjectBase
 {
@@ -48,5 +19,6 @@ protected:
             item->draw();
         }
     }
-};
+};  // class Object
 
+#endif  // _OBJECT_HPP_
