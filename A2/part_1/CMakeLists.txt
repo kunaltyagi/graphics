@@ -40,9 +40,9 @@ set(HDRS
 )
 
 set(LIBS
-    Threads::Threads
     ${OPENGL_LIBRARIES}
     ${GLUT_LIBRARY}
+    Threads::Threads
 )
 
 add_library(glut_framework ${GLUT_SRCS} ${GLUT_HDRS})
@@ -50,8 +50,8 @@ target_link_libraries(glut_framework ${LIBS})
 
 add_executable(bicycle src/main.cpp ${HDRS})
 add_dependencies(bicycle glut_framework)
-target_link_libraries(bicycle ${LIBS} glut_framework)
+target_link_libraries(bicycle glut_framework ${LIBS})
 
 add_executable(glut_test src/glut/main.cpp)
 add_dependencies(glut_test glut_framework)
-target_link_libraries(glut_test ${LIBS} glut_framework)
+target_link_libraries(glut_test glut_framework ${LIBS})

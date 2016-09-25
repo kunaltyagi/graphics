@@ -15,27 +15,27 @@ struct Viewport: public glut_framework::GlutFramework
 
     void setBaseObj(ObjectPtr obj_) { _baseObject = obj_; }
 
-    /* void displayFramework() */
-    /* { */
-    /*     if (this->displayTimer.isStopped()) */
-    /*     { */
-    /*         this->displayTimer.start(); */
-    /*     } */
+    void displayFramework()
+    {
+        if (this->displayTimer.isStopped())
+        {
+            this->displayTimer.start();
+        }
 
-    /*     glClearColor(_bg.x, _bg.y, _bg.z, _bg.w); */
-    /*     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); */
+        glClearColor(_bg.x, _bg.y, _bg.z, _bg.w);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    /*     this->displayTimer.stop(); */
-    /*     this->elapsedTimeInSeconds = this->displayTimer.getElapsedSeconds(); */
+        this->displayTimer.stop();
+        this->elapsedTimeInSeconds = this->displayTimer.getElapsedSeconds();
 
-    /*     setupLights(); */
-    /*     setDisplayMatricies(); */
+        setupLights();
+        setDisplayMatricies();
 
-    /*     _baseObject->draw(); */
+        _baseObject->draw();
 
-    /*     glutSwapBuffers(); */
-    /*     this->displayTimer.start(); */
-    /* } */
+        glutSwapBuffers();
+        this->displayTimer.start();
+    }
 protected:
     Point _bg;  // background color
     ObjectPtr _baseObject;
