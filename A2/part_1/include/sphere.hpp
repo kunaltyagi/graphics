@@ -3,18 +3,12 @@
 
 #include <generic_object.hpp>
 
-void errorCallback()
-{
-   exit(0);
-}
-
 struct Sphere: public GenericObject
 {
     void load(void)
     {
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();
-        gluQuadricCallback(qobj, GLU_ERROR, errorCallback);
 
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
@@ -30,7 +24,7 @@ struct Sphere: public GenericObject
     float radius = 1;
     int slices = 15, stacks = 15;
     Sphere(): GenericObject() {}
-    Sphere(float r_base, float r, int slice, int stack):
+    Sphere(float r, int slice, int stack):
         GenericObject(), radius(r),
         slices(slice), stacks(stack)
     {

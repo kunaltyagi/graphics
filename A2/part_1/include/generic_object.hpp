@@ -26,6 +26,8 @@ struct GenericObject: public Object
     virtual void setFlags(void)
     {
         glEnable(GL_LIGHTING);
+        /* glEnable(GL_COLOR_MATERIAL); */
+        /* glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE); */
         glShadeModel (GL_FLAT);
     }
 
@@ -38,14 +40,14 @@ struct GenericObject: public Object
     virtual void setupMaterial(void)
     {
         GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
+        GLfloat mat_diffuse[] = { 0.5, 0.5, 0.5, 1.0 };
         GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
         GLfloat mat_shininess[] = { 50.0 };
-        GLfloat model_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
 
-        glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-        glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-        glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, model_ambient);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
     }
 
     virtual void setupObject(void)
