@@ -54,6 +54,7 @@ struct Viewport: public glut_framework::GlutFramework
         case 'Z': glRotatef(del_theta, 0.0, 0.0, 1.0); break;
         case 'z': glRotatef(-del_theta, 0.0, 0.0, 1.0); break;
 
+        // make translations in view frame TODO
         case 'w': glTranslatef(del_x, 0.0, 0.0); break;
         case 's': glTranslatef(-del_x, 0.0, 0.0); break;
         case 'a': glTranslatef(0.0, del_x, 0.0); break;

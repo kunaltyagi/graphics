@@ -33,10 +33,12 @@ set(GLUT_SRCS
     src/glut/performance_timer.cpp
 )
 set(HDRS
-    include/object.hpp
     include/joint.hpp
-    include/cylinder.hpp
+    include/object.hpp
+    include/generic_object.hpp
     include/viewport.hpp
+    include/cylinder.hpp
+    include/sphere.hpp
 )
 
 set(LIBS

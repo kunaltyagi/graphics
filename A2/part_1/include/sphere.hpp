@@ -1,5 +1,5 @@
-#ifndef _CYLINDER_HPP_
-#define _CYLINDER_HPP_
+#ifndef _SPHERE_HPP_
+#define _SPHERE_HPP_
 
 #include <generic_object.hpp>
 
@@ -8,11 +8,10 @@ void errorCallback()
    exit(0);
 }
 
-struct Cylinder: public GenericObject
+struct Sphere: public GenericObject
 {
     void load(void)
     {
-        std::cout << color << '\n';
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();
         gluQuadricCallback(qobj, GLU_ERROR, errorCallback);
@@ -20,7 +19,7 @@ struct Cylinder: public GenericObject
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
         glNewList(_drawList, GL_COMPILE);
-        gluCylinder(qobj, base_radius, top_radius, height, slices, stacks);
+        gluSphere(qobj, radius, slices, stacks);
         glEndList();
     }
     void _cleanup()
@@ -28,16 +27,16 @@ struct Cylinder: public GenericObject
         gluDeleteQuadric(qobj);
     }
 
-    float base_radius = 0.5, top_radius = 0.5, height = 1.0;
-    int slices = 15, stacks = 1;
-    Cylinder(): GenericObject() {}
-    Cylinder(float r_base, float r_top, float h, int slice, int stack = 1):
-        GenericObject(), base_radius(r_base), top_radius(r_top), height(h),
+    float radius = 1;
+    int slices = 15, stacks = 15;
+    Sphere(): GenericObject() {}
+    Sphere(float r_base, float r, int slice, int stack):
+        GenericObject(), radius(r),
         slices(slice), stacks(stack)
     {
         color.x = color.y = color.z = 0.8;
         color.w = 1.0;
     }
-};  // class Cylinder
+};  // class Sphere
 
-#endif  // _CYLINDER_HPP_
+#endif  // _SPHERE_HPP_
