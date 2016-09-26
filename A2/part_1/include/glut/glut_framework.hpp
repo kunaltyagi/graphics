@@ -179,7 +179,7 @@ public:
     virtual void specialKeyboardUp(int key, int x, int y);
 
     /** Sets the intitial matricies that are used to setup OpenGL. */
-    void setDisplayMatricies();
+    virtual void setDisplayMatricies();
 
     /** Sets up basic lighting */
     void setupLights();

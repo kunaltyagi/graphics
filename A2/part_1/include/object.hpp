@@ -5,12 +5,12 @@
 
 struct Object: public ObjectBase
 {
-    Object():ObjectBase() { _init(); }
     virtual ~Object() { _cleanup(); }
     virtual void draw(void) { _drawJoints(); }
     void setPose(Pose newPose_) { _objPose = newPose_; }
     Pose getPose() { return _objPose; }
     void addJoint(JointPtr newJoint_) { _jointVec.push_back(newJoint_); }
+    virtual void load() {}
 protected:
     Pose _objPose;
     std::vector<JointPtr> _jointVec;
@@ -21,7 +21,6 @@ protected:
             item->draw();
         }
     }
-    virtual void _init() {}
     virtual void _cleanup() {}
 };  // class Object
 

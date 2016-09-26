@@ -20,6 +20,7 @@ struct Pose
 struct ObjectBase
 {
     virtual void draw(void) = 0;
+    virtual void load(void) {};
 };  // class ObjectBase
 using ObjectPtr = std::shared_ptr<ObjectBase>;
 using WeakObjPtr = std::weak_ptr<ObjectBase>;
@@ -36,6 +37,7 @@ public:
     virtual void manipulate(Pose deltaPose_) = 0;
     Pose getPose() { return _jointPose; }
     void draw(void) { /*transfor*/ _child->draw(); }
+    void load(void) { _child->load(); }
 };  // class Joint
 using JointPtr = std::shared_ptr<Joint>;
 

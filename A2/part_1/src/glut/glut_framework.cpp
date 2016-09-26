@@ -158,10 +158,6 @@ void GlutFramework::setDisplayMatricies()
     gluPerspective(60, aspectRatio, 1, 500.0);
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(eyeVector.x, eyeVector.y, eyeVector.z,
-            centerVector.x, centerVector.y, centerVector.z,
-            upVector.x, upVector.y, upVector.z);
 }
 
 void GlutFramework::setupLights()

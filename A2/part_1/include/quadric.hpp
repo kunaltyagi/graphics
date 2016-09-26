@@ -37,7 +37,7 @@ struct Quadric: public Object
         glFlush();
         Object::draw();
     }
-    void _init(void)
+    void load(void)
     {
         GLUquadricObj *qobj;
         GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
