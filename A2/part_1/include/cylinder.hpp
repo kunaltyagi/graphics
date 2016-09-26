@@ -12,36 +12,18 @@ struct Cylinder: public Object
 {
     void draw(void)
     {
+        glEnable(GL_LIGHTING);
+        glColor3f (1.0, 1.0, 1.0);
+        glShadeModel (GL_FLAT);
+
         glPushMatrix();
 
-        int numc = 8, numt = 25;
-       int i, j, k;
-       double s, t, x, y, z, twopi;
-
-       twopi = 2 * (double)M_PI;
-       for (i = 0; i < numc; i++) {
-          glBegin(GL_QUAD_STRIP);
-          for (j = 0; j <= numt; j++) {
-             for (k = 1; k >= 0; k--) {
-                s = (i + k) % numc + 0.5;
-                t = j % numt;
-
-                x = (1+.1*cos(s*twopi/numc))*cos(t*twopi/numt);
-                y = (1+.1*cos(s*twopi/numc))*sin(t*twopi/numt);
-                z = .1 * sin(s * twopi / numc);
-                glVertex3f(x, y, z);
-             }
-          }
-          glEnd();
-       }
-        /* glEnable(GL_LIGHTING); */
-        /* glColor3f (1.0, 1.0, 1.0); */
-        /* glShadeModel (GL_FLAT); */
-        /* glTranslatef(0.0, 10.0, 0.0); */
-        /* glPushMatrix(); */
-        /* glRotatef(300.0, 1.0, 0.0, 0.0); */
-        /* glCallList(startList); */
-        /* glPopMatrix(); */
+        glPushMatrix();
+        glRotatef(_objPose.R.w, _objPose.R.x,
+                  _objPose.R.y, _objPose.R.z);
+        glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
+        glCallList(startList);
+        glPopMatrix();
 
         glPopMatrix();
         Object::draw();
@@ -59,7 +41,6 @@ struct Cylinder: public Object
         glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
         glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
         glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-        glLightfv(GL_LIGHT0, GL_POSITION, light_position);
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, model_ambient);
 
         /* Create 4 display lists, each with a different cylinder object.
@@ -73,7 +54,7 @@ struct Cylinder: public Object
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
         glNewList(startList, GL_COMPILE);
-        gluCylinder(qobj, 0.5, 0.3, 1.0, 15, 5);
+        gluCylinder(qobj, base_radius, top_radius, height, slices, stacks);
         glEndList();
     }
     void _cleanup()
@@ -82,6 +63,8 @@ struct Cylinder: public Object
     }
     GLuint startList;
     GLUquadric* qobj;
+    float base_radius = 0.5, top_radius = 0.5, height = 1.0;
+    int slices = 15, stacks = 1;
 };  // class Cylinder
 
 #endif  // _CYLINDER_HPP_

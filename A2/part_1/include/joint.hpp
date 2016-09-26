@@ -14,7 +14,8 @@ using Point = glut_framework::Point<float>;
 
 struct Pose
 {
-    Point transpose, rotation;  // transpose.w = 1, rotation in quaternion
+    Point T, R;  // T: translation, R: rotation
+    // translation.w = 1, rotation in quaternion
 };  // class Pose
 
 struct ObjectBase
