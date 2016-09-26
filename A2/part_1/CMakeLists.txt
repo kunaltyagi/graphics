@@ -38,7 +38,10 @@ set(HDRS
     include/generic_object.hpp
     include/viewport.hpp
     include/cylinder.hpp
+    include/cube.hpp
     include/sphere.hpp
+    include/torus.hpp
+    include/objects.hpp
 )
 
 set(LIBS

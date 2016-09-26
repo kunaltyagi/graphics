@@ -16,7 +16,9 @@ struct GenericObject: public Object
         glRotatef(_objPose.R.w, _objPose.R.x,
                   _objPose.R.y, _objPose.R.z);
         glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
+        glScalef(scale.x, scale.y, scale.z);
         glCallList(_drawList);
+        glScalef(1/scale.x, 1/scale.y, 1/scale.z);
         glPopMatrix();
 
         glPopMatrix();
@@ -28,7 +30,7 @@ struct GenericObject: public Object
         glEnable(GL_LIGHTING);
         /* glEnable(GL_COLOR_MATERIAL); */
         /* glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE); */
-        glShadeModel (GL_FLAT);
+        glShadeModel (GL_SMOOTH);
     }
 
     virtual void load(void)
@@ -68,6 +70,7 @@ struct GenericObject: public Object
     virtual void _cleanup() {}
 
     Point color;
+    Vector scale = {1, 1, 1};
     // preferably don't access the public attributes, use ctor instead
     GenericObject(): Object() {}
     virtual ~GenericObject() {}
