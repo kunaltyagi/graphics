@@ -10,7 +10,10 @@ void errorCallback()
 
 struct Cylinder: public GenericObject
 {
-    void load(void)
+    float base_radius = 0.5, top_radius = 0.5, height = 1.0;
+    int slices = 15, stacks = 1;
+
+    void setupObject(void)
     {
         std::cout << color << '\n';
         _drawList = glGenLists(1);
@@ -23,13 +26,12 @@ struct Cylinder: public GenericObject
         gluCylinder(qobj, base_radius, top_radius, height, slices, stacks);
         glEndList();
     }
+
     void _cleanup()
     {
         gluDeleteQuadric(qobj);
     }
 
-    float base_radius = 0.5, top_radius = 0.5, height = 1.0;
-    int slices = 15, stacks = 1;
     Cylinder(): GenericObject() {}
     Cylinder(float r_base, float r_top, float h, int slice, int stack = 1):
         GenericObject(), base_radius(r_base), top_radius(r_top), height(h),

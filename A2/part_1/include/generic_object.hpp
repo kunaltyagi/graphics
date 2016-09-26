@@ -11,8 +11,6 @@ struct GenericObject: public Object
         glColor4f (color.x, color.y, color.z, color.w);
 
         glPushMatrix();
-
-        glPushMatrix();
         glRotatef(_objPose.R.w, _objPose.R.x,
                   _objPose.R.y, _objPose.R.z);
         glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
@@ -21,7 +19,6 @@ struct GenericObject: public Object
         glScalef(1/scale.x, 1/scale.y, 1/scale.z);
         glPopMatrix();
 
-        glPopMatrix();
         Object::draw();
     }
 

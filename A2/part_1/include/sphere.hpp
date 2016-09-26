@@ -5,7 +5,7 @@
 
 struct Sphere: public GenericObject
 {
-    void load(void)
+    void setupObject(void)
     {
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();

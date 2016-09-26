@@ -5,43 +5,43 @@
 
 struct Torus: public GenericObject
 {
-    void load(void)
+    void setupObject(void)
     {
-        int numc = 8, numt = 25;
-        int i, j, k;
-        double s, t, x, y, z, twopi;
+        glNewList(_drawList, GL_COMPILE);
+        glutSolidTorus(rInner, rOuter, slices, rings);
+        glEndList();
+        /* int numc = 8, numt = 25; */
+        /* int i, j, k; */
+        /* double s, t, x, y, z, twopi; */
 
-        twopi = 2 * (double)M_PI;
-        for (i = 0; i < numc; i++)
-        {
-           glBegin(GL_QUAD_STRIP);
-           for (j = 0; j <= numt; j++)
-           {
-              for (k = 1; k >= 0; k--)
-              {
-                 s = (i + k) % numc + 0.5;
-                 t = j % numt;
+        /* twopi = 2 * (double)M_PI; */
+        /* for (i = 0; i < numc; i++) */
+        /* { */
+        /*    glBegin(GL_QUAD_STRIP); */
+        /*    for (j = 0; j <= numt; j++) */
+        /*    { */
+        /*       for (k = 1; k >= 0; k--) */
+        /*       { */
+        /*          s = (i + k) % numc + 0.5; */
+        /*          t = j % numt; */
 
-                 x = (1+.1*cos(s*twopi/numc))*cos(t*twopi/numt);
-                 y = (1+.1*cos(s*twopi/numc))*sin(t*twopi/numt);
-                 z = .1 * sin(s * twopi / numc);
-                 glVertex3f(x, y, z);
-              }
-           }
-          glEnd();
-        }
+        /*          x = (1+.1*cos(s*twopi/numc))*cos(t*twopi/numt); */
+        /*          y = (1+.1*cos(s*twopi/numc))*sin(t*twopi/numt); */
+        /*          z = .1 * sin(s * twopi / numc); */
+        /*          glVertex3f(x, y, z); */
+        /*       } */
+        /*    } */
+        /*   glEnd(); */
+        /* } */
     }
-    void _cleanup()
-    {
-        gluDeleteQuadric(qobj);
-    }
 
-    float base_radius = 0.5, top_radius = 0.5, height = 1.0;
-    int slices = 15, stacks = 1;
+    float rInner = 0.8, rOuter = 1.2;
+    int slices = 10, rings = 25;
+
     Torus(): GenericObject() {}
-    Torus(float r_base, float r_top, float h, int slice, int stack = 1):
-        GenericObject(), base_radius(r_base), top_radius(r_top), height(h),
-        slices(slice), stacks(stack)
+    Torus(float r_inner, float r_outer, int slice, int ring):
+        GenericObject(), rInner(r_inner), rOuter(r_outer),
+        slices(slice), rings(ring)
     {
         color.x = color.y = color.z = 0.8;
         color.w = 1.0;
