@@ -5,56 +5,18 @@
 
 struct GenericObject: public Object
 {
-    virtual void draw(void)
-    {
-        setFlags();
-        glColor4f (color.x, color.y, color.z, color.w);
+    virtual void draw(void);
 
-        glPushMatrix();
-        transformObj();
-        glCallList(_drawList);
-        glPopMatrix();
+    virtual void transformObj(void);
 
-        Object::draw();
-    }
+    virtual void setFlags(void);
 
-    virtual void transformObj(void)
-    {
-        glRotatef(_objPose.R.w, _objPose.R.x, _objPose.R.y, _objPose.R.z);
-        glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
-        glScalef(scale.x, scale.y, scale.z);
-    }
+    virtual void load(void);
 
-    virtual void setFlags(void)
-    {
-        glEnable(GL_LIGHTING);
-        /* glEnable(GL_COLOR_MATERIAL); */
-        /* glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE); */
-        glShadeModel (GL_SMOOTH);
-    }
-
-    virtual void load(void)
-    {
-        setupMaterial();
-        setupObject();
-    }
-
-    virtual void setupMaterial(void)
-    {
-        GLfloat mat_ambient[] = { 0.5, 0.5, 0.5, 1.0 };
-        GLfloat mat_diffuse[] = { 0.5, 0.5, 0.5, 1.0 };
-        GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-        GLfloat mat_shininess[] = { 50.0 };
-
-        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
-        glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess);
-    }
+    virtual void setupMaterial(void);
 
     virtual void setupObject(void)
     {
-        // sample setup
         /*
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();
@@ -71,6 +33,7 @@ struct GenericObject: public Object
 
     Point color;
     Vector scale = {1, 1, 1};
+
     // preferably don't access the public attributes, use ctor instead
     GenericObject(): Object() {}
     GenericObject(Vector vec): Object(), scale(vec) {}

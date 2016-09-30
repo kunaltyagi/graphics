@@ -3,11 +3,6 @@
 
 #include <generic_object.hpp>
 
-void errorCallback()
-{
-   exit(0);
-}
-
 struct Cylinder: public GenericObject
 {
     float base_radius = 0.5, top_radius = 0.5, height = 1.0;
@@ -18,7 +13,6 @@ struct Cylinder: public GenericObject
         std::cout << color << '\n';
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();
-        gluQuadricCallback(qobj, GLU_ERROR, errorCallback);
 
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
@@ -33,6 +27,7 @@ struct Cylinder: public GenericObject
     }
 
     Cylinder(): GenericObject() {}
+
     Cylinder(float r_base, float r_top, float h, int slice, int stack = 1):
         GenericObject(), base_radius(r_base), top_radius(r_top), height(h),
         slices(slice), stacks(stack)

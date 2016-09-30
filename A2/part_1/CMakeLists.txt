@@ -41,9 +41,14 @@ set(HDRS
     include/cube.hpp
     include/sphere.hpp
     include/torus.hpp
-    include/torus_old.hpp
+    #    include/torus_old.hpp
     include/objects.hpp
     include/triangle.hpp
+)
+set(SRCS
+    src/viewport.cpp
+    src/generic_object.cpp
+    src/cube.cpp
 )
 
 set(LIBS
@@ -55,7 +60,7 @@ set(LIBS
 add_library(glut_framework ${GLUT_SRCS} ${GLUT_HDRS})
 target_link_libraries(glut_framework ${LIBS})
 
-add_executable(bicycle src/main.cpp ${HDRS})
+add_executable(bicycle src/main.cpp ${HDRS} ${SRCS})
 add_dependencies(bicycle glut_framework)
 target_link_libraries(bicycle glut_framework ${LIBS})
 
