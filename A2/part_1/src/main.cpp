@@ -18,7 +18,7 @@ int main (int argc, char *argv[])
     far.T.setPoint(1, 1, 0, 1);
     /* triangle->setPose(far); */
 
-    std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(std::make_shared<Torus>());
+    std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(std::make_shared<Cube>());
 
     assignment.setBaseObj(baseObj);
     assignment.startFramework(argc, argv);

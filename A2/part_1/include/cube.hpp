@@ -50,10 +50,12 @@ struct Cube: public GenericObject
 
         glShadeModel(GL_SMOOTH);
         glBegin(GL_TRIANGLES);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_FLOAT, 0, vertices);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
-        glDisableClientState(GL_VERTEX_ARRAY);
+        for (int i = 0; i < 12; ++i)
+        {
+            glVertex3fv(vertices + 3*i + 0);
+            glVertex3fv(vertices + 3*i + 1);
+            glVertex3fv(vertices + 3*i + 2);
+        }
         glEnd();
         glEndList();
     }
