@@ -16,6 +16,8 @@ using Vector = glut_framework::Vector<float>;
 
 struct Pose
 {
+    Pose() {}
+    Pose(Point t, Point r): T(t), R(r) {}
     Point T, R;  // T: translation, R: rotation
     // translation.w = 1, rotation in quaternion
 };  // class Pose

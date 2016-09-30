@@ -41,7 +41,9 @@ set(HDRS
     include/cube.hpp
     include/sphere.hpp
     include/torus.hpp
+    include/torus_old.hpp
     include/objects.hpp
+    include/triangle.hpp
 )
 
 set(LIBS

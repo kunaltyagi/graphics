@@ -5,14 +5,14 @@
 
 struct Object: public ObjectBase
 {
+    Object() {}
     virtual ~Object() { _cleanup(); }
     virtual void draw(void) { _drawJoints(); }
     void setPose(Pose newPose_) { _objPose = newPose_; }
     Pose getPose() { return _objPose; }
     void addJoint(JointPtr newJoint_) { _jointVec.push_back(newJoint_); }
-    virtual void load() {}
 protected:
-    Pose _objPose;
+    Pose _objPose = Pose(Point(0, 0, 0, 1), Point(0, 0, 1, 0));
     std::vector<JointPtr> _jointVec;
     void _drawJoints(void)
     {

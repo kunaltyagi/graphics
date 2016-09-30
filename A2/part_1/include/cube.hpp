@@ -8,6 +8,7 @@ struct Cube: public GenericObject
     void setupObject(void)
     {
         _drawList = glGenLists(1);
+        glNewList(_drawList, GL_COMPILE);
 
         float vertices[] = {
                 -1.0f,-1.0f,-1.0f, // triangle 1 : begin
@@ -46,15 +47,15 @@ struct Cube: public GenericObject
                  1.0f, 1.0f, 1.0f,
                 -1.0f, 1.0f, 1.0f,
                  1.0f,-1.0f, 1.0f};
-        /* glBegin(GL_TRIANGLES); */
+
+        glShadeModel(GL_SMOOTH);
+        glBegin(GL_TRIANGLES);
         glEnableClientState(GL_VERTEX_ARRAY);
         glVertexPointer(3, GL_FLOAT, 0, vertices);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glDisableClientState(GL_VERTEX_ARRAY);
-        /* glEnd(); */
+        glEnd();
         glEndList();
-
-        glShadeModel(GL_SMOOTH);
     }
 
     float side = 10;

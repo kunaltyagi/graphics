@@ -5,21 +5,25 @@
 
 struct GenericObject: public Object
 {
-    void draw(void)
+    virtual void draw(void)
     {
         setFlags();
         glColor4f (color.x, color.y, color.z, color.w);
 
         glPushMatrix();
-        glRotatef(_objPose.R.w, _objPose.R.x,
-                  _objPose.R.y, _objPose.R.z);
-        glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
-        glScalef(scale.x, scale.y, scale.z);
+        transformObj();
         glCallList(_drawList);
-        glScalef(1/scale.x, 1/scale.y, 1/scale.z);
         glPopMatrix();
 
         Object::draw();
+    }
+
+    virtual void transformObj(void)
+    {
+        glRotatef(_objPose.R.w, _objPose.R.x, _objPose.R.y, _objPose.R.z);
+        std::cout << _objPose.T << '\t' << _objPose.R << '\n';
+        glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
+        glScalef(scale.x, scale.y, scale.z);
     }
 
     virtual void setFlags(void)
@@ -70,6 +74,7 @@ struct GenericObject: public Object
     Vector scale = {1, 1, 1};
     // preferably don't access the public attributes, use ctor instead
     GenericObject(): Object() {}
+    GenericObject(Vector vec): Object(), scale(vec) {}
     virtual ~GenericObject() {}
 
 protected:

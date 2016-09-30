@@ -7,9 +7,9 @@ struct Torus: public GenericObject
 {
     void setupObject(void)
     {
+        _drawList = glGenLists(1);
         glNewList(_drawList, GL_COMPILE);
         glutSolidTorus(rInner, rOuter, slices, rings);
-        glEndList();
         /* int numc = 8, numt = 25; */
         /* int i, j, k; */
         /* double s, t, x, y, z, twopi; */
@@ -33,6 +33,7 @@ struct Torus: public GenericObject
         /*    } */
         /*   glEnd(); */
         /* } */
+        glEndList();
     }
 
     float rInner = 0.8, rOuter = 1.2;
