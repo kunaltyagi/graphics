@@ -21,7 +21,6 @@ struct GenericObject: public Object
     virtual void transformObj(void)
     {
         glRotatef(_objPose.R.w, _objPose.R.x, _objPose.R.y, _objPose.R.z);
-        std::cout << _objPose.T << '\t' << _objPose.R << '\n';
         glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
         glScalef(scale.x, scale.y, scale.z);
     }

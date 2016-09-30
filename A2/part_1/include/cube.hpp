@@ -10,62 +10,73 @@ struct Cube: public GenericObject
         _drawList = glGenLists(1);
         glNewList(_drawList, GL_COMPILE);
 
+        float a = 0.5;
         float vertices[] = {
-                -1.0f,-1.0f,-1.0f, // triangle 1 : begin
-                -1.0f,-1.0f, 1.0f,
-                -1.0f, 1.0f, 1.0f, // triangle 1 : end
-                 1.0f, 1.0f,-1.0f, // triangle 2 : begin
-                -1.0f,-1.0f,-1.0f,
-                -1.0f, 1.0f,-1.0f, // triangle 2 : end
-                 1.0f,-1.0f, 1.0f,
-                -1.0f,-1.0f,-1.0f,
-                 1.0f,-1.0f,-1.0f,
-                 1.0f, 1.0f,-1.0f,
-                 1.0f,-1.0f,-1.0f,
-                -1.0f,-1.0f,-1.0f,
-                -1.0f,-1.0f,-1.0f,
-                -1.0f, 1.0f, 1.0f,
-                -1.0f, 1.0f,-1.0f,
-                 1.0f,-1.0f, 1.0f,
-                -1.0f,-1.0f, 1.0f,
-                -1.0f,-1.0f,-1.0f,
-                -1.0f, 1.0f, 1.0f,
-                -1.0f,-1.0f, 1.0f,
-                 1.0f,-1.0f, 1.0f,
-                 1.0f, 1.0f, 1.0f,
-                 1.0f,-1.0f,-1.0f,
-                 1.0f, 1.0f,-1.0f,
-                 1.0f,-1.0f,-1.0f,
-                 1.0f, 1.0f, 1.0f,
-                 1.0f,-1.0f, 1.0f,
-                 1.0f, 1.0f, 1.0f,
-                 1.0f, 1.0f,-1.0f,
-                -1.0f, 1.0f,-1.0f,
-                 1.0f, 1.0f, 1.0f,
-                -1.0f, 1.0f,-1.0f,
-                -1.0f, 1.0f, 1.0f,
-                 1.0f, 1.0f, 1.0f,
-                -1.0f, 1.0f, 1.0f,
-                 1.0f,-1.0f, 1.0f};
+             a,  a, -a,
+            -a,  a, -a,
+            -a, -a, -a,
+             a,  a,  a,
+            -a,  a,  a,
+            -a, -a,  a,
+
+             a,  a, -a,
+             a, -a, -a,
+            -a, -a, -a,
+             a,  a,  a,
+             a, -a,  a,
+            -a, -a,  a,
+
+             a,  a,  a,
+             a, -a,  a,
+             a, -a, -a,
+            -a,  a,  a,
+            -a, -a,  a,
+            -a, -a, -a,
+
+             a,  a,  a,
+             a,  a, -a,
+             a, -a, -a,
+            -a,  a,  a,
+            -a,  a, -a,
+            -a, -a, -a,
+
+             a,  a,  a,
+            -a,  a,  a,
+            -a,  a, -a,
+             a, -a,  a,
+            -a, -a,  a,
+            -a, -a, -a,
+
+             a,  a,  a,
+             a,  a, -a,
+            -a,  a, -a,
+             a, -a,  a,
+             a, -a, -a,
+            -a, -a, -a
+        };
 
         glShadeModel(GL_SMOOTH);
+        /* glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); */
         glBegin(GL_TRIANGLES);
         for (int i = 0; i < 12; ++i)
         {
-            glVertex3fv(vertices + 3*i + 0);
-            glVertex3fv(vertices + 3*i + 1);
-            glVertex3fv(vertices + 3*i + 2);
+            std::cout << i << ": ";
+            std::cout << vertices[9*i + 0] << '\t';
+            glVertex3fv(vertices + 9*i + 0);
+            std::cout << vertices[9*i + 3] << '\t';
+            glVertex3fv(vertices + 9*i + 3);
+            std::cout << vertices[9*i + 6] << '\n';
+            glVertex3fv(vertices + 9*i + 6);
         }
         glEnd();
+        /* glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); */
         glEndList();
     }
 
-    float side = 10;
-    int slices = 1, stacks = 1;
+    float side = 1;
     Cube(): GenericObject() {}
-    Cube(float a, int slice, int stack):
-        GenericObject(), side(a),
-        slices(slice), stacks(stack)
+    Cube(float a):
+        GenericObject(Vector(a, a, a))
     {
         color.x = color.y = color.z = 0.8;
         color.w = 1.0;
