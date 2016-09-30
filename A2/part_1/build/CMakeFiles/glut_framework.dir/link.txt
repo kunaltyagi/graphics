@@ -1,0 +1,2 @@
+/usr/bin/ar cq lib/libglut_framework.a  CMakeFiles/glut_framework.dir/src/glut/glut_framework.cpp.o CMakeFiles/glut_framework.dir/src/glut/keyboard.cpp.o CMakeFiles/glut_framework.dir/src/glut/performance_timer.cpp.o
+/usr/bin/ranlib lib/libglut_framework.a

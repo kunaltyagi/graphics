@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11 -g -Wall -Wextra -O0 -pedantic -g   CMakeFiles/bicycle.dir/src/main.cpp.o  -o bin/bicycle -rdynamic lib/libglut_framework.a -lGLU -lGL -lglut -lXmu -lXi -pthread 

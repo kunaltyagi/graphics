@@ -1,0 +1,3 @@
+/home/pavan/graphics/A2/part_1/build/CMakeFiles/bicycle.dir
+/home/pavan/graphics/A2/part_1/build/CMakeFiles/glut_framework.dir
+/home/pavan/graphics/A2/part_1/build/CMakeFiles/glut_test.dir
