@@ -16,9 +16,11 @@ int main (int argc, char *argv[])
     Pose far;
     far.R.setPoint(0, 0, 1, 180);
     far.T.setPoint(1, 1, 0, 1);
-    /* triangle->setPose(far); */
 
-    std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(std::make_shared<Cube>());
+    std::shared_ptr<Cube> cube = std::make_shared<Cube>();
+    std::shared_ptr<Square> square = std::make_shared<Square>();
+    square->setPose(far);
+    std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(cube);
 
     assignment.setBaseObj(baseObj);
     assignment.startFramework(argc, argv);
@@ -29,11 +31,12 @@ int main (int argc, char *argv[])
 /*
     Point vertices[Triangle::num_vertex] = {{0, 0, 0, 1}, {1, 0, 0, 1}, {0, 1, 0, 1}};
     std::shared_ptr<Triangle> triangle = std::make_shared<Triangle>(vertices);
-
+    triangle->setPose(far);
     std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(triangle);
  */
 // for square
 /*
     std::shared_ptr<Square> square = std::make_shared<Square>();
+    square->setPose(far);
     std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(square);
  */

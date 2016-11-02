@@ -7,6 +7,8 @@ struct GenericObject: public Object
 {
     virtual void draw(void);
 
+    virtual void drawObject(void) {}
+
     virtual void transformObj(void);
 
     virtual void setFlags(void);

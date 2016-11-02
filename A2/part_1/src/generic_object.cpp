@@ -3,11 +3,16 @@
 void GenericObject::draw(void)
 {
     setFlags();
+    std::cout << "Color: " << color << '\n';
     glColor4f (color.x, color.y, color.z, color.w);
 
     glPushMatrix();
     transformObj();
+#if 0
     glCallList(_drawList);
+#else
+    this->drawObject();
+#endif
     glPopMatrix();
 
     Object::draw();
@@ -15,7 +20,10 @@ void GenericObject::draw(void)
 
 void GenericObject::transformObj(void)
 {
+    /* std::cout << "Origin: " << _origin << */
+    /*              " Pose: " << _objPose.T << _objPose.R << '\n'; */
     glRotatef(_objPose.R.w, _objPose.R.x, _objPose.R.y, _objPose.R.z);
+    glTranslatef(-_origin.x, -_origin.y, -_origin.z);
     glTranslatef(_objPose.T.x, _objPose.T.y, _objPose.T.z);
     glScalef(scale.x, scale.y, scale.z);
 }

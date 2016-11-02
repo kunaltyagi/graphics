@@ -10,24 +10,18 @@ struct Triangle: public GenericObject
         _drawList = glGenLists(1);
         glNewList(_drawList, GL_COMPILE);
         glShadeModel(GL_SMOOTH);
-        glBegin(GL_TRIANGLES);
-        drawTriangle();
-        glEnd();
+        this->drawObject();
         glEndList();
     }
 
-    void drawTriangle(void)
+    void drawObject(void)
     {
+        glBegin(GL_TRIANGLES);
         for (auto& vertex : vertices)
         {
             glVertex4f(vertex.x, vertex.y, vertex.z, vertex.w);
         }
-    }
-
-    void draw(void)
-    {
-        std::cout << "Triangle:\t";
-        GenericObject::draw();
+        glEnd();
     }
 
     const static int num_vertex = 3;
@@ -42,7 +36,7 @@ struct Triangle: public GenericObject
     Triangle(const Point (&vertex)[num_vertex])
     {
         setVertices(std::forward<const Point[num_vertex]>(vertex));
-        color.x = color.y = color.z = 0.8;
+        color.x = color.y = color.z = 1;
         color.w = 1.0;
     }
 };  // class Triangle

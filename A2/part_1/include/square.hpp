@@ -1,8 +1,6 @@
 #ifndef _SQUARE_HPP_
 #define _SQUARE_HPP_
 
-// not working
-
 #include <generic_object.hpp>
 #include <triangle.hpp>
 
@@ -17,9 +15,7 @@ struct Square: public GenericObject
         _drawList = glGenLists(1);
         glNewList(_drawList, GL_COMPILE);
         glShadeModel(GL_SMOOTH);
-        glBegin(GL_TRIANGLES);
-        drawSquare();
-        glEnd();
+        this->drawObject();
         glEndList();
     }
 
@@ -31,31 +27,12 @@ struct Square: public GenericObject
         }
     }
 
-    void drawSquare(void)
+    void drawObject(void)
     {
-            glPushMatrix();
         for (auto& triangle : triangles)
         {
-            triangle.transformObj();
-            std::cout << triangle.getPose().R << '\n';
-            triangle.drawTriangle();
+            triangle.draw();
         }
-        glEnd();
-            glPopMatrix();
-        /* for (auto& triangle : triangles) */
-        /* { */
-        /*     triangle.draw(); */
-        /* } */
-    }
-
-    void draw(void)
-    {
-        std::cout << "Square  :\t";
-        GenericObject::draw();
-        /* for (auto& triangle : triangles) */
-        /* { */
-        /*     triangle.draw(); */
-        /* } */
     }
 
     static const int num_triangles = 2;
@@ -74,7 +51,10 @@ struct Square: public GenericObject
         far.T.setPoint(-1, -1, 0, 1);
         triangles[1].setPose(far);
 
-        color.x = color.y = color.z = 0.8;
+        this->_origin.x = 0.5;
+        this->_origin.y = 0.5;
+
+        color.x = color.y = color.z = 1;
         color.w = 1.0;
     }
 };  // class Square

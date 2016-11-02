@@ -18,7 +18,7 @@ struct Pose
 {
     Pose() {}
     Pose(Point t, Point r): T(t), R(r) {}
-    Point T, R;  // T: translation, R: rotation
+    Point T = {0, 0, 0, 1}, R = {0, 0, 1, 0};  // T: translation, R: rotation
     // translation.w = 1, rotation in quaternion
 };  // class Pose
 
@@ -27,6 +27,8 @@ struct ObjectBase
     virtual void draw(void) = 0;
     virtual void load(void) {};
     virtual ~ObjectBase() {}
+  protected:
+    Point _origin = {0, 0, 0, 1};
 };  // class ObjectBase
 using ObjectPtr = std::shared_ptr<ObjectBase>;
 using WeakObjPtr = std::weak_ptr<ObjectBase>;

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(bicycle)
 
+enable_testing()
+
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
@@ -48,7 +50,7 @@ set(HDRS
 set(SRCS
     src/viewport.cpp
     src/generic_object.cpp
-    src/cube.cpp
+    # src/cube.cpp
 )
 
 set(LIBS
@@ -67,3 +69,5 @@ target_link_libraries(bicycle glut_framework ${LIBS})
 add_executable(glut_test src/glut/main.cpp)
 add_dependencies(glut_test glut_framework)
 target_link_libraries(glut_test glut_framework ${LIBS})
+
+# add_test( testname Exename arg1 arg2 ... )
