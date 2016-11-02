@@ -46,6 +46,7 @@ set(HDRS
     #    include/torus_old.hpp
     include/objects.hpp
     include/triangle.hpp
+    include/combo.hpp
 )
 set(SRCS
     src/viewport.cpp

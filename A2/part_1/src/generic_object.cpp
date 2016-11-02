@@ -3,7 +3,7 @@
 void GenericObject::draw(void)
 {
     setFlags();
-    std::cout << "Color: " << color << '\n';
+    /* std::cout << "Color: " << color << '\n'; */
     glColor4f (color.x, color.y, color.z, color.w);
 
     glPushMatrix();
@@ -40,6 +40,10 @@ void GenericObject::load(void)
 {
     setupMaterial();
     setupObject();
+    for (auto& joint : _jointVec)
+    {
+        joint->load();
+    }
 }
 
 void GenericObject::setupMaterial(void)

@@ -10,15 +10,19 @@ struct Cylinder: public GenericObject
 
     void setupObject(void)
     {
-        std::cout << color << '\n';
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();
 
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
         glNewList(_drawList, GL_COMPILE);
-        gluCylinder(qobj, base_radius, top_radius, height, slices, stacks);
+        drawObject();
         glEndList();
+    }
+
+    void drawObject(void)
+    {
+        gluCylinder(qobj, base_radius, top_radius, height, slices, stacks);
     }
 
     void _cleanup()
@@ -26,9 +30,8 @@ struct Cylinder: public GenericObject
         gluDeleteQuadric(qobj);
     }
 
-    Cylinder(): GenericObject() {}
-
-    Cylinder(float r_base, float r_top, float h, int slice, int stack = 1):
+    Cylinder(float r_base = 0.5, float r_top = 0.5, float h = 1,
+             int slice = 15, int stack = 1):
         GenericObject(), base_radius(r_base), top_radius(r_top), height(h),
         slices(slice), stacks(stack)
     {

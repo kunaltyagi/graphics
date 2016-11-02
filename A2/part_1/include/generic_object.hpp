@@ -33,12 +33,11 @@ struct GenericObject: public Object
 
     virtual void _cleanup() {}
 
-    Point color;
-    Vector scale = {1, 1, 1};
+    Point color = {0.2, 0.8, 0.3, 1};
+    Vector scale;
 
     // preferably don't access the public attributes, use ctor instead
-    GenericObject(): Object() {}
-    GenericObject(Vector vec): Object(), scale(vec) {}
+    GenericObject(Vector vec = {1, 1, 1}): Object(), scale(vec) {}
     virtual ~GenericObject() {}
 
 protected:

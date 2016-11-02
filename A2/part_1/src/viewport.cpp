@@ -55,6 +55,8 @@ void Viewport::keyboardDown(unsigned char key, int x, int y)
         break;
     case 27:
         exit(0);
+    default:
+        _baseObject->input(key);
     }
     glutPostRedisplay();
 }
