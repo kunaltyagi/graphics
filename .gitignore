@@ -35,3 +35,9 @@ build/
 *.out
 *.app
 core
+
+# Hidden files
+.*
+
+# tag files
+tags
