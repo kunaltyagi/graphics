@@ -18,6 +18,15 @@ void GenericObject::draw(void)
     Object::draw();
 }
 
+void GenericObject::input(int key)
+{
+    for (auto& joint : _jointVec)
+    {
+        joint->input(key);
+    }
+}
+
+
 void GenericObject::transformObj(void)
 {
     /* std::cout << "Origin: " << _origin << */

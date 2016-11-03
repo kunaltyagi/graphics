@@ -5,18 +5,21 @@
 
 struct Cylinder: public GenericObject
 {
-    float base_radius = 0.5, top_radius = 0.5, height = 1.0;
-    int slices = 15, stacks = 1;
+    float base_radius, top_radius, height;
+    int slices, stacks;
 
     void setupObject(void)
     {
+        _origin.z = height/2;
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();
 
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
         glNewList(_drawList, GL_COMPILE);
+        glPushMatrix();
         drawObject();
+        glPopMatrix();
         glEndList();
     }
 

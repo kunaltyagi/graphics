@@ -13,7 +13,9 @@ struct Sphere: public GenericObject
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
         glNewList(_drawList, GL_COMPILE);
+        glPushMatrix();
         drawObject();
+        glPopMatrix();
         glEndList();
     }
     void drawObject()

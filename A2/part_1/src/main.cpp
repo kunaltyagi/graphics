@@ -1,7 +1,7 @@
 #include <viewport.hpp>
 /* #include <torus_old.hpp> */
 #include <objects.hpp>
-#include <combo.hpp>
+#include <wheel.hpp>
 
 // these 2 lines are a hack to force loading of pthread
 // Somehow, the linker is not adding pthread. For more details, see
@@ -18,11 +18,8 @@ int main (int argc, char *argv[])
     far.R.setPoint(0, 0, 1, 180);
     far.T.setPoint(1, 1, 0, 1);
 
-    std::shared_ptr<Cube> cube = std::make_shared<Cube>();
-    std::shared_ptr<Square> square = std::make_shared<Square>();
-    std::shared_ptr<Combo> combo = std::make_shared<Combo>();
-    square->setPose(far);
-    std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(combo);
+    std::shared_ptr<Wheel> wheel = std::make_shared<Wheel>();
+    std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(wheel);
 
     assignment.setBaseObj(baseObj);
     assignment.startFramework(argc, argv);

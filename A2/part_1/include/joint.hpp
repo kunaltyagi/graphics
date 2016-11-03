@@ -55,6 +55,7 @@ public:
     float getActuation() { return _jointActuation; }
     Vector getAxis() { return _jointAxis; }
     void setOffset(Pose pose_) { _offset = pose_; }
+    virtual void input(int key) { _child->input(key); }
     void draw(void)
     {
         glPushMatrix();
