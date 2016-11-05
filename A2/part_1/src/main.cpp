@@ -1,7 +1,7 @@
 #include <viewport.hpp>
 /* #include <torus_old.hpp> */
 #include <objects.hpp>
-#include <wheel.hpp>
+#include <front_handle.hpp>
 
 // these 2 lines are a hack to force loading of pthread
 // Somehow, the linker is not adding pthread. For more details, see
@@ -18,7 +18,7 @@ int main (int argc, char *argv[])
     far.R.setPoint(0, 0, 1, 180);
     far.T.setPoint(1, 1, 0, 1);
 
-    std::shared_ptr<Wheel> wheel = std::make_shared<Wheel>();
+    std::shared_ptr<FrontHandle> wheel = std::make_shared<FrontHandle>();
     std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(wheel);
 
     assignment.setBaseObj(baseObj);

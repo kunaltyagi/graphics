@@ -40,8 +40,8 @@ void GenericObject::transformObj(void)
 void GenericObject::setFlags(void)
 {
     glEnable(GL_LIGHTING);
-    /* glEnable(GL_COLOR_MATERIAL); */
-    /* glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE); */
+    glEnable(GL_COLOR_MATERIAL);
+    glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
     glShadeModel (GL_SMOOTH);
 }
 

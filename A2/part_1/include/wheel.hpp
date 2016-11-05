@@ -9,9 +9,19 @@ struct Wheel: public GenericObject
 {
     void setupObject(void)
     {
+        tire.rInner = thickness;
+        tire.rOuter = radius;
+        axle.base_radius = axle.top_radius = tire.rInner;
+        axle.height = 3 * tire.rInner;
+
         tire.setupObject();
         axle.setupObject();
-        spokes[0].setupObject();
+        for (auto& spoke : spokes)
+        {
+            spoke.height = tire.rOuter * 2;
+            spoke.base_radius = spoke.top_radius = 0.05;
+            spoke.setupObject();
+        }
         _drawList = glGenLists(1);
         glNewList(_drawList, GL_COMPILE);
         glPushMatrix();
@@ -24,35 +34,49 @@ struct Wheel: public GenericObject
     {
         tire.setupMaterial();
         axle.setupMaterial();
-        spokes[0].setupMaterial();
+        for (auto& spoke : spokes)
+        {
+            spoke.setupMaterial();
+        }
     }
 
     void drawObject()
     {
-        /* tire.draw(); */
-        /* axle.draw(); */
-        spokes[0].draw();
+        tire.draw();
+        axle.draw();
+        // plane of spokes is different
+        glRotatef(90, 0, 1, 0);
+        for (auto& spoke : spokes)
+        {
+            spoke.draw();
+        }
     }
 
     Torus tire;
     Cylinder axle;
-    const static int num_spokes = 1; //36
+    float radius, thickness;
+    const static int num_spokes = 18; //36
     std::array<Cylinder, num_spokes> spokes;
-    Wheel(): GenericObject()
+    Wheel(float radius_ = 3.3, float thickness_ = 0.18): GenericObject()
     {
-        tire.rInner = 0.18;
-        tire.rOuter = 3.3;
+        radius = radius_;
+        thickness = thickness_;
+
         tire.slices = 20;
         tire.rings = 50;
-        axle.base_radius = axle.top_radius = tire.rInner;
-        axle.height = 3 * tire.rInner;
+        tire.color = {0.1, 0.1, 0.1, 1};
 
+        axle.color = {0.5, 0.5, 0.5, 1};
+
+        Pose pose;
+        pose.R = {1, 0, 0, 0};
+        float delta = 180./num_spokes;
         for (auto& spoke : spokes)
         {
-            spoke.height = 5;
-            spoke.base_radius = spoke.top_radius = 0.05;
+            spoke.setPose(pose);
+            spoke.color = {0.3, 0.3, 0.3, 1};
+            pose.R.w += delta;
         }
-
 
         color.x = color.y = color.z = 0.9;
         color.w = 1.0;
