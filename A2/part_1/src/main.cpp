@@ -1,7 +1,7 @@
 #include <viewport.hpp>
 /* #include <torus_old.hpp> */
 #include <objects.hpp>
-#include <front_handle.hpp>
+#include <frame.hpp>
 
 // these 2 lines are a hack to force loading of pthread
 // Somehow, the linker is not adding pthread. For more details, see
@@ -12,13 +12,13 @@ void* simpleFunc(void*) { return NULL; } void forcePThreadLink() { pthread_t t1;
 int main (int argc, char *argv[])
 {
     Viewport assignment;
-    assignment.setLookAt(0.0, 0.0, 20.0, 0.0, 0.0, 0.0, 0.0, 1.0, .0);
+    assignment.setLookAt(0.0, 0.0, 30.0, 0.0, 0.0, 10.0, 0.0, 1.0, .0);
 
     Pose far;
     far.R.setPoint(0, 0, 1, 180);
     far.T.setPoint(1, 1, 0, 1);
 
-    std::shared_ptr<FrontHandle> wheel = std::make_shared<FrontHandle>();
+    std::shared_ptr<Frame> wheel = std::make_shared<Frame>();
     std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(wheel);
 
     assignment.setBaseObj(baseObj);
