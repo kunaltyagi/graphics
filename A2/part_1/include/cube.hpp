@@ -12,11 +12,7 @@ struct Cube: public GenericObject
         {
             square.setupObject();
         }
-        _drawList = glGenLists(1);
-        glNewList(_drawList, GL_COMPILE);
-        glShadeModel(GL_SMOOTH);
-        this->drawObject();
-        glEndList();
+        GenericObject::setupObject();
     }
 
     void setupMaterial(void)

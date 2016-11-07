@@ -22,12 +22,7 @@ struct Wheel: public GenericObject
             spoke.base_radius = spoke.top_radius = 0.05;
             spoke.setupObject();
         }
-        _drawList = glGenLists(1);
-        glNewList(_drawList, GL_COMPILE);
-        glPushMatrix();
-        drawObject();
-        glPopMatrix();
-        glEndList();
+        GenericObject::setupObject();
     }
 
     void setupMaterial(void)

@@ -10,10 +10,7 @@ struct Combo: public GenericObject
     void setupObject(void)
     {
         cylinder.setupObject();
-        _drawList = glGenLists(1);
-        glNewList(_drawList, GL_COMPILE);
-        drawObject();
-        glEndList();
+        GenericObject::setupObject();
     }
 
     void setupMaterial(void)

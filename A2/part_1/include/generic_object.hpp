@@ -19,9 +19,8 @@ struct GenericObject: public Object
 
     virtual void setupMaterial(void);
 
-    virtual void setupObject(void)
-    {
-        /*
+    virtual void setupObject(void);
+        /* Sample example
         _drawList = glGenLists(1);
         qobj = gluNewQuadric();
 
@@ -31,7 +30,6 @@ struct GenericObject: public Object
         gluGenericObject(qobj, base_radius, top_radius, height, slices, stacks);
         glEndList();
         */
-    }
 
     virtual void _cleanup() {}
 

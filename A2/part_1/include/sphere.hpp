@@ -7,16 +7,11 @@ struct Sphere: public GenericObject
 {
     void setupObject(void)
     {
-        _drawList = glGenLists(1);
         qobj = gluNewQuadric();
 
         gluQuadricDrawStyle(qobj, GLU_FILL); /* smooth shaded */
         gluQuadricNormals(qobj, GLU_SMOOTH);
-        glNewList(_drawList, GL_COMPILE);
-        glPushMatrix();
-        drawObject();
-        glPopMatrix();
-        glEndList();
+        GenericObject::setupObject();
     }
     void drawObject()
     {

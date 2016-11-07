@@ -1,7 +1,6 @@
 #ifndef _JOINT_HPP_
 #define _JOINT_HPP_
 
-#include <cmath>
 #include <iostream>
 #include <cstdlib>
 #include <GL/glut.h>
@@ -10,6 +9,8 @@
 
 #include <glut/glut_framework.hpp>
 #include <glut/vector.hpp>
+
+#include <utils.hpp>
 
 using Point = glut_framework::Point<float>;
 using Vector = glut_framework::Vector<float>;

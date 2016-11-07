@@ -8,7 +8,7 @@ void GenericObject::draw(void)
 
     glPushMatrix();
     transformObj();
-#if 0
+#if 1
     glCallList(_drawList);
 #else
     this->drawObject();
@@ -16,6 +16,17 @@ void GenericObject::draw(void)
     glPopMatrix();
 
     Object::draw();
+}
+
+void GenericObject::setupObject(void)
+{
+    _drawList = glGenLists(1);
+    glNewList(_drawList, GL_COMPILE);
+    glShadeModel(GL_SMOOTH);
+    glPushMatrix();
+    drawObject();
+    glPopMatrix();
+    glEndList();
 }
 
 void GenericObject::input(int key)

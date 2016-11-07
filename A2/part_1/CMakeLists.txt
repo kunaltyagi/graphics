@@ -35,17 +35,22 @@ set(GLUT_SRCS
     src/glut/performance_timer.cpp
 )
 set(HDRS
+    include/utils.hpp
     include/joint.hpp
     include/object.hpp
     include/generic_object.hpp
     include/viewport.hpp
     include/cylinder.hpp
-    include/cube.hpp
     include/sphere.hpp
     include/torus.hpp
     #    include/torus_old.hpp
-    include/objects.hpp
     include/triangle.hpp
+    include/square.hpp
+    include/cube.hpp
+    include/objects.hpp
+    include/wheel.hpp
+    include/front_handle.hpp
+    include/frame.hpp
     include/combo.hpp
 )
 set(SRCS

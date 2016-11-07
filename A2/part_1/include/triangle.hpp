@@ -5,15 +5,6 @@
 
 struct Triangle: public GenericObject
 {
-    void setupObject(void)
-    {
-        _drawList = glGenLists(1);
-        glNewList(_drawList, GL_COMPILE);
-        glShadeModel(GL_SMOOTH);
-        this->drawObject();
-        glEndList();
-    }
-
     void drawObject(void)
     {
         glBegin(GL_TRIANGLES);
