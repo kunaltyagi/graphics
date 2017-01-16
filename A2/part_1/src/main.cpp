@@ -1,7 +1,6 @@
 #include <viewport.hpp>
 #include <frame.hpp>
 #include <objects.hpp>
-#include <circle.hpp>
 
 // these 2 lines are a hack to force loading of pthread
 // Somehow, the linker is not adding pthread. For more details, see
@@ -18,8 +17,7 @@ int main (int argc, char *argv[])
     far.R.setPoint(0, 0, 1, 180);
     far.T.setPoint(1, 1, 0, 1);
 
-    /* std::shared_ptr<Frame> wheel = std::make_shared<Frame>(); */
-    std::shared_ptr<Circle> wheel = std::make_shared<Circle>();
+    std::shared_ptr<Frame> wheel = std::make_shared<Frame>();
     std::shared_ptr<ObjectBase> baseObj = std::static_pointer_cast<ObjectBase>(wheel);
 
     assignment.setBaseObj(baseObj);

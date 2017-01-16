@@ -67,6 +67,7 @@ struct Frame: public GenericObject
     FrontHandle frontWheel;
     Wheel rearWheel;
     Cylinder horizontalBar, triangle_1, triangle_2, rearWheelBar;
+    Cylinder frontGear, rearGear;
     float handleBarHeight = 5;
     Frame(): GenericObject()
     {

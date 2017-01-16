@@ -3,6 +3,7 @@
 
 #include <cylinder.hpp>
 #include <triangle.hpp>
+#include <circle.hpp>
 #include <square.hpp>
 #include <cube.hpp>
 #include <sphere.hpp>

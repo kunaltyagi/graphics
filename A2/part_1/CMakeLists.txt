@@ -45,6 +45,7 @@ set(HDRS
     include/torus.hpp
     #    include/torus_old.hpp
     include/triangle.hpp
+    include/circle.hpp
     include/square.hpp
     include/cube.hpp
     include/objects.hpp
